@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:scheduler/Screens/teacher_name_select.dart';
+import 'package:scheduler/Widgets/teachers_list.dart';
+import 'package:scheduler/Screens/teacher_login.dart';
 
-String teacherInstitutionCode = '';
-
-class TeacherLogin extends StatefulWidget {
-  const TeacherLogin({Key? key}) : super(key: key);
-  static const String screen = 'TeacherLogin';
+class TeacherNameSelect extends StatefulWidget {
+  const TeacherNameSelect({Key? key}) : super(key: key);
+  static const String screen = 'TeacherNameSelect';
 
   @override
-  State<TeacherLogin> createState() => _TeacherLoginState();
+  State<TeacherNameSelect> createState() => _TeacherNameSelectState();
 }
 
-class _TeacherLoginState extends State<TeacherLogin> {
+class _TeacherNameSelectState extends State<TeacherNameSelect> {
+  String selectedTeacherName = 'Select your name';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,11 +71,8 @@ class _TeacherLoginState extends State<TeacherLogin> {
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
-                  onChanged: (value) {
-                    setState(() {
-                      teacherInstitutionCode = value;
-                    });
-                  },
+                  initialValue: teacherInstitutionCode,
+                  readOnly: true,
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -99,10 +97,39 @@ class _TeacherLoginState extends State<TeacherLogin> {
                   //   return null;
                   // },
                 ),
+                const SizedBox(height: 20),
+                Container(
+                  clipBehavior: Clip.hardEdge,
+                  height: 60,
+                  width: 300,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  //Teacher name dropDownButton
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    padding: const EdgeInsets.only(left: 20, top: 5),
+                    style: const TextStyle(
+                        fontFamily: 'poppins',
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                    alignment: Alignment.center,
+                    focusColor: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                    value: selectedTeacherName,
+                    //getDropDownItem() from teacher_list.dart
+                    items: getDropDownItem(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedTeacherName = value.toString();
+                      });
+                    },
+                    underline: Container(color: Colors.transparent),
+                  ),
+                ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, TeacherNameSelect.screen);
-                  },
+                  onTap: () {},
                   //hero is used for simple animation similar to morph in powerpoint
                   child: Hero(
                     tag: 'Button',
