@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class StudentLogin extends StatefulWidget {
-  const StudentLogin({Key? key}) : super(key: key);
-  static const String screen = 'StudentLogin';
+class TeacherLogin extends StatefulWidget {
+  const TeacherLogin({Key? key}) : super(key: key);
+  static const String screen = 'TeacherLogin';
   @override
-  State<StudentLogin> createState() => _StudentLoginState();
+  State<TeacherLogin> createState() => _TeacherLoginState();
 }
 
-class _StudentLoginState extends State<StudentLogin> {
+class _TeacherLoginState extends State<TeacherLogin> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +34,7 @@ class _StudentLoginState extends State<StudentLogin> {
                   width: 10,
                 ),
                 const Text(
-                  'Student',
+                  'Teacher',
                   style: TextStyle(
                       fontFamily: 'poppins', fontSize: 25, color: Colors.black),
                 )
@@ -71,33 +71,6 @@ class _StudentLoginState extends State<StudentLogin> {
                     fontSize: 18,
                   ),
                   decoration: const InputDecoration(
-                    labelText: 'Username',
-                    labelStyle: TextStyle(fontFamily: 'poppins'),
-                    prefixIcon: Icon(Icons.person),
-                    constraints: BoxConstraints(maxHeight: 60, maxWidth: 300),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                  ),
-
-                  //Todo validation of text field if it is empty
-
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  style: const TextStyle(
-                    fontFamily: 'poppins',
-                    fontSize: 18,
-                  ),
-                  decoration: const InputDecoration(
                     labelStyle: TextStyle(fontFamily: 'poppins'),
                     labelText: 'Institution Code',
                     prefixIcon: Icon(Icons.key),
@@ -110,7 +83,6 @@ class _StudentLoginState extends State<StudentLogin> {
                   ),
 
                   //Todo validation of institution code
-
                   // validator: (value) {
                   //   if (value == null) {
                   //     return 'Please enter your username';

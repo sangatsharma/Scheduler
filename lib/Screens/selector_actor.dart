@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scheduler/Screens/student_login.dart';
+import 'package:scheduler/Screens/teacher_login.dart';
 
 class SelectActor extends StatefulWidget {
   const SelectActor({Key? key}) : super(key: key);
@@ -97,6 +98,9 @@ class _SelectActorState extends State<SelectActor> {
                 switch (selectedActor) {
                   case 'Student':
                     Navigator.pushNamed(context, StudentLogin.screen);
+                    break;
+                  case 'Teacher':
+                    Navigator.pushNamed(context, TeacherLogin.screen);
                     break;
                   default:
                 }
