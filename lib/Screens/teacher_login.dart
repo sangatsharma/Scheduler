@@ -103,6 +103,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                       return 'Please enter your Institution Code';
                     }
                     // If everything is good, return null
+                    teacherInstitutionCode = value;
                     return null;
                   },
                 ),
