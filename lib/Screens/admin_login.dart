@@ -8,6 +8,10 @@ class AdminLogin extends StatefulWidget {
 }
 
 class _AdminLoginState extends State<AdminLogin> {
+  //Initial conditions for password visibility hidden
+  bool hidePassword = true;
+  String _userName = '';
+  String _userPassword = '';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,6 +74,11 @@ class _AdminLoginState extends State<AdminLogin> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      _userName = value;
+                    });
+                  },
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -101,19 +110,41 @@ class _AdminLoginState extends State<AdminLogin> {
                     fontFamily: 'poppins',
                     fontSize: 18,
                   ),
-                  decoration: const InputDecoration(
-                    labelStyle: TextStyle(fontFamily: 'poppins'),
+                  onChanged: (value) {
+                    setState(() {
+                      _userPassword = value;
+                    });
+                  },
+                  obscureText: hidePassword,
+                  decoration: InputDecoration(
+                    labelStyle: const TextStyle(fontFamily: 'poppins'),
                     labelText: 'Password',
-                    prefixIcon: Icon(Icons.key_sharp),
-                    constraints: BoxConstraints(maxHeight: 60, maxWidth: 300),
-                    border: OutlineInputBorder(
+                    prefixIcon: const Icon(Icons.key_sharp),
+                    suffixIcon: GestureDetector(
+                      onLongPress: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      onLongPressEnd: (value) {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      child: hidePassword
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                    ),
+                    constraints:
+                        const BoxConstraints(maxHeight: 60, maxWidth: 300),
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       ),
                     ),
                   ),
 
-                  //Todo validation of password
+                  //Todo validation of password if it is empty
 
                   // validator: (value) {
                   //   if (value == null) {
@@ -136,7 +167,9 @@ class _AdminLoginState extends State<AdminLogin> {
                             borderRadius: BorderRadius.circular(10))),
                         backgroundColor:
                             const MaterialStatePropertyAll(Colors.pinkAccent)),
-                    onPressed: () {},
+                    onPressed: () {
+                      //todo :validate username and password and route to adminHomePage
+                    },
                     child: const Text(
                       'Log In',
                       style: TextStyle(

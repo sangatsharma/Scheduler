@@ -8,6 +8,10 @@ class StudentLogin extends StatefulWidget {
 }
 
 class _StudentLoginState extends State<StudentLogin> {
+  //initial error text is hidden from user until error occurs
+  Color errorTextColor = Colors.transparent;
+  String studentUserName = '';
+  String studentInstitutionCode = '';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,6 +70,11 @@ class _StudentLoginState extends State<StudentLogin> {
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      studentUserName = value;
+                    });
+                  },
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -81,18 +90,17 @@ class _StudentLoginState extends State<StudentLogin> {
                       ),
                     ),
                   ),
-
-                  //Todo validation of text field if it is empty
-
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      studentInstitutionCode = value;
+                      errorTextColor = Colors.transparent;
+                    });
+                  },
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -108,18 +116,27 @@ class _StudentLoginState extends State<StudentLogin> {
                       ),
                     ),
                   ),
-
-                  //Todo validation of institution code
-
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  '* Invalid code !',
+                  style: TextStyle(
+                    color: errorTextColor,
+                  ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (studentInstitutionCode == '') {
+                      setState(() {
+                        errorTextColor = Colors.red;
+                      });
+                    } else if (studentUserName == '' ||
+                        !RegExp('[a-zA-Z]').hasMatch(studentUserName)) {
+                      setState(() {});
+                    }
+                  },
                   child: Container(
                     height: 45,
                     width: 70,

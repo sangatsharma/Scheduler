@@ -12,6 +12,8 @@ class TeacherLogin extends StatefulWidget {
 }
 
 class _TeacherLoginState extends State<TeacherLogin> {
+  //initial error text is hidden from user until error occurs
+  Color errorTextColor = Colors.transparent;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -73,6 +75,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                   onChanged: (value) {
                     setState(() {
                       teacherInstitutionCode = value;
+                      errorTextColor = Colors.transparent;
                     });
                   },
                   style: const TextStyle(
@@ -90,18 +93,25 @@ class _TeacherLoginState extends State<TeacherLogin> {
                       ),
                     ),
                   ),
-
-                  //Todo validation of institution code
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  '* Invalid code !',
+                  style: TextStyle(
+                    color: errorTextColor,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, TeacherNameSelect.screen);
+                    if (teacherInstitutionCode == '') {
+                      setState(() {
+                        errorTextColor = Colors.red;
+                      });
+                    } else {
+                      Navigator.pushNamed(context, TeacherNameSelect.screen);
+                    }
                   },
                   //hero is used for simple animation similar to morph in powerpoint
                   child: Hero(

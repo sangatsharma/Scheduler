@@ -11,8 +11,10 @@ class TeacherNameSelect extends StatefulWidget {
 }
 
 class _TeacherNameSelectState extends State<TeacherNameSelect> {
+  // Initializing selected teacher name
   String selectedTeacherName = 'Select your name';
-
+  //initial error text is hidden from user until error occurs
+  Color errorTextColor = Colors.transparent;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -125,13 +127,31 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     onChanged: (value) {
                       setState(() {
                         selectedTeacherName = value.toString();
+                        errorTextColor = Colors.transparent;
                       });
                     },
                     underline: Container(color: Colors.transparent),
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  '* Please select your name !',
+                  style: TextStyle(
+                    color: errorTextColor,
+                  ),
+                ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (selectedTeacherName == 'Select your name') {
+                      setState(() {
+                        errorTextColor = Colors.red;
+                      });
+                    } else {
+                      //Route to next page :TeacherHomepage
+                    }
+                  },
                   //hero is used for simple animation similar to morph in powerpoint
                   child: Hero(
                     tag: 'Button',
