@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/teacher_name_select.dart';
 
+import 'package:scheduler/Widgets/login_users.dart';
+
 String teacherInstitutionCode = '';
 
 class TeacherLogin extends StatefulWidget {
@@ -12,6 +14,11 @@ class TeacherLogin extends StatefulWidget {
 }
 
 class _TeacherLoginState extends State<TeacherLogin> {
+  // A key helps uniquely identify a form and validate it.
+  // It's like a state that remembers the forms state even when the
+  // widget rebuilds itself
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,6 +56,9 @@ class _TeacherLoginState extends State<TeacherLogin> {
           ),
           body: Center(
               child: SingleChildScrollView(
+                child:Form(
+                  // We then associate the key to this Form
+                  key: _formKey,
             child: Column(
               children: [
                 const CircleAvatar(
@@ -91,17 +101,26 @@ class _TeacherLoginState extends State<TeacherLogin> {
                     ),
                   ),
 
-                  //Todo validation of institution code
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Institution Code';
+                    }
+                    // If everything is good, return null
+                    return null;
+                  },
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, TeacherNameSelect.screen);
+                    // The TeacherNameSelect screen only loads if the validation
+                    // was success
+                    if(loginUser(_formKey)){
+                      // The TeacherLogin screen is popped before loading
+                      // TeacherNameSelect screen
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(context, TeacherNameSelect.screen);
+                    }
                   },
                   //hero is used for simple animation similar to morph in powerpoint
                   child: Hero(
@@ -124,6 +143,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                 ),
               ],
             ),
+                ),
           ))),
     );
   }

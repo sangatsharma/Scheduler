@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Widgets/login_users.dart';
 
 class StudentLogin extends StatefulWidget {
   const StudentLogin({Key? key}) : super(key: key);
@@ -8,6 +9,9 @@ class StudentLogin extends StatefulWidget {
 }
 
 class _StudentLoginState extends State<StudentLogin> {
+  // A key helps uniquely identify a form and validate it.
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,6 +49,10 @@ class _StudentLoginState extends State<StudentLogin> {
           ),
           body: Center(
               child: SingleChildScrollView(
+                child: Form(
+                  // We then associate the key to this Form
+                  key: _formKey,
+
             child: Column(
               children: [
                 const CircleAvatar(
@@ -82,14 +90,16 @@ class _StudentLoginState extends State<StudentLogin> {
                     ),
                   ),
 
-                  //Todo validation of text field if it is empty
 
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Username';
+                    }
+                    // If everything is good, return null
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -111,15 +121,19 @@ class _StudentLoginState extends State<StudentLogin> {
 
                   //Todo validation of institution code
 
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Institution Code';
+                    }
+                    return null;
+                  },
+
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    loginUser(_formKey);
+                  },
                   child: Container(
                     height: 45,
                     width: 70,
@@ -137,6 +151,7 @@ class _StudentLoginState extends State<StudentLogin> {
                 ),
               ],
             ),
+                ),
           ))),
     );
   }
