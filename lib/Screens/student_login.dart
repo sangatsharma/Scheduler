@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Widgets/login_users.dart';
 
 class StudentLogin extends StatefulWidget {
   const StudentLogin({Key? key}) : super(key: key);
@@ -8,10 +9,9 @@ class StudentLogin extends StatefulWidget {
 }
 
 class _StudentLoginState extends State<StudentLogin> {
-  //initial error text is hidden from user until error occurs
-  Color errorTextColor = Colors.transparent;
-  String studentUserName = '';
-  String studentInstitutionCode = '';
+  // A key helps uniquely identify a form and validate it.
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,6 +49,10 @@ class _StudentLoginState extends State<StudentLogin> {
           ),
           body: Center(
               child: SingleChildScrollView(
+                child: Form(
+                  // We then associate the key to this Form
+                  key: _formKey,
+
             child: Column(
               children: [
                 const CircleAvatar(
@@ -70,11 +74,6 @@ class _StudentLoginState extends State<StudentLogin> {
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
-                  onChanged: (value) {
-                    setState(() {
-                      studentUserName = value;
-                    });
-                  },
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -90,17 +89,22 @@ class _StudentLoginState extends State<StudentLogin> {
                       ),
                     ),
                   ),
+
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Username';
+                    }
+                    // If everything is good, return null
+                    return null;
+                  },
+
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
-                  onChanged: (value) {
-                    setState(() {
-                      studentInstitutionCode = value;
-                      errorTextColor = Colors.transparent;
-                    });
-                  },
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -116,26 +120,18 @@ class _StudentLoginState extends State<StudentLogin> {
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '* Invalid code !',
-                  style: TextStyle(
-                    color: errorTextColor,
-                  ),
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Institution Code';
+                    }
+                    return null;
+                  },
+
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (studentInstitutionCode == '') {
-                      setState(() {
-                        errorTextColor = Colors.red;
-                      });
-                    } else if (studentUserName == '' ||
-                        !RegExp('[a-zA-Z]').hasMatch(studentUserName)) {
-                      setState(() {});
-                    }
+                    loginUser(_formKey);
                   },
                   child: Container(
                     height: 45,
@@ -154,6 +150,7 @@ class _StudentLoginState extends State<StudentLogin> {
                 ),
               ],
             ),
+                ),
           ))),
     );
   }

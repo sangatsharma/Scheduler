@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Widgets/login_users.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({Key? key}) : super(key: key);
@@ -8,10 +9,13 @@ class AdminLogin extends StatefulWidget {
 }
 
 class _AdminLoginState extends State<AdminLogin> {
-  //Initial conditions for password visibility hidden
   bool hidePassword = true;
-  String _userName = '';
-  String _userPassword = '';
+
+  // A key helps uniquely identify a form and validate it.
+  // It's like a state that remembers the forms state even when the
+  // widget rebuilds itself
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,6 +53,9 @@ class _AdminLoginState extends State<AdminLogin> {
           ),
           body: Center(
               child: SingleChildScrollView(
+                child: Form(
+                  // We then associate the key to this Form
+                  key: _formKey,
             child: Column(
               children: [
                 const CircleAvatar(
@@ -74,11 +81,6 @@ class _AdminLoginState extends State<AdminLogin> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  onChanged: (value) {
-                    setState(() {
-                      _userName = value;
-                    });
-                  },
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -95,14 +97,16 @@ class _AdminLoginState extends State<AdminLogin> {
                     ),
                   ),
 
-                  //Todo validation of Username if it is empty
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Username';
+                    }
+                    // If everything is good, return null
+                    return null;
+                  },
 
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -110,11 +114,6 @@ class _AdminLoginState extends State<AdminLogin> {
                     fontFamily: 'poppins',
                     fontSize: 18,
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      _userPassword = value;
-                    });
-                  },
                   obscureText: hidePassword,
                   decoration: InputDecoration(
                     labelStyle: const TextStyle(fontFamily: 'poppins'),
@@ -144,14 +143,16 @@ class _AdminLoginState extends State<AdminLogin> {
                     ),
                   ),
 
-                  //Todo validation of password if it is empty
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Password';
+                    }
+                    // If everything is good, return null
+                    return null;
+                  },
 
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
                 ),
                 const SizedBox(
                   height: 10,
@@ -167,8 +168,9 @@ class _AdminLoginState extends State<AdminLogin> {
                             borderRadius: BorderRadius.circular(10))),
                         backgroundColor:
                             const MaterialStatePropertyAll(Colors.pinkAccent)),
-                    onPressed: () {
-                      //todo :validate username and password and route to adminHomePage
+                    onPressed: (){
+                      // Validate input fields
+                      loginUser(_formKey);
                     },
                     child: const Text(
                       'Log In',
@@ -224,6 +226,7 @@ class _AdminLoginState extends State<AdminLogin> {
                 ),
               ],
             ),
+                ),
           ))),
     );
   }

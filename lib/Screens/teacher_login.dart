@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/teacher_name_select.dart';
 
+import 'package:scheduler/Widgets/login_users.dart';
+
 String teacherInstitutionCode = '';
 
 class TeacherLogin extends StatefulWidget {
@@ -12,8 +14,11 @@ class TeacherLogin extends StatefulWidget {
 }
 
 class _TeacherLoginState extends State<TeacherLogin> {
-  //initial error text is hidden from user until error occurs
-  Color errorTextColor = Colors.transparent;
+  // A key helps uniquely identify a form and validate it.
+  // It's like a state that remembers the forms state even when the
+  // widget rebuilds itself
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,6 +56,9 @@ class _TeacherLoginState extends State<TeacherLogin> {
           ),
           body: Center(
               child: SingleChildScrollView(
+                child:Form(
+                  // We then associate the key to this Form
+                  key: _formKey,
             child: Column(
               children: [
                 const CircleAvatar(
@@ -72,12 +80,6 @@ class _TeacherLoginState extends State<TeacherLogin> {
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
-                  onChanged: (value) {
-                    setState(() {
-                      teacherInstitutionCode = value;
-                      errorTextColor = Colors.transparent;
-                    });
-                  },
                   style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 18,
@@ -93,23 +95,25 @@ class _TeacherLoginState extends State<TeacherLogin> {
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '* Invalid code !',
-                  style: TextStyle(
-                    color: errorTextColor,
-                  ),
+
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Institution Code';
+                    }
+                    // If everything is good, return null
+                    return null;
+                  },
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (teacherInstitutionCode == '') {
-                      setState(() {
-                        errorTextColor = Colors.red;
-                      });
-                    } else {
+                    // The TeacherNameSelect screen only loads if the validation
+                    // was success
+                    if(loginUser(_formKey)){
+                      // The TeacherLogin screen is popped before loading
+                      // TeacherNameSelect screen
+                      Navigator.of(context).pop();
                       Navigator.pushNamed(context, TeacherNameSelect.screen);
                     }
                   },
@@ -134,6 +138,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                 ),
               ],
             ),
+                ),
           ))),
     );
   }
