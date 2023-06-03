@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:scheduler/Screens/admin_login.dart';
 import 'package:scheduler/Screens/student_login.dart';
 import 'package:scheduler/Screens/teacher_login.dart';
 
@@ -102,6 +103,9 @@ class _SelectActorState extends State<SelectActor> {
                   case 'Teacher':
                     Navigator.pushNamed(context, TeacherLogin.screen);
                     break;
+                  case 'Admin':
+                    Navigator.pushNamed(context, AdminLogin.screen);
+                    break;
                   default:
                 }
               },
@@ -126,4 +130,3 @@ class _SelectActorState extends State<SelectActor> {
     );
   }
 }
-// hello how are you.

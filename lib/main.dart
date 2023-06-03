@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Screens/admin_login.dart';
 import 'package:scheduler/Screens/selector_actor.dart';
 import 'package:scheduler/Screens/student_login.dart';
 import 'package:scheduler/Screens/teacher_login.dart';
@@ -21,8 +22,8 @@ class MyApp extends StatelessWidget {
         StudentLogin.screen: (context) => const StudentLogin(),
         TeacherLogin.screen: (context) => const TeacherLogin(),
         TeacherNameSelect.screen: (context) => const TeacherNameSelect(),
+        AdminLogin.screen: (context) => const AdminLogin(),
       },
     );
   }
 }
-//hello just a try

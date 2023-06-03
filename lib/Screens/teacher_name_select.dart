@@ -89,7 +89,8 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     ),
                   ),
 
-                  //Todo validation of institution code
+                  //Todo :validation of institution code
+
                   // validator: (value) {
                   //   if (value == null) {
                   //     return 'Please enter your username';
@@ -113,6 +114,7 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 15,
+                        color: Colors.black,
                         fontWeight: FontWeight.normal),
                     alignment: Alignment.center,
                     focusColor: Colors.transparent,
