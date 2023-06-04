@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:scheduler/Widgets/teachers_list.dart';
 import 'package:scheduler/Screens/teacher_login.dart';
 
+import '../Widgets/appbar_func.dart';
+import '../Widgets/next_button.dart';
+
 class TeacherNameSelect extends StatefulWidget {
   const TeacherNameSelect({Key? key}) : super(key: key);
   static const String screen = 'TeacherNameSelect';
@@ -11,45 +14,18 @@ class TeacherNameSelect extends StatefulWidget {
 }
 
 class _TeacherNameSelectState extends State<TeacherNameSelect> {
-  // Initializing selected teacher name
+  //initial value for selectedTeacherName,
+  //final value should not be same as initial.
   String selectedTeacherName = 'Select your name';
-  //initial error text is hidden from user until error occurs
+  Color dropDownBorderColor = Colors.grey;
   Color errorTextColor = Colors.transparent;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            leading: Row(
-              children: [
-                const SizedBox(
-                  width: 5,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Icon(
-                    Icons.west,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text(
-                  'Teacher',
-                  style: TextStyle(
-                      fontFamily: 'poppins', fontSize: 25, color: Colors.black),
-                )
-              ],
-            ),
-            leadingWidth: 160,
-            elevation: 0,
-          ),
+          appBar: buildAppBar(context, 'Teacher'),
           body: Center(
               child: SingleChildScrollView(
             child: Column(
@@ -91,8 +67,9 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     ),
                   ),
 
-                  //Todo :validation of institution code
-
+                  //validation of institution code {* Not required in this page}
+                  //validation should be done in previous page so that teachers dropdown list
+                  //of that institution will be fetch from that institution's database.
                   // validator: (value) {
                   //   if (value == null) {
                   //     return 'Please enter your username';
@@ -106,7 +83,7 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                   height: 60,
                   width: 300,
                   decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
+                    border: Border.all(width: 1, color: dropDownBorderColor),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   //Teacher name dropDownButton
@@ -127,47 +104,41 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     onChanged: (value) {
                       setState(() {
                         selectedTeacherName = value.toString();
-                        errorTextColor = Colors.transparent;
                       });
+                      //validation for selected name
+                      validateSelectName();
                     },
                     underline: Container(color: Colors.transparent),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '* Please select your name !',
-                  style: TextStyle(
-                    color: errorTextColor,
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: 20,
+                  width: 300,
+                  padding: const EdgeInsets.only(top: 4, left: 10),
+                  child: Text(
+                    'Please select your name',
+                    style: TextStyle(fontSize: 12, color: errorTextColor),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (selectedTeacherName == 'Select your name') {
-                      setState(() {
-                        errorTextColor = Colors.red;
-                      });
+                    //validation for selected name
+                    if (selectedTeacherName != teachersNameList[0]) {
+                      // route to next page
                     } else {
-                      //Route to next page :TeacherHomepage
+                      validateSelectName();
                     }
                   },
                   //hero is used for simple animation similar to morph in powerpoint
-                  child: Hero(
+                  child: const Hero(
                     tag: 'Button',
-                    child: Container(
-                      height: 45,
-                      width: 70,
-                      margin: const EdgeInsets.only(top: 30),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.elliptical(35, 35),
-                        ),
-                        border: Border.fromBorderSide(
-                          BorderSide(width: 1),
-                        ),
+                    child: NextButton(
+                      //next btn is a custom widget from next_button.dart
+                      btnIcon: Icon(
+                        Icons.east,
+                        size: 30,
                       ),
-                      child: const Icon(Icons.east, size: 30),
                     ),
                   ),
                 ),
@@ -175,5 +146,21 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
             ),
           ))),
     );
+  }
+
+  //****  VALIDATION LOGIC ****//
+//function to check if final selected name is not equal to initial.
+  void validateSelectName() {
+    //validation for selected name
+    setState(() {
+      if (selectedTeacherName != teachersNameList[0]) {
+        debugPrint(selectedTeacherName);
+        errorTextColor = Colors.transparent;
+        dropDownBorderColor = Colors.grey;
+      } else {
+        errorTextColor = Colors.red;
+        dropDownBorderColor = Colors.red;
+      }
+    });
   }
 }

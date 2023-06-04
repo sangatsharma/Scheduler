@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:scheduler/Screens/admin_login.dart';
 import 'package:scheduler/Screens/student_login.dart';
 import 'package:scheduler/Screens/teacher_login.dart';
+import 'package:scheduler/Widgets/next_button.dart';
 
 class SelectActor extends StatefulWidget {
   const SelectActor({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class SelectActor extends StatefulWidget {
 }
 
 class _SelectActorState extends State<SelectActor> {
+  //initial selected actor=student
   String selectedActor = 'Student';
 
   @override
@@ -21,6 +23,7 @@ class _SelectActorState extends State<SelectActor> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               margin: const EdgeInsets.only(top: 80),
@@ -109,19 +112,12 @@ class _SelectActorState extends State<SelectActor> {
                   default:
                 }
               },
-              child: Container(
-                height: 45,
-                width: 70,
-                margin: const EdgeInsets.only(top: 30),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.elliptical(35, 35),
-                  ),
-                  border: Border.fromBorderSide(
-                    BorderSide(width: 1),
-                  ),
+              child: const NextButton(
+                //nextbtn is a custom widget from next_button.dart
+                btnIcon: Icon(
+                  Icons.east,
+                  size: 30,
                 ),
-                child: const Icon(Icons.east, size: 30),
               ),
             ),
           ],
