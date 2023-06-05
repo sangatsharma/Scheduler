@@ -230,10 +230,12 @@ class _AdminLoginState extends State<AdminLogin> {
                           border: Border.all(width: 1.5, color: Colors.grey),
                           borderRadius: BorderRadius.circular(130),
                         ),
-                        child: const Image(
-                            fit: BoxFit.contain,
-                            height: 50,
-                            image: AssetImage('Assets/images/Google.png')),
+                        child: const Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Image(
+                              height: 50,
+                              image: AssetImage('Assets/images/Google.png')),
+                        ),
                       ),
                     ),
                   ),

@@ -35,16 +35,6 @@ class _AdminSignUpState extends State<AdminSignUp> {
               key: _formKey,
               child: Column(
                 children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.transparent,
-                    child: Image(
-                      image: AssetImage(
-                        'Assets/images/logo.jpg',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
                   const SizedBox(
                     width: 250,
                     child: Text(
@@ -242,7 +232,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
                     ),
                   ),
 
-                  //****Login with Google***//
+                  //****SignUp with Google***//
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
@@ -253,12 +243,14 @@ class _AdminSignUpState extends State<AdminSignUp> {
                         height: 55,
                         decoration: BoxDecoration(
                           border: Border.all(width: 1.5, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(130),
+                          borderRadius: BorderRadius.circular(150),
                         ),
-                        child: const Image(
-                            fit: BoxFit.contain,
-                            height: 50,
-                            image: AssetImage('Assets/images/Google.png')),
+                        child: const Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Image(
+                              height: 30,
+                              image: AssetImage('Assets/images/Google.png')),
+                        ),
                       ),
                     ),
                   ),
