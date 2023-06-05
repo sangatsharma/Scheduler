@@ -8,14 +8,17 @@ AppBar buildAppBar(BuildContext context, String labelText) {
         const SizedBox(
           width: 5,
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: const Icon(
-            Icons.west,
-            color: Colors.black,
-            size: 30,
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: const Icon(
+              Icons.west,
+              color: Colors.black,
+              size: 30,
+            ),
           ),
         ),
         const SizedBox(

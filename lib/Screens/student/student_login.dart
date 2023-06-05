@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scheduler/Widgets/login_users.dart';
-
-import '../Widgets/appbar_func.dart';
+import 'package:scheduler/Widgets/appbar_func.dart';
 
 class StudentLogin extends StatefulWidget {
   const StudentLogin({Key? key}) : super(key: key);
@@ -10,12 +9,11 @@ class StudentLogin extends StatefulWidget {
   State<StudentLogin> createState() => _StudentLoginState();
 }
 
-String studentUserName = '';
-String studentInstitutionCode = '';
-
 class _StudentLoginState extends State<StudentLogin> {
   // A key helps uniquely identify a form and validate it.
   final _formKey = GlobalKey<FormState>();
+  String _studentUserName = '';
+  String _studentInstitutionCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +51,7 @@ class _StudentLoginState extends State<StudentLogin> {
                     height: 85,
                     child: TextFormField(
                       onChanged: (value) {
-                        studentUserName = value;
+                        _studentUserName = value;
                       },
                       style: const TextStyle(
                         fontFamily: 'poppins',
@@ -83,11 +81,14 @@ class _StudentLoginState extends State<StudentLogin> {
                       },
                     ),
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   SizedBox(
                     height: 85,
                     child: TextFormField(
                       onChanged: (value) {
-                        studentInstitutionCode = value;
+                        _studentInstitutionCode = value;
                       },
                       style: const TextStyle(
                         fontFamily: 'poppins',

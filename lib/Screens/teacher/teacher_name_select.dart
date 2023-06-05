@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scheduler/Widgets/teachers_list.dart';
-import 'package:scheduler/Screens/teacher_login.dart';
+import 'package:scheduler/Screens/teacher/teacher_login.dart';
 
-import '../Widgets/appbar_func.dart';
-import '../Widgets/next_button.dart';
+import '../../Widgets/appbar_func.dart';
+import '../../Widgets/next_button.dart';
 
 class TeacherNameSelect extends StatefulWidget {
   const TeacherNameSelect({Key? key}) : super(key: key);

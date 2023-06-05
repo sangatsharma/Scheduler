@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:scheduler/Screens/teacher_name_select.dart';
+import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import 'package:scheduler/Widgets/next_button.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 
-import '../Widgets/appbar_func.dart';
+import '../../Widgets/appbar_func.dart';
 
 class TeacherLogin extends StatefulWidget {
   const TeacherLogin({Key? key}) : super(key: key);
@@ -102,7 +102,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                     child: const Hero(
                       tag: 'Button',
                       child: NextButton(
-                          //nextbtn is a custom widget from next_button.dart
+                          //next btn is a custom widget from next_button.dart
                           btnIcon: Icon(
                         Icons.east,
                         size: 30,
