@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scheduler/Screens/admin/admin_login.dart';
+// import 'package:scheduler/Screens/admin/admin_login.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
 
@@ -261,7 +261,10 @@ class _AdminSignUpState extends State<AdminSignUp> {
                   //****Sign Up****//
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, AdminLogin.screen);
+                      // Navigator.pushNamed(context, AdminLogin.screen);
+
+                      // This prevents multiple screens to exist
+                      Navigator.of(context).pop();
                     },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
