@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "828125426845",
+    "firebase_url": "https://scheduarappbackend-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "scheduarappbackend",
+    "storage_bucket": "scheduarappbackend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828125426845:android:747831e40e94a43fac5074",
+        "android_client_info": {
+          "package_name": "com.example.scheduler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "828125426845-8b7djg5jgrpksp50hlq6fc34vna0o40t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scheduler",
+            "certificate_hash": "8c38da37a719c917303223d8f52f09e41df16d02"
+          }
+        },
+        {
+          "client_id": "828125426845-ip5qrt7phcs413j4iuik9ahjl0rj7pfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCldUAfVO1dud1jBs2h8fKbKxNfEzt5vIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "828125426845-if3ffm4r866qfhe8290gr28mto9uump4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "828125426845-j3vjiq21582ob8s7sr3qpm855l3ej027.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.scheduler"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
