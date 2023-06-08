@@ -13,8 +13,6 @@ buildscript {
         // END: FlutterFire Configuration
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        // ADD THE DEPENDENCY FOR THE GOOGLE SERVICES GRADLE PLUGIN
-        classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 

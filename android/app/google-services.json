@@ -7,42 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:229538634287:android:212d5f126c6b454ff744da",
-        "android_client_info": {
-          "package_name": "com.example.scheduler"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "229538634287-2enp9iuqb1hd50l0pfggerlavu30brsp.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBEin8in3hkTNS6lP2c2LUyOjOZSYyTk3E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "229538634287-2enp9iuqb1hd50l0pfggerlavu30brsp.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "229538634287-0ehea4io12akts7i6pup1p74tofo7e57.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.scheduler.RunnerTests"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:229538634287:android:07c4555c44e1396ff744da",
         "android_client_info": {
           "package_name": "com.scheduler.app"
