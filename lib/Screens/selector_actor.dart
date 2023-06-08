@@ -16,6 +16,7 @@ class SelectActor extends StatefulWidget {
 
 class _SelectActorState extends State<SelectActor> {
   //initial selected actor=student
+  String labelText = 'I am a';
   String selectedActor = 'Student';
 
   @override
@@ -37,12 +38,17 @@ class _SelectActorState extends State<SelectActor> {
                     fit: BoxFit.cover,
                   )),
             ),
-            const Text(
-              'I am a',
-              style: TextStyle(
-                  fontFamily: 'cursive',
-                  fontSize: 60,
-                  fontWeight: FontWeight.w900),
+            SizedBox(
+              width: 300,
+              child: Center(
+                child: Text(
+                  labelText,
+                  style: const TextStyle(
+                      fontFamily: 'cursive',
+                      fontSize: 60,
+                      fontWeight: FontWeight.w900),
+                ),
+              ),
             ),
             Container(
               alignment: Alignment.center,
@@ -56,11 +62,14 @@ class _SelectActorState extends State<SelectActor> {
                     switch (index) {
                       case 0:
                         selectedActor = 'Teacher';
+                        labelText = 'I am a';
                         break; // The switch statement must be told to exit, or it will execute every case.
                       case 2:
                         selectedActor = 'Admin';
+                        labelText = 'I am an';
                         break;
                       default:
+                        labelText = 'I am a';
                         selectedActor = 'Student';
                     }
                   });

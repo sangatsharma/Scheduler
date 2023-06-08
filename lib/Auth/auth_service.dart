@@ -9,8 +9,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 // firebase_auth: for implementing Firebase authentication
 // google_sign_in: to use Google Sign-In
 
-class Authenticate{
-
+class Authenticate {
   // This must be done as the first step.
   static Future<FirebaseApp> initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
@@ -20,17 +19,14 @@ class Authenticate{
     return firebaseApp;
   }
 
-  static Future<UserCredential> registerWithEmail({required String email, required String password}) async {
+  static Future<UserCredential> registerWithEmail(
+      {required String email, required String password}) async {
     await Firebase.initializeApp();
 
     FirebaseAuth auth = FirebaseAuth.instance;
 
-    final UserCredential user = await(
-      auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password
-      )
-    );
+    final UserCredential user = await (auth.createUserWithEmailAndPassword(
+        email: email, password: password));
 
     return user;
   }
@@ -50,13 +46,12 @@ class Authenticate{
 
     // Opens Pop up to choose account
     final GoogleSignInAccount? googleSignInAccount =
-    await googleSignIn.signIn();
+        await googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
-
       // The request goes to google
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+          await googleSignInAccount.authentication;
 
       // Get auth credentials
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -67,7 +62,7 @@ class Authenticate{
       try {
         // Sign in with Firebase Auth SDK
         final UserCredential userCredential =
-        await auth.signInWithCredential(credential);
+            await auth.signInWithCredential(credential);
 
         // The `user` instance holds users info (e.g email)
         user = userCredential.user;
@@ -77,8 +72,7 @@ class Authenticate{
       on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           // handle the error here
-        }
-        else if (e.code == 'invalid-credential') {
+        } else if (e.code == 'invalid-credential') {
           // handle the error here
         }
       } catch (e) {

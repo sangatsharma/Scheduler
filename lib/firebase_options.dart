@@ -67,8 +67,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '229538634287',
     projectId: 'the-scheduler-app',
     storageBucket: 'the-scheduler-app.appspot.com',
-    androidClientId: '229538634287-uobetv4padturdqu2k7ol2cn9kpb7ead.apps.googleusercontent.com',
-    iosClientId: '229538634287-te9rqdjonvemnjk4hmdbg7o9e1h3obdh.apps.googleusercontent.com',
+    androidClientId:
+        '229538634287-uobetv4padturdqu2k7ol2cn9kpb7ead.apps.googleusercontent.com',
+    iosClientId:
+        '229538634287-te9rqdjonvemnjk4hmdbg7o9e1h3obdh.apps.googleusercontent.com',
     iosBundleId: 'com.example.scheduler',
   );
 
@@ -78,8 +80,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '229538634287',
     projectId: 'the-scheduler-app',
     storageBucket: 'the-scheduler-app.appspot.com',
-    androidClientId: '229538634287-uobetv4padturdqu2k7ol2cn9kpb7ead.apps.googleusercontent.com',
-    iosClientId: '229538634287-0ehea4io12akts7i6pup1p74tofo7e57.apps.googleusercontent.com',
+    androidClientId:
+        '229538634287-uobetv4padturdqu2k7ol2cn9kpb7ead.apps.googleusercontent.com',
+    iosClientId:
+        '229538634287-0ehea4io12akts7i6pup1p74tofo7e57.apps.googleusercontent.com',
     iosBundleId: 'com.example.scheduler.RunnerTests',
   );
 }
