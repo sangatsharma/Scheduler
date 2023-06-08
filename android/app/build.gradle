@@ -52,18 +52,18 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
 
-        // EDITED THIS
-        // minSdkVersion flutter.minSdkVersion
-        //targetSdkVersion flutter.targetSdkVersion
+        //CHANGED HERE: APP THREW AN ERROR
+        // (old) minSdkVersion flutter.minSdkVersion
+        // (old) targetSdkVersion flutter.targetSdkVersion
 
-        // TO THIS
-        minSdkVersion 21
-        targetSdkVersion 30
+        // new
+         minSdkVersion 21
+         targetSdkVersion 30
 
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        // ADDED THIS
+        // ALSO ADDED THIS ONE
         multiDexEnabled true
     }
 

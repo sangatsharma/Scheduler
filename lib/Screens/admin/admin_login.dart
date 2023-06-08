@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Auth/auth_service.dart';
 import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
 
 import 'package:scheduler/Auth/auth_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:scheduler/tmp/temp_file.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({Key? key}) : super(key: key);
@@ -23,6 +26,8 @@ class _AdminLoginState extends State<AdminLogin> {
   // It's like a state that remembers the forms state even when the
   // widget rebuilds itself
   final _formKey = GlobalKey<FormState>();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -224,12 +229,15 @@ class _AdminLoginState extends State<AdminLogin> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () async {
-                        //todo Route to log in with google account
-                        Authenticate.initializeFirebase();
+                        //Todo disallow user to tap multiple times
+
+                        //Login the user
                         var user = await Authenticate.signInWithGoogle(context: context);
 
-                        print(user?.email);
+                        // Open the temp page
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => TempWidget(user: user)));
                       },
+
                       child: Container(
                         height: 55,
                         decoration: BoxDecoration(

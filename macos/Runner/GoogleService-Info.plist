@@ -3,6 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
+<<<<<<< HEAD
 	<string>229538634287-0ehea4io12akts7i6pup1p74tofo7e57.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.229538634287-0ehea4io12akts7i6pup1p74tofo7e57</string>
@@ -12,14 +13,31 @@
 	<string>AIzaSyDfBZkxMtg89SYobEu6FWwVIpdK016DQTg</string>
 	<key>GCM_SENDER_ID</key>
 	<string>229538634287</string>
+=======
+	<string>828125426845-rnd6eeo5nu1b63u3t21j0d46er9qu15g.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.828125426845-rnd6eeo5nu1b63u3t21j0d46er9qu15g</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>828125426845-8b7djg5jgrpksp50hlq6fc34vna0o40t.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAUd4eqKMT4rt1-tANmYvsico1O2Pvo4YM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>828125426845</string>
+>>>>>>> e71322aee1a51f7050d57b5214df96d0d2bfa80f
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.scheduler.RunnerTests</string>
 	<key>PROJECT_ID</key>
+<<<<<<< HEAD
 	<string>the-scheduler-app</string>
 	<key>STORAGE_BUCKET</key>
 	<string>the-scheduler-app.appspot.com</string>
+=======
+	<string>scheduarappbackend</string>
+	<key>STORAGE_BUCKET</key>
+	<string>scheduarappbackend.appspot.com</string>
+>>>>>>> e71322aee1a51f7050d57b5214df96d0d2bfa80f
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +49,12 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
+<<<<<<< HEAD
 	<string>1:229538634287:ios:cd717f9971f40179f744da</string>
+=======
+	<string>1:828125426845:ios:02aa9257ef6b463cac5074</string>
+	<key>DATABASE_URL</key>
+	<string>https://scheduarappbackend-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+>>>>>>> e71322aee1a51f7050d57b5214df96d0d2bfa80f
 </dict>
 </plist>
