@@ -3,6 +3,8 @@ import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
 
+import 'package:scheduler/Auth/auth_service.dart';
+
 class AdminLogin extends StatefulWidget {
   const AdminLogin({Key? key}) : super(key: key);
   static const String screen = 'AdminLogin';
@@ -221,8 +223,12 @@ class _AdminLoginState extends State<AdminLogin> {
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         //todo Route to log in with google account
+                        Authenticate.initializeFirebase();
+                        var user = await Authenticate.signInWithGoogle(context: context);
+
+                        print(user?.email);
                       },
                       child: Container(
                         height: 55,
