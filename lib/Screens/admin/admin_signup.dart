@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Auth/auth_service.dart';
 // import 'package:scheduler/Screens/admin/admin_login.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
+import '../../tmp/temp_file.dart';
 
 class AdminSignUp extends StatefulWidget {
   const AdminSignUp({Key? key}) : super(key: key);
@@ -190,10 +192,14 @@ class _AdminSignUpState extends State<AdminSignUp> {
                                   borderRadius: BorderRadius.circular(10))),
                           backgroundColor: const MaterialStatePropertyAll(
                               Colors.blueAccent)),
-                      onPressed: () {
+                      onPressed: () async{
                         // Validate input fields
                         loginUser(_formKey);
                         //Route to LoginPage/adminHomePage
+                        var user = await Authenticate.registerWithEmail(email: _adminSignUpEmail, password: _adminSignUpPassword);
+                        if(user != null){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => TempWidget(user: user)));
+                        }
                       },
                       child: const Text(
                         'Sign Up',
@@ -236,7 +242,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async{
                         //todo Route to signUp  with google account
                       },
                       child: Container(

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:scheduler/Auth/auth_service.dart';
 
 class TempWidget extends StatelessWidget{
   const TempWidget({super.key, required this.user});
@@ -7,7 +8,10 @@ class TempWidget extends StatelessWidget{
   final User? user;
   @override
   Widget build(BuildContext context){
-    var photoUrl = user?.photoURL ?? 'Error Image link';
+    var photoUrl = user?.photoURL ?? 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Facebook_default_male_avatar.gif';
+    var name = user?.displayName ?? 'Anonymous';
+    var email = user?.email;
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -15,8 +19,17 @@ class TempWidget extends StatelessWidget{
           children: [
             Image.network(photoUrl),
             const SizedBox(height: 30,),
-            Text("Hello: ${user?.displayName}"),
-            Text("Email: ${user?.email}"),
+            Text("Hello: $name"),
+            Text("Email: $email"),
+            TextButton(
+              onPressed: () async{
+                bool success = await Authenticate.signOut(context: context);
+                if(success){
+                  Navigator.of(context).pop();
+                }
+              },
+                child: const Text("Sign Out"),
+            )
           ],
         ),
       ),
