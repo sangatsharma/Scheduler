@@ -204,9 +204,29 @@ class _AdminLoginState extends State<AdminLogin> {
                                     borderRadius: BorderRadius.circular(10))),
                             backgroundColor: const MaterialStatePropertyAll(
                                 Colors.pinkAccent)),
-                        onPressed: () {
+
+                        onPressed: () async{
                           // Validate input fields
-                          loginUser(_formKey);
+                          bool validateSuccess = loginUser(_formKey);
+
+                          // If successfully validated
+                          if(validateSuccess) {
+
+                            // Try to sign the user in
+                            var user = await Authenticate.signInWithEmail(
+                                email: _adminLogInEmail,
+                                password: _adminLogInPassword,
+                                context: context
+                            );
+
+                            // If sign-in was success, load corresponding page
+                            // Also make sure the present context is mounted
+                            if (user != null && context.mounted) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      TempWidget(user: user)));
+                            }
+                          }
                         },
                         child: const Text(
                           'Log In',

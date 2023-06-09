@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flash/flash.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:scheduler/Auth/error_message_codes.dart';
 
 // firebase_core: for initializing Firebase
 // firebase_auth: for implementing Firebase authentication
@@ -12,7 +15,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 // GLOBAL AUTH OBJECT
 FirebaseAuth _auth = FirebaseAuth.instance;
 
-//TODO check if the user is connected to the internet
+// TODO check if the user is connected to the internet
+/*
+  If the user account already exists, or email/password format donot match,
+  app throws an error. How to fix it?
+*/
+
 class Authenticate{
   // This must be done as the first step.
   static Future<FirebaseApp> initializeFirebase() async {
@@ -23,7 +31,9 @@ class Authenticate{
     return firebaseApp;
   }
 
-  static Future<User?> registerWithEmail({required String email, required String password}) async {
+
+  /* REGISTER NEW USER WITH EMAIL AND PASSWORD */
+  static Future<User?> registerWithEmail({required String email, required String password, required BuildContext context}) async {
     try{
       // Try to create a new user
       final UserCredential user = await(
@@ -36,22 +46,58 @@ class Authenticate{
       // If success, return a User object
       return user.user;
 
-    } catch(e) {
-      //On error, get the hashcode of the error message and display snack-bar
-        var hash = e.hashCode;
+    }
+    on FirebaseAuthException catch(e) {
+      // Get error message
+      String errorMessage = AuthenticateErrorMessageCodes.getErrorMessage(e);
 
-       // Todo display a snackBar with error message
-       if(hash == 264247444){
-         print("User with this email already exists");
-       }
-       else{
-         print("Sorry. Something went wrong");
-       }
+      // Show an ErrorBar with error message
+      context.showErrorBar(
+        content: Text(
+          errorMessage,
+          style: const TextStyle(color: Colors.red),
+        ),
+        position: FlashPosition.top
+      );
 
-       return null;
+      return null;
     }
   }
 
+
+  /* SIGN IN USER WITH EMAIL AND PASSWORD */
+  static Future<User?> signInWithEmail({required String email, required String password, required BuildContext context}) async{
+    try{
+      // Try to sign in user
+      final UserCredential userCredential = await (
+        _auth.signInWithEmailAndPassword(
+            email: email,
+            password: password
+        )
+      );
+
+      // If success, return users info
+      return userCredential.user;
+    }
+
+    on FirebaseAuthException catch (e){
+      String errorMessage = AuthenticateErrorMessageCodes.getErrorMessage(e);
+
+      // On error, show error-bar
+      context.showErrorBar(
+          content: Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.red),
+          ),
+          position: FlashPosition.top
+      );
+    }
+
+    return null;
+}
+
+
+  /* SIGN IN USER WITH GOOGLE*/
   static Future<User?> signInWithGoogle({required BuildContext context}) async {
     // FirebaseAuth is an entry point to Firebase Auth SDK. Create an instance of it
     // FirebaseAuth auth = FirebaseAuth.instance;
@@ -103,7 +149,8 @@ class Authenticate{
     return user;
   }
 
-  // Sign out process
+
+  /* SIGN OUT USERS*/
   static Future<bool> signOut({required BuildContext context}) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final User? currentUser = _auth.currentUser;

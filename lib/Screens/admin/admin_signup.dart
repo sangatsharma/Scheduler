@@ -1,3 +1,5 @@
+import 'package:flash/flash.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Auth/auth_service.dart';
 // import 'package:scheduler/Screens/admin/admin_login.dart';
@@ -23,6 +25,9 @@ class _AdminSignUpState extends State<AdminSignUp> {
   // It's like a state that remembers the forms state even when the
   // widget rebuilds itself
   final _formKey = GlobalKey<FormState>();
+
+  bool showLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -168,15 +173,28 @@ class _AdminSignUpState extends State<AdminSignUp> {
                                   borderRadius: BorderRadius.circular(10))),
                           backgroundColor: const MaterialStatePropertyAll(
                               Colors.blueAccent)),
+
                       onPressed: () async{
                         // Validate input fields
-                        loginUser(_formKey);
-                        //Route to LoginPage/adminHomePage
-                        var user = await Authenticate.registerWithEmail(email: _adminSignUpEmail, password: _adminSignUpPassword);
-                        if(user != null){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => TempWidget(user: user)));
+                        bool validateSuccess = loginUser(_formKey);
+
+                        if (validateSuccess) {
+
+                          //Try to register new user
+                          var user = await Authenticate.registerWithEmail(
+                              email: _adminSignUpEmail,
+                              password: _adminSignUpPassword,
+                              context: context
+                          );
+                          // TOdo (maybe): try logging out the user if different build context
+                          // If login successful and same context is mounted, redirect to login page
+                          if (user != null && context.mounted) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => TempWidget(user: user)));
+                          }
                         }
                       },
+
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(
@@ -220,6 +238,10 @@ class _AdminSignUpState extends State<AdminSignUp> {
                     child: GestureDetector(
                       onTap: () async{
                         //todo Route to signUp  with google account
+                        var user = await Authenticate.signInWithGoogle(context: context);
+                        if(user != null){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => TempWidget(user: user)));
+                        }
                       },
                       child: Container(
                         height: 55,

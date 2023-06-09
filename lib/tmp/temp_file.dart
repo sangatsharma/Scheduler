@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Auth/auth_service.dart';
 
@@ -24,7 +25,7 @@ class TempWidget extends StatelessWidget{
             TextButton(
               onPressed: () async{
                 bool success = await Authenticate.signOut(context: context);
-                if(success){
+                if(success && context.mounted){
                   Navigator.of(context).pop();
                 }
               },
