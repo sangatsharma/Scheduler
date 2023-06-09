@@ -16,7 +16,6 @@ class _AdminSignUpState extends State<AdminSignUp> {
   bool hidePassword = true;
 
   //****Variables****//
-  String _adminSignUpInstitutionName = '';
   String _adminSignUpEmail = '';
   String _adminSignUpPassword = '';
 
@@ -37,51 +36,25 @@ class _AdminSignUpState extends State<AdminSignUp> {
               key: _formKey,
               child: Column(
                 children: [
+                  CircleAvatar(
+                    radius: MediaQuery.of(context).size.height * 0.1,
+                    backgroundColor: Colors.transparent,
+                    child: const Image(
+                      image: AssetImage(
+                        'Assets/images/logo.jpg',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   const SizedBox(
                     width: 250,
                     child: Text(
                       'Sign Up to become an Admin',
                       style: TextStyle(
                           fontFamily: 'poppins',
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.normal),
                       textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 80,
-                    child: TextFormField(
-                      onChanged: (value) {
-                        setState(() {
-                          _adminSignUpInstitutionName = value;
-                        });
-                      },
-                      style: const TextStyle(
-                        fontFamily: 'poppins',
-                        fontSize: 18,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: 'Institution name',
-                        labelStyle: TextStyle(fontFamily: 'poppins'),
-                        prefixIcon: Icon(Icons.school),
-                        constraints:
-                            BoxConstraints(maxHeight: 60, maxWidth: 300),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                      ),
-
-                      //****  VALIDATION LOGIC ****//
-                      validator: (value) {
-                        // Make sure that input field is not Empty neither null
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your Institution name';
-                        }
-                        // If everything is good, return null
-                        return null;
-                      },
                     ),
                   ),
                   SizedBox(
@@ -121,6 +94,9 @@ class _AdminSignUpState extends State<AdminSignUp> {
                         return null;
                       },
                     ),
+                  ),
+                  const SizedBox(
+                    height: 8,
                   ),
                   SizedBox(
                     height: 80,

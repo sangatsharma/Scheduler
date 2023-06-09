@@ -14,7 +14,6 @@ FirebaseAuth _auth = FirebaseAuth.instance;
 
 //TODO check if the user is connected to the internet
 class Authenticate{
-
   // This must be done as the first step.
   static Future<FirebaseApp> initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
@@ -26,7 +25,6 @@ class Authenticate{
 
   static Future<User?> registerWithEmail({required String email, required String password}) async {
     try{
-
       // Try to create a new user
       final UserCredential user = await(
           _auth.createUserWithEmailAndPassword(
@@ -69,13 +67,12 @@ class Authenticate{
 
     // Opens Pop up to choose account
     final GoogleSignInAccount? googleSignInAccount =
-    await googleSignIn.signIn();
+        await googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
-
       // The request goes to google
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+          await googleSignInAccount.authentication;
 
       // Get auth credentials
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -96,8 +93,7 @@ class Authenticate{
       on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           // handle the error here
-        }
-        else if (e.code == 'invalid-credential') {
+        } else if (e.code == 'invalid-credential') {
           // handle the error here
         }
       } catch (e) {
