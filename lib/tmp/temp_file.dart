@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Auth/auth_service.dart';
+import 'package:scheduler/Screens/selector_actor.dart';
 
 class TempWidget extends StatelessWidget{
   const TempWidget({super.key, required this.user});
@@ -27,6 +28,7 @@ class TempWidget extends StatelessWidget{
                 bool success = await Authenticate.signOut(context: context);
                 if(success && context.mounted){
                   Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed(SelectActor.screen);
                 }
               },
                 child: const Text("Sign Out"),

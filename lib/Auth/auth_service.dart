@@ -27,7 +27,6 @@ class Authenticate{
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
     // TODO: Add auto login logic
-
     return firebaseApp;
   }
 
@@ -104,7 +103,6 @@ class Authenticate{
 
     // New variable of type User or null
     User? user;
-
     // Entry point to SignInWithGoogle
     final GoogleSignIn googleSignIn = GoogleSignIn(
       // This is required to signup with google from web
@@ -137,15 +135,31 @@ class Authenticate{
 
       // Todo Error handeling
       on FirebaseAuthException catch (e) {
-        if (e.code == 'account-exists-with-different-credential') {
-          // handle the error here
-        } else if (e.code == 'invalid-credential') {
-          // handle the error here
+        var errorMessage = AuthenticateErrorMessageCodes.getErrorMessage(e);
+
+        if(context.mounted){
+          context.showErrorBar(
+            content: Text(
+              errorMessage,
+              style: const TextStyle(color: Colors.red),
+            ),
+            position: FlashPosition.top
+          );
         }
-      } catch (e) {
-        // handle the error here
       }
     }
+
+    // If user aborts the sign in process
+    if(user == null && context.mounted){
+      context.showErrorBar(
+        content: const Text(
+          'Something went wrong, please try again',
+            style: TextStyle(color: Colors.red),
+          ),
+          position: FlashPosition.top
+        );
+    }
+
     return user;
   }
 

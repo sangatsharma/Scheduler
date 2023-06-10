@@ -36,7 +36,7 @@ class AuthenticateErrorMessageCodes{
         errorMessage = "Email address is badly formatted.";
         break;
       case "weak-password":
-        errorMessage = "Password must be at-least 6 characters";
+        errorMessage = "Password must be atleast 6 characters";
       default:
         errorMessage = "Login failed. Please try again.";
         break;
