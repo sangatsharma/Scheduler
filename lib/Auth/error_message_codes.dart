@@ -37,6 +37,8 @@ class AuthenticateErrorMessageCodes{
         break;
       case "weak-password":
         errorMessage = "Password must be atleast 6 characters";
+      case "network-request-failed":
+          errorMessage = "No Internet Access";
       default:
         errorMessage = "Login failed. Please try again.";
         break;

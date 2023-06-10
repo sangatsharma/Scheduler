@@ -294,14 +294,6 @@ class _AdminLoginState extends State<AdminLogin> {
                                       style: TextStyle(color: Colors.green),
                                     ),
                                     position: FlashPosition.top);
-                              } else {
-                                //Show success message
-                                context.showErrorBar(
-                                    content: const Text(
-                                      'Login failed !',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    position: FlashPosition.top);
                               }
                             });
                           } catch (e) {

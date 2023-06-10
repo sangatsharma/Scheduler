@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:scheduler/Auth/error_message_codes.dart';
+import 'package:scheduler/Tools/internet_connectivity.dart';
 
 // firebase_core: for initializing Firebase
 // firebase_auth: for implementing Firebase authentication
@@ -14,12 +15,6 @@ import 'package:scheduler/Auth/error_message_codes.dart';
 
 // GLOBAL AUTH OBJECT
 FirebaseAuth _auth = FirebaseAuth.instance;
-
-// TODO check if the user is connected to the internet
-/*
-  If the user account already exists, or email/password format donot match,
-  app throws an error. How to fix it?
-*/
 
 class Authenticate{
   // This must be done as the first step.
@@ -101,8 +96,23 @@ class Authenticate{
     // FirebaseAuth is an entry point to Firebase Auth SDK. Create an instance of it
     // FirebaseAuth auth = FirebaseAuth.instance;
 
+    // Check for internet access
+    bool hasInternetAccess = await InternetConnectivity.isOnline();
+
+    if(!hasInternetAccess && context.mounted){
+     //Show success message
+     context.showErrorBar(
+        content: const Text(
+         'No Internet Access',
+          style: TextStyle(color: Colors.red),
+        ),
+        position: FlashPosition.top);
+      return null;
+    }
+
     // New variable of type User or null
     User? user;
+
     // Entry point to SignInWithGoogle
     final GoogleSignIn googleSignIn = GoogleSignIn(
       // This is required to signup with google from web
