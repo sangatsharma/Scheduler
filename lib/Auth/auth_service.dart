@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:scheduler/Auth/error_message_codes.dart';
-import 'package:scheduler/Tools/internet_connectivity.dart';
 
 // firebase_core: for initializing Firebase
 // firebase_auth: for implementing Firebase authentication
@@ -96,20 +96,6 @@ class Authenticate{
     // FirebaseAuth is an entry point to Firebase Auth SDK. Create an instance of it
     // FirebaseAuth auth = FirebaseAuth.instance;
 
-    // Check for internet access
-    bool hasInternetAccess = await InternetConnectivity.isOnline();
-
-    if(!hasInternetAccess && context.mounted){
-     //Show success message
-     context.showErrorBar(
-        content: const Text(
-         'No Internet Access',
-          style: TextStyle(color: Colors.red),
-        ),
-        position: FlashPosition.top);
-      return null;
-    }
-
     // New variable of type User or null
     User? user;
 
@@ -120,8 +106,30 @@ class Authenticate{
     );
 
     // Opens Pop up to choose account
-    final GoogleSignInAccount? googleSignInAccount =
-        await googleSignIn.signIn();
+    GoogleSignInAccount? googleSignInAccount;
+
+    // Make a call to google
+    try {
+      googleSignInAccount =
+      await googleSignIn.signIn();
+    }
+
+    // If no internet connection, print an error message
+    on PlatformException catch(_){
+      context.showErrorBar(
+          content: const Text(
+            'No Internet Access',
+            style: TextStyle(color: Colors.red),
+          ),
+          position: FlashPosition.top
+      );
+
+      return null;
+    }
+
+    catch(e){
+      print(e);
+    }
 
     if (googleSignInAccount != null) {
       // The request goes to google
