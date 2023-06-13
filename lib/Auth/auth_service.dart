@@ -36,7 +36,7 @@ class Authenticate{
               password: password,
           )
       );
-
+       await _auth.currentUser?.sendEmailVerification();
       // If success, return a User object
       return user.user;
 
@@ -49,9 +49,9 @@ class Authenticate{
       context.showErrorBar(
         content: Text(
           errorMessage,
-          style: const TextStyle(color: Colors.red),
-        ),
-        position: FlashPosition.top
+            style: const TextStyle(color: Colors.red),
+          ),
+          position: FlashPosition.top
       );
 
       return null;
@@ -179,6 +179,11 @@ class Authenticate{
     }
 
     return user;
+  }
+
+  // TODO finish it
+  static Future<void> forgotPassword({required String email}) async {
+    await _auth.sendPasswordResetEmail(email: email);
   }
 
 

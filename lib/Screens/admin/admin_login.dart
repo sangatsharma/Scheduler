@@ -2,6 +2,7 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Auth/auth_service.dart';
 import 'package:scheduler/Screens/admin/admin_signup.dart';
+import 'package:scheduler/Screens/admin/email_verify.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -222,6 +223,15 @@ class _AdminLoginState extends State<AdminLogin> {
                             // If sign-in was success, load corresponding page
                             // Also make sure the present context is mounted
                             if (user != null && context.mounted) {
+
+                              // If email didn't finish the verify process
+                              if(user.emailVerified == false){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const EmailVerify()
+
+                                ));
+                              }
+
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
                                       TempWidget(user: user)));

@@ -2,6 +2,7 @@ import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Auth/auth_service.dart';
+import 'package:scheduler/Screens/admin/email_verify.dart';
 // import 'package:scheduler/Screens/admin/admin_login.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
@@ -189,8 +190,9 @@ class _AdminSignUpState extends State<AdminSignUp> {
                           // TOdo (maybe): try logging out the user if different build context
                           // If login successful and same context is mounted, redirect to login page
                           if (user != null && context.mounted) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => TempWidget(user: user)));
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => TempWidget(user: user)));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EmailVerify()));
                           }
                         }
                       },

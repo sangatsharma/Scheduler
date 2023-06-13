@@ -31,8 +31,11 @@ class MyApp extends StatelessWidget {
     User? currentUser = FirebaseAuth.instance.currentUser;
     Widget defaultScreen;
 
-    // If user is not logged in, load SelectActor screen
-    if (currentUser == null) {
+    // If user is not logged in or has an unverified email, load SelectActor screen
+    if (currentUser == null || !currentUser.emailVerified) {
+      if(currentUser?.emailVerified == false) {
+        FirebaseAuth.instance.signOut();
+      }
       defaultScreen = const SelectActor();
     }
 
