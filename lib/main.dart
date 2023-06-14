@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 
     // If user is not logged in or has an unverified email, load SelectActor screen
     if (currentUser == null || !currentUser.emailVerified) {
-      if(currentUser?.emailVerified == false) {
+      if (currentUser?.emailVerified == false) {
         FirebaseAuth.instance.signOut();
       }
       defaultScreen = const SelectActor();

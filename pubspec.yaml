@@ -41,6 +41,9 @@ dependencies:
   firebase_core: ^2.13.1
   modal_progress_hud_nsn: ^0.4.0
   flash: ^3.0.5
+  intl:
+  date_picker_timeline: ^1.2.3
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   change_app_package_name: ^1.1.0

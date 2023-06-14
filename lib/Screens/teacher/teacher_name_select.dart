@@ -93,7 +93,7 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 15,
-                        color: Colors.black,
+                        color: Colors.blue,
                         fontWeight: FontWeight.normal),
                     alignment: Alignment.center,
                     focusColor: Colors.transparent,

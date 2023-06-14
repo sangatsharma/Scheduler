@@ -82,7 +82,8 @@ class _StudentClassSelectState extends State<StudentClassSelect> {
                       padding: const EdgeInsets.only(left: 20, top: 5),
                       style: const TextStyle(
                           fontFamily: 'poppins',
-                          fontSize: 15,
+                          fontSize: 16,
+                          color: Colors.blue,
                           fontWeight: FontWeight.normal),
                       alignment: Alignment.center,
                       focusColor: Colors.transparent,
