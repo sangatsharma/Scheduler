@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const StudentHomepage(),
+      home: defaultScreen,
       routes: {
         SelectActor.screen: (context) => const SelectActor(),
         StudentLogin.screen: (context) => const StudentLogin(),
