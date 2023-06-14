@@ -1,9 +1,8 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Screens/student/student_class_select.dart';
-import 'functions.dart'; //formats date
+import 'functions.dart';
 
 class StudentHomepage extends StatefulWidget {
   const StudentHomepage({Key? key}) : super(key: key);
@@ -134,7 +133,7 @@ class _StudentHomepageState extends State<StudentHomepage> {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(right: 20),
+                                margin: const EdgeInsets.only(right: 20),
                                 child: Text(selectedClass,
                                     style: TextStyle(
                                         fontFamily: 'poppins',
@@ -160,7 +159,7 @@ class _StudentHomepageState extends State<StudentHomepage> {
                           DateTime.now(),
                           height: 90,
                           width:
-                              MediaQuery.of(context).size.width * 0.126, //0.123
+                              MediaQuery.of(context).size.width * 0.123, //0.123
                           deactivatedColor: Colors.white,
                           initialSelectedDate: selectedDate,
                           selectionColor: Colors.pinkAccent,
@@ -172,10 +171,10 @@ class _StudentHomepageState extends State<StudentHomepage> {
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w200),
                           dayTextStyle: TextStyle(
-                              fontSize: 12,
+                              fontSize: 11,
                               color: isLightMode ? Colors.black : Colors.white,
                               fontFamily: 'poppins',
-                              fontWeight: FontWeight.w700),
+                              fontWeight: FontWeight.w600),
                           monthTextStyle: TextStyle(
                               fontSize: 10,
                               color: isLightMode ? Colors.black : Colors.white,

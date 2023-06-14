@@ -55,7 +55,7 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
     'Database Management System(2T)(A/B)',
     'Break',
     'Computer Graphics(1L)',
-    'Computer Organization and Architecture(2P)(A)',
+    'Computer Organization and Architecture (2P)(A)/Computer Graphics (2p)(B)',
   ];
   List<Widget> allRoutine = [];
   for (int i = 0; i < startingTime.length; i++) {
@@ -108,7 +108,7 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
           Container(
             margin: const EdgeInsets.only(left: 5),
             height: double.infinity,
-            width: MediaQuery.of(context).size.width * 0.6,
+            width: MediaQuery.of(context).size.width * 0.58,
             child: Column(
               children: [
                 SizedBox(
@@ -116,9 +116,13 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
                   width: double.infinity,
                   child: AutoSizeText(
                     textAlign: TextAlign.left,
-                    maxLines: 2,
-                    maxFontSize: 25,
-                    minFontSize: 16,
+                    maxLines: 4,
+                    maxFontSize: 28,
+                    minFontSize: 17,
+                    overflowReplacement: Text(
+                      subjectName[i],
+                      style: const TextStyle(fontSize: 14),
+                    ),
                     subjectName[i],
                     style: const TextStyle(fontFamily: 'poppins'),
                   ),
@@ -132,6 +136,10 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
                     maxFontSize: 15,
                     minFontSize: 12,
                     teacherName[i],
+                    overflowReplacement: Text(
+                      teacherName[i],
+                      style: const TextStyle(fontSize: 10),
+                    ),
                     style: const TextStyle(
                       fontFamily: 'poppins',
                     ),
