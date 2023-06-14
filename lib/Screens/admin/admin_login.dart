@@ -232,10 +232,13 @@ class _AdminLoginState extends State<AdminLogin> {
                                 ));
                               }
 
-                              Navigator.of(context).push(MaterialPageRoute(
+                              else{
+                                Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                      TempWidget(user: user)));
-                            }
+                                    TempWidget(user: user)));
+                                }
+                              }
+
                           }
                         },
                         child: const Text(

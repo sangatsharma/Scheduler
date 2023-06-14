@@ -36,7 +36,10 @@ class Authenticate{
               password: password,
           )
       );
-       await _auth.currentUser?.sendEmailVerification();
+
+      // Send email verification link
+      await _sendEmailVerification();
+
       // If success, return a User object
       return user.user;
 
@@ -180,6 +183,12 @@ class Authenticate{
 
     return user;
   }
+
+  // Send email verification code to user
+  static Future<void> _sendEmailVerification() async{
+    return await _auth.currentUser?.sendEmailVerification();
+  }
+
 
   // TODO finish it
   static Future<void> forgotPassword({required String email}) async {
