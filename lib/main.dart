@@ -11,6 +11,7 @@ import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/firebase_options.dart';
 import 'package:scheduler/tmp/temp_file.dart';
+import 'package:scheduler/Widgets/shared_prefs.dart';
 
 void main() async {
   // Initialize Firebase app
@@ -19,11 +20,33 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  //check if student was logged in
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+bool checkIsStudentLogin = false;
+
+class _MyAppState extends State<MyApp> {
+  void updateStatus() async {
+    bool? checkIfLoggedIn = await checkStudentLogInStatus();
+    setState(() {
+      checkIsStudentLogin = checkIfLoggedIn ?? false;
+    });
+  }
+
+  @override
+  void initState() {
+    updateStatus();
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +61,13 @@ class MyApp extends StatelessWidget {
       }
       defaultScreen = const SelectActor();
     }
-
     // Else load TempWidget
     else {
       defaultScreen = TempWidget(user: currentUser);
     }
-
+    if (checkIsStudentLogin) {
+      defaultScreen = const StudentHomepage();
+    }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: defaultScreen,

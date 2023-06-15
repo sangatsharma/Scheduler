@@ -4,6 +4,7 @@ import 'package:scheduler/Screens/student/student_login.dart';
 import '../../Widgets/appbar_func.dart';
 import '../../Widgets/next_button.dart';
 import '../../Widgets/class_list.dart';
+import 'package:scheduler/Widgets/shared_prefs.dart';
 
 class StudentClassSelect extends StatefulWidget {
   const StudentClassSelect({Key? key}) : super(key: key);
@@ -115,6 +116,10 @@ class _StudentClassSelectState extends State<StudentClassSelect> {
                     onTap: () {
                       //validation for selected name
                       if (selectedClass != classNameList[0]) {
+                        setState(() {
+                          isStudentLogin = true;
+                        });
+                        setStudentLoginStatus(isStudentLogin);
                         Navigator.pushNamed(context, StudentHomepage.screen);
                       } else {
                         validateSelectedClass();
