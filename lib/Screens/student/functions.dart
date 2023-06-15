@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:intl/intl.dart';
 import 'package:scheduler/Screens/student/student_homepage.dart';
 
 List<Widget> fetchRoutine(String day, BuildContext context) {
@@ -9,27 +10,33 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
   List<String> startingTime = [
     '10:15',
     '11:55',
-    '1:35',
-    '2:05',
-    '2:55',
+    '01:35',
+    '02:05',
+    '02:55',
     '10:15',
     '11:55',
-    '1:35',
-    '2:05',
-    '2:55',
+    '01:35',
+    '02:05',
+    '02:55',
+    '07:44',
+    '07:46',
+    '07:49',
   ];
   List<String> endingTime = [
     '11:55',
-    '1:35',
-    '2:05',
-    '2:55',
-    '4:35',
+    '01:35',
+    '02:05',
+    '02:55',
+    '04:35',
     //
     '11:55',
-    '1:35',
-    '2:05',
-    '2:55',
-    '4:35',
+    '01:35',
+    '02:05',
+    '02:55',
+    '07:35',
+    '07:46',
+    '07:48',
+    '07:51',
   ];
   List<String> teacherName = [
     'Dr.Rammani Adhikari',
@@ -43,6 +50,9 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
     'N/A ',
     'Er. Sujan Dhakal',
     'Er. ShivaramDam/Er. Sujan Dhakal',
+    'Sangat Sharma',
+    'Sangat Sharma',
+    'Sangat Sharma',
   ];
   List<String> subjectName = [
     'Numerical Method(2L)',
@@ -56,6 +66,9 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
     'Break',
     'Computer Graphics(1L)',
     'Computer Organization and Architecture (2P)(A)/Computer Graphics (2p)(B)',
+    'Computer Graphics(1L)',
+    'Computer Graphics(1L)',
+    'Computer Graphics(1L)',
   ];
   List<Widget> allRoutine = [];
   for (int i = 0; i < startingTime.length; i++) {
@@ -72,31 +85,31 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
         children: [
           Container(
             padding: const EdgeInsets.all(5),
-            width: MediaQuery.of(context).size.width * 0.28,
+            width: MediaQuery.of(context).size.width * 0.3,
             child: Row(
               children: [
                 Text(
                   startingTime[i],
                   style: TextStyle(
                     fontFamily: 'poppins',
-                    fontSize: MediaQuery.of(context).size.width * 0.038,
+                    fontSize: MediaQuery.of(context).size.width * 0.036,
                   ),
                 ),
                 const SizedBox(
-                  width: 5,
+                  width: 2,
                 ),
                 const Icon(
                   Icons.arrow_forward,
                   size: 20,
                 ),
                 const SizedBox(
-                  width: 5,
+                  width: 2,
                 ),
                 Text(
                   endingTime[i],
                   style: TextStyle(
                     fontFamily: 'poppins',
-                    fontSize: MediaQuery.of(context).size.width * 0.038,
+                    fontSize: MediaQuery.of(context).size.width * 0.036,
                   ),
                 ),
               ],
@@ -104,11 +117,13 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
           ),
           VerticalDivider(
               thickness: 2,
-              color: isLightMode ? Colors.pinkAccent : Colors.white),
+              color: isClassLive(startingTime[i], endingTime[i])
+                  ? Colors.green
+                  : Colors.pinkAccent),
           Container(
             margin: const EdgeInsets.only(left: 5),
             height: double.infinity,
-            width: MediaQuery.of(context).size.width * 0.58,
+            width: MediaQuery.of(context).size.width * 0.56,
             child: Column(
               children: [
                 SizedBox(
@@ -156,6 +171,8 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
   return allRoutine;
 }
 
+//List to fetch routine from database caled by passing day as a string
+//can be change day string to index according to the input field in admin section
 List<Widget> showRoutine(String dayIndex, BuildContext context) {
   switch (dayIndex) {
     case '1':
@@ -180,3 +197,22 @@ List<Widget> showRoutine(String dayIndex, BuildContext context) {
       return [];
   }
 }
+
+//function to check if class is live to indicate live class
+// denoted by green color vertical divider
+bool isClassLive(String startTime, String endTime) {
+  bool flag = false;
+  DateTime currentTime = DateTime.now();
+  DateFormat formatter = DateFormat('hh:mm a');
+  String formattedCurrentTime = formatter.format(currentTime);
+  // DateTime currentTime = DateTime.now();
+  // String formattedCurrentTime = '${currentTime.hour}:${currentTime.minute}';
+  if (formattedCurrentTime.compareTo(startTime) > 0) {
+    if (formattedCurrentTime.compareTo(endTime) < 0) {
+      flag = true;
+    }
+  }
+  return flag;
+}
+
+//
