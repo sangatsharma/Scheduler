@@ -38,7 +38,7 @@ class Authenticate{
       );
 
       // Send email verification link
-      await sendEmailVerification();
+      // await sendEmailVerification();
 
       // If success, return a User object
       return user.user;
@@ -189,9 +189,46 @@ class Authenticate{
   }
 
 
-  // TODO finish it
-  static Future<void> forgotPassword({required String email}) async {
-    await _auth.sendPasswordResetEmail(email: email);
+  /* RESET PASSWORD */
+  static Future<bool> forgotPassword({required String email, required BuildContext context}) async {
+
+    // Try to send resend email to supplied email
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+
+      // If success, return true
+      if(context.mounted){
+        context.showSuccessBar(
+          content: const Text(
+            "Password reset link send",
+            style: TextStyle(color: Colors.green),
+          ),
+          position: FlashPosition.top
+        );
+      }
+      return true;
+
+    }
+
+    // ON FirebaseAuthException, get the message and display; return false
+    on FirebaseAuthException catch(e){
+      var errorMessage = AuthenticateErrorMessageCodes.getErrorMessage(e);
+
+      if(context.mounted){
+        context.showErrorBar(
+            content: Text(
+              errorMessage,
+              style: const TextStyle(color: Colors.red),
+            ),
+            position: FlashPosition.top
+        );
+      }
+    }
+    catch(e){
+      print(e);
+    }
+
+    return false;
   }
 
 

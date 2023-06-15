@@ -185,8 +185,9 @@ class _AdminLoginState extends State<AdminLogin> {
                         width: 280,
                         child: GestureDetector(
                           onTap: () {
-                            //todo make pw reset page and route to it
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ResetPassword()));
+
+                            // Navigate to password reset page
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetPassword()));
                           },
                           child: const Text(
                             'Forgot password?',

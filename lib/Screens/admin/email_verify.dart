@@ -14,6 +14,7 @@ class EmailVerify extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    //Authenticate.sendEmailVerification();
     return Scaffold(
       body: Padding(
         padding:const EdgeInsets.all(8.0),
@@ -215,6 +216,7 @@ class _ResendButtonEmailState extends State<ResendEmailButton>{
 }
 
 //TODO dosen't work first time (maybe call reload twice, or set a 1 sec delay)
+// TODO maybe sign out after user verifies
 // Check if user has verified email or not
 bool? _checkForVerification() {
   FirebaseAuth.instance.currentUser?.reload();
