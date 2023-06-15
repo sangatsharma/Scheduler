@@ -38,7 +38,7 @@ class Authenticate{
       );
 
       // Send email verification link
-      await _sendEmailVerification();
+      await sendEmailVerification();
 
       // If success, return a User object
       return user.user;
@@ -118,7 +118,7 @@ class Authenticate{
     }
 
     // If no internet connection, print an error message
-    on PlatformException catch(_){
+    on PlatformException catch(e){
       context.showErrorBar(
           content: const Text(
             'No Internet Access',
@@ -126,7 +126,6 @@ class Authenticate{
           ),
           position: FlashPosition.top
       );
-
       return null;
     }
 
@@ -185,7 +184,7 @@ class Authenticate{
   }
 
   // Send email verification code to user
-  static Future<void> _sendEmailVerification() async{
+  static Future<void> sendEmailVerification() async{
     return await _auth.currentUser?.sendEmailVerification();
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scheduler/Auth/auth_service.dart';
 import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/Screens/admin/email_verify.dart';
+import 'package:scheduler/Screens/admin/reset_password.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -185,6 +186,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         child: GestureDetector(
                           onTap: () {
                             //todo make pw reset page and route to it
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ResetPassword()));
                           },
                           child: const Text(
                             'Forgot password?',
@@ -228,10 +230,8 @@ class _AdminLoginState extends State<AdminLogin> {
                               if(user.emailVerified == false){
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const EmailVerify()
-
                                 ));
                               }
-
                               else{
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
