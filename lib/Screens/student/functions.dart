@@ -85,7 +85,7 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
         children: [
           Container(
             padding: const EdgeInsets.all(5),
-            width: MediaQuery.of(context).size.width * 0.29,
+            width: MediaQuery.of(context).size.width * 0.3,
             child: Row(
               children: [
                 Text(
@@ -123,7 +123,7 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
           Container(
             margin: const EdgeInsets.only(left: 5),
             height: double.infinity,
-            width: MediaQuery.of(context).size.width * 0.57,
+            width: MediaQuery.of(context).size.width * 0.56,
             child: Column(
               children: [
                 SizedBox(
@@ -171,6 +171,8 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
   return allRoutine;
 }
 
+//List to fetch routine from database caled by passing day as a string
+//can be change day string to index according to the input field in admin section
 List<Widget> showRoutine(String dayIndex, BuildContext context) {
   switch (dayIndex) {
     case '1':
@@ -212,3 +214,5 @@ bool isClassLive(String startTime, String endTime) {
   }
   return flag;
 }
+
+//
