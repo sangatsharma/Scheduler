@@ -17,7 +17,7 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
     '11:55',
     '01:35',
     '02:05',
-    '02:55',
+    '05:05',
     '07:44',
     '07:46',
     '07:49',
@@ -73,11 +73,15 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
   List<Widget> allRoutine = [];
   for (int i = 0; i < startingTime.length; i++) {
     Widget tempContainer = Container(
-      margin: const EdgeInsets.only(top: 3, left: 5, right: 5, bottom: 3),
-      height: 85,
+      margin: const EdgeInsets.only(top: 2, left: 4, right: 4, bottom: 3),
+      height: 86,
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+              color: isClassLive(startingTime[i], endingTime[i])
+                  ? Colors.green
+                  : Colors.transparent),
           color: isLightMode ? const Color(0xffECC9EE) : Colors.black),
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -203,7 +207,7 @@ List<Widget> showRoutine(String dayIndex, BuildContext context) {
 bool isClassLive(String startTime, String endTime) {
   bool flag = false;
   DateTime currentTime = DateTime.now();
-  DateFormat formatter = DateFormat('hh:mm a');
+  DateFormat formatter = DateFormat('hh:mm');
   String formattedCurrentTime = formatter.format(currentTime);
   // DateTime currentTime = DateTime.now();
   // String formattedCurrentTime = '${currentTime.hour}:${currentTime.minute}';

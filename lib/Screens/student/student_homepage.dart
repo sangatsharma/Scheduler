@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
-import 'functions.dart';
+import 'databaseFetch_Student.dart';
 import 'package:scheduler/Widgets/themes.dart';
 
 class StudentHomepage extends StatefulWidget {
@@ -84,19 +84,10 @@ class _StudentHomepageState extends State<StudentHomepage> {
   }
 
   //updateTheme after user logins
-  void updateTheme() async {
-    bool? checkDarkMode = await selectedThemeMode();
-    setState(() {
-      isLightMode = checkDarkMode!;
-    });
-  }
 
   @override
   void initState() {
-    //updateTheme after user logins
-    updateTheme();
     super.initState();
-
   }
 
   @override
