@@ -7,8 +7,9 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
   //fetch all data from database
   //items to be fetched and convert to list
   //todo make list empty and add from database
+  //List can be of type dateTime
   List<String> startingTime = [
-    '10:15',
+    day,
     '11:55',
     '01:35',
     '02:05',
@@ -22,13 +23,13 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
     '07:46',
     '07:49',
   ];
+  //List can be of type dateTime
   List<String> endingTime = [
     '11:55',
     '01:35',
     '02:05',
     '02:55',
     '04:35',
-    //
     '11:55',
     '01:35',
     '02:05',
@@ -44,7 +45,6 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
     'N/A ',
     'Er. Sujan Dhakal',
     'Er. ShivaramDam/Er. Sujan Dhakal',
-    //
     'Dr.Rammani Adhikari',
     'Er.Rishi Sharan Khanal',
     'N/A ',
@@ -60,7 +60,6 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
     'Break',
     'Computer Graphics(1L)',
     'Computer Organization and Architecture(2P)(A)',
-    //
     'Numerical Method(2L)',
     'Database Management System(2T)(A/B)',
     'Break',
@@ -177,6 +176,8 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
 
 //List to fetch routine from database caled by passing day as a string
 //can be change day string to index according to the input field in admin section
+//List to fetch routine from database caled by passing day as a string
+//can be change day string to index according to the input field in admin section
 List<Widget> showRoutine(String dayIndex, BuildContext context) {
   switch (dayIndex) {
     case '1':
@@ -196,7 +197,7 @@ List<Widget> showRoutine(String dayIndex, BuildContext context) {
       return fetchRoutine('SAT', context);
 
     case '7':
-      return fetchRoutine('SAT', context);
+      return fetchRoutine('SUN', context);
     default:
       return [];
   }
@@ -206,11 +207,14 @@ List<Widget> showRoutine(String dayIndex, BuildContext context) {
 // denoted by green color vertical divider
 bool isClassLive(String startTime, String endTime) {
   bool flag = false;
+  //todo compare dates more precisely
   DateTime currentTime = DateTime.now();
+  DateFormat getHour = DateFormat('hh'); //('hh:mm a')=>12:14 PM
+  DateFormat getMinute = DateFormat('mm');
   DateFormat formatter = DateFormat('hh:mm');
   String formattedCurrentTime = formatter.format(currentTime);
-  // DateTime currentTime = DateTime.now();
-  // String formattedCurrentTime = '${currentTime.hour}:${currentTime.minute}';
+  // String currenthour = getHour.format(formattedCurrentTime as DateTime);
+
   if (formattedCurrentTime.compareTo(startTime) > 0) {
     if (formattedCurrentTime.compareTo(endTime) < 0) {
       flag = true;
@@ -218,5 +222,3 @@ bool isClassLive(String startTime, String endTime) {
   }
   return flag;
 }
-
-//
