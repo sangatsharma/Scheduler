@@ -1,74 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:intl/intl.dart';
 import 'package:scheduler/Screens/student/student_homepage.dart';
+
+List<String> startingTime = [
+  '09:57',
+  '09:58',
+  '10:00',
+  '10:05',
+  '10:08',
+  '11:15',
+  '11:35',
+  '12:05',
+  '12:15',
+  '14:37',
+  '14:38',
+  '15:28',
+];
+//List can be of type dateTime
+List<String> endingTime = [
+  '08:38',
+  '10:25',
+  '10:35',
+  '10:45',
+  '11:15',
+  '11:35',
+  '12:05',
+  '12:15',
+  '12:55',
+  '14:38',
+  '14:39',
+  '14:40',
+];
+List<String> teacherName = [
+  'Er. ShivaramDam/Er. Sujan Dhakal',
+  'Dr.Rammani Adhikari',
+  'Er.Rishi Sharan Khanal',
+  'Dr.Rammani Adhikari',
+  'Er.Rishi Sharan Khanal',
+  'N/A ',
+  'Er. Sujan Dhakal',
+  'Er. ShivaramDam/Er. Sujan Dhakal',
+  'Dr.Rammani Adhikari',
+  'Er.Rishi Sharan Khanal',
+  'N/A ',
+  'Er. Sujan Dhakal',
+];
+List<String> subjectName = [
+  'Computer Organization and Architecture(2P)(A)',
+  'Numerical Method(2L)',
+  'Database Management System(2T)(A/B)',
+  'Numerical Method(2L)',
+  'DBMs(2T)(A/B)',
+  'Break',
+  'Computer Graphics(1L)',
+  'Computer Organization and Architecture(2P)(A)',
+  'Numerical Method(2L)',
+  'Database Management System(2T)(A/B)',
+  'Break',
+  'Computer Graphics(1L)',
+];
 
 List<Widget> fetchRoutine(String day, BuildContext context) {
   //fetch all data from database
   //items to be fetched and convert to list
   //todo make list empty and add from database
   //List can be of type dateTime
-  List<String> startingTime = [
-    day,
-    '11:55',
-    '01:35',
-    '02:05',
-    '02:55',
-    '10:15',
-    '11:55',
-    '01:35',
-    '02:05',
-    '05:05',
-    '07:44',
-    '07:46',
-    '07:49',
-  ];
-  //List can be of type dateTime
-  List<String> endingTime = [
-    '11:55',
-    '01:35',
-    '02:05',
-    '02:55',
-    '04:35',
-    '11:55',
-    '01:35',
-    '02:05',
-    '02:55',
-    '07:35',
-    '07:46',
-    '07:48',
-    '07:51',
-  ];
-  List<String> teacherName = [
-    'Dr.Rammani Adhikari',
-    'Er.Rishi Sharan Khanal',
-    'N/A ',
-    'Er. Sujan Dhakal',
-    'Er. ShivaramDam/Er. Sujan Dhakal',
-    'Dr.Rammani Adhikari',
-    'Er.Rishi Sharan Khanal',
-    'N/A ',
-    'Er. Sujan Dhakal',
-    'Er. ShivaramDam/Er. Sujan Dhakal',
-    'Sangat Sharma',
-    'Sangat Sharma',
-    'Sangat Sharma',
-  ];
-  List<String> subjectName = [
-    'Numerical Method(2L)',
-    'DBMs(2T)(A/B)',
-    'Break',
-    'Computer Graphics(1L)',
-    'Computer Organization and Architecture(2P)(A)',
-    'Numerical Method(2L)',
-    'Database Management System(2T)(A/B)',
-    'Break',
-    'Computer Graphics(1L)',
-    'Computer Organization and Architecture (2P)(A)/Computer Graphics (2p)(B)',
-    'Computer Graphics(1L)',
-    'Computer Graphics(1L)',
-    'Computer Graphics(1L)',
-  ];
   List<Widget> allRoutine = [];
   for (int i = 0; i < startingTime.length; i++) {
     Widget tempContainer = Container(
@@ -205,20 +201,50 @@ List<Widget> showRoutine(String dayIndex, BuildContext context) {
 
 //function to check if class is live to indicate live class
 // denoted by green color vertical divider
+//todo check dates more precisely
 bool isClassLive(String startTime, String endTime) {
   bool flag = false;
-  //todo compare dates more precisely
-  DateTime currentTime = DateTime.now();
-  DateFormat getHour = DateFormat('hh'); //('hh:mm a')=>12:14 PM
-  DateFormat getMinute = DateFormat('mm');
-  DateFormat formatter = DateFormat('hh:mm');
-  String formattedCurrentTime = formatter.format(currentTime);
-  // String currenthour = getHour.format(formattedCurrentTime as DateTime);
-
-  if (formattedCurrentTime.compareTo(startTime) > 0) {
-    if (formattedCurrentTime.compareTo(endTime) < 0) {
+  DateTime now = DateTime.now();
+  String classStartTimeString =
+      '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T$startTime';
+  String classEndTimeString =
+      '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T$endTime';
+  DateTime classStartTime = DateTime.parse(classStartTimeString);
+  DateTime classEndTime = DateTime.parse(classEndTimeString);
+  if (now.isAfter(classStartTime)) {
+    if (now.isBefore(classEndTime)) {
       flag = true;
     }
   }
+
   return flag;
 }
+
+// if (dateTime1.isBefore(dateTime2)) {
+// print('DateTime1 is earlier than DateTime2');
+// } else if (dateTime1.isAfter(dateTime2)) {
+// print('DateTime1 is later than DateTime2');
+// } else {
+// print('DateTime1 is equal to DateTime2');
+// }
+
+// to convert am pm time to date type
+// String timeString = '12:30 pm';
+// DateTime dateTime = DateFormat('hh:mm a').parse(timeString);
+//
+// print(dateTime); // Output: 2023-06-17 12:30:00.000
+
+// DateTime dateTime = DateTime(
+//   now.year,
+//   now.month,
+//   now.day,
+//   timeOfDay.hour,
+//   timeOfDay.minute,
+// );
+
+// String timeString = '12:45';
+// DateTime now = DateTime.now();
+// String formattedTimeString =
+//     '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T$timeString';
+// DateTime dateTime = DateTime.parse(formattedTimeString);
+// print(dateTime);

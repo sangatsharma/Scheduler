@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'dart:io';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Screens/selector_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
-import 'databaseFetch_Student.dart';
+import 'databaseFetch_student.dart';
 import 'package:scheduler/Widgets/themes.dart';
 
 class StudentHomepage extends StatefulWidget {
@@ -82,7 +83,10 @@ class _StudentHomepageState extends State<StudentHomepage>
   }
 
   late AnimationController _controller;
+  final ScrollController _scrollController = ScrollController();
   String _selectedDateIndex = DateTime.now().weekday.toString();
+  int nextIndex = 100;
+  int previousIndex = int.parse(DateTime.now().day.toString());
   DateTime selectedDate = DateTime.now();
 
   @override
@@ -107,6 +111,14 @@ class _StudentHomepageState extends State<StudentHomepage>
     _controller.forward();
   }
 
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
   List<Widget> routines = [];
   void _addItems(BuildContext context) {
     routines = showRoutine(_selectedDateIndex, context);
@@ -114,6 +126,7 @@ class _StudentHomepageState extends State<StudentHomepage>
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -264,12 +277,13 @@ class _StudentHomepageState extends State<StudentHomepage>
                 Expanded(
                   // child: showRoutine(_selectedDateIndex),
                   child: SingleChildScrollView(
+                    controller: _scrollController,
                     child: Column(
                       children: List.generate(
                         routines.length,
                         (index) {
                           final delay =
-                              const Duration(milliseconds: 40) * (index + 1);
+                              const Duration(milliseconds: 0) * (index + 1);
                           return FutureBuilder(
                             future: Future.delayed(delay),
                             builder: (context, snapshot) {
@@ -281,14 +295,14 @@ class _StudentHomepageState extends State<StudentHomepage>
                                     return FadeTransition(
                                       opacity: Tween<double>(
                                         begin: 0.0,
-                                        end: 1.0,
+                                        end: 2.0,
                                       ).animate(CurvedAnimation(
                                         parent: _controller,
                                         curve: Curves.easeIn,
                                       )),
                                       child: SlideTransition(
                                         position: Tween<Offset>(
-                                                begin: const Offset(0.0, 1.0),
+                                                begin: const Offset(0.0, .5),
                                                 end: const Offset(0.0, 0.0))
                                             .animate(CurvedAnimation(
                                           parent: _controller,
@@ -353,6 +367,7 @@ class _StudentHomepageState extends State<StudentHomepage>
             _resetAnimation();
           });
         }
+        _scrollToTop();
       },
     );
   }

@@ -12,22 +12,19 @@ import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/firebase_options.dart';
 
 void main() async {
-  // Initialize Firebase app
+  //ensure necessary platform-specific dependencies
+  // and services are available for the Flutter application to run.
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase app
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   static const String screen = 'mainDart';
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

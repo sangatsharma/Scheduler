@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/selector_actor.dart';
+import 'package:scheduler/Screens/student/databaseFetch_student.dart';
 import 'package:scheduler/Screens/student/student_homepage.dart';
+import '../Notification/notification_services.dart';
 import '../Widgets/shared_prefs.dart';
 import '../tmp/temp_file.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -27,11 +29,28 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    //scheduleNotification
+    NotificationServices notificationServices = NotificationServices();
+    WidgetsFlutterBinding.ensureInitialized();
+    notificationServices.initializeNotifications();
+    // notificationServices.zoneScheduleNotifications(
+    //     'Test', 'This is body', timeList, const Duration(minutes: 1));
+
     //check login status of student
     updateStatus();
     //updateTheme after user logins
     updateTheme();
     super.initState();
+
+    //send notification function
+    notificationServices.sendNotifications(
+        'Test', 'application Loaded successfully');
+    notificationServices.zoneScheduleNotifications(
+        'Next Class in 5 minutes.',
+        'Class will start shortly',
+        subjectName,
+        startingTime,
+        const Duration(minutes: 5));
   }
 
   void updateTheme() async {
@@ -69,6 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
       size: 60.0,
       lineWidth: 5,
     );
+
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
