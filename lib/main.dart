@@ -10,6 +10,7 @@ import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/firebase_options.dart';
+import 'Screens/teacher/teacher_homepage.dart';
 
 void main() async {
   //ensure necessary platform-specific dependencies
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         AdminSignUp.screen: (context) => const AdminSignUp(),
         StudentHomepage.screen: (context) => const StudentHomepage(),
         SplashScreen.screen: (context) => const SplashScreen(),
+        TeacherHomepage.screen: (context) => const TeacherHomepage(),
       },
     );
   }

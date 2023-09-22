@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Screens/teacher/teacher_homepage.dart';
 import 'package:scheduler/Widgets/teachers_list.dart';
 import 'package:scheduler/Screens/teacher/teacher_login.dart';
 
@@ -13,10 +14,12 @@ class TeacherNameSelect extends StatefulWidget {
   State<TeacherNameSelect> createState() => _TeacherNameSelectState();
 }
 
+//final value should not be same as initial.
+String selectedTeacherName = 'Select your name';
+
 class _TeacherNameSelectState extends State<TeacherNameSelect> {
   //initial value for selectedTeacherName,
-  //final value should not be same as initial.
-  String selectedTeacherName = 'Select your name';
+
   Color dropDownBorderColor = Colors.grey;
   Color errorTextColor = Colors.transparent;
 
@@ -35,7 +38,7 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                   backgroundColor: Colors.transparent,
                   child: Image(
                     image: AssetImage(
-                      'Assets/images/logo.jpg',
+                      'Assets/images/logo.png',
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -126,6 +129,7 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     //validation for selected name
                     if (selectedTeacherName != teachersNameList[0]) {
                       // route to next page
+                      Navigator.pushNamed(context, TeacherHomepage.screen);
                     } else {
                       validateSelectName();
                     }

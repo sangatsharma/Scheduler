@@ -6,21 +6,23 @@ import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Screens/selector_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
-import 'databaseFetch_student.dart';
+import 'databaseFetch_teacher.dart';
 import 'package:scheduler/Widgets/themes.dart';
+import 'teacher_name_select.dart';
 
-class StudentHomepage extends StatefulWidget {
-  const StudentHomepage({Key? key}) : super(key: key);
-  static const String screen = 'studentHomepage';
+class TeacherHomepage extends StatefulWidget {
+  const TeacherHomepage({Key? key}) : super(key: key);
+  static const String screen = 'TeacherHomepage';
+
   @override
-  State<StudentHomepage> createState() => _StudentHomepageState();
+  State<TeacherHomepage> createState() => _TeacherHomepageState();
 }
 
 //default set to light mode
 //from themes.dart
 bool isLightMode = true;
 
-class _StudentHomepageState extends State<StudentHomepage>
+class _TeacherHomepageState extends State<TeacherHomepage>
     with SingleTickerProviderStateMixin {
   //function to show when back button is pressed
   Future<bool> showExitPopup() async {
@@ -55,7 +57,7 @@ class _StudentHomepageState extends State<StudentHomepage>
                         backgroundColor: MaterialStatePropertyAll<Color>(
                             isLightMode
                                 ? const Color(0xffB1B2FF)
-                                : Colors.pinkAccent),
+                                : Colors.black),
                         foregroundColor: MaterialStatePropertyAll<Color>(
                             isLightMode ? Colors.black : Colors.white)),
                     onPressed: () => exit(0),
@@ -114,7 +116,7 @@ class _StudentHomepageState extends State<StudentHomepage>
   void _scrollToTop() {
     _scrollController.animateTo(
       0,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
@@ -248,7 +250,7 @@ class _StudentHomepageState extends State<StudentHomepage>
                               ),
                               Container(
                                 margin: const EdgeInsets.only(right: 20),
-                                child: Text(selectedClass,
+                                child: Text(selectedTeacherName,
                                     style: TextStyle(
                                         fontFamily: 'poppins',
                                         fontSize: 15,

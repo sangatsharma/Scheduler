@@ -10,11 +10,6 @@ List<String> startingTime = [
   '10:08',
   '11:15',
   '11:35',
-  '12:05',
-  '12:15',
-  '14:37',
-  '14:38',
-  '15:28',
 ];
 //List can be of type dateTime
 List<String> endingTime = [
@@ -25,25 +20,15 @@ List<String> endingTime = [
   '11:15',
   '11:35',
   '12:05',
-  '12:15',
-  '12:55',
-  '14:38',
-  '14:39',
-  '14:40',
 ];
-List<String> teacherName = [
-  'Er. ShivaramDam/Er. Sujan Dhakal',
-  'Dr.Rammani Adhikari',
-  'Er.Rishi Sharan Khanal',
-  'Dr.Rammani Adhikari',
-  'Er.Rishi Sharan Khanal',
-  'N/A ',
-  'Er. Sujan Dhakal',
-  'Er. ShivaramDam/Er. Sujan Dhakal',
-  'Dr.Rammani Adhikari',
-  'Er.Rishi Sharan Khanal',
-  'N/A ',
-  'Er. Sujan Dhakal',
+List<String> className = [
+  'BSE 4th sem',
+  'BSE 3rd sem',
+  'BSE 2nd sem',
+  'BSE 5th sem',
+  'BSE 6th sem',
+  'BSE 7th sem',
+  'BSE 8th sem',
 ];
 List<String> subjectName = [
   'Computer Organization and Architecture(2P)(A)',
@@ -53,14 +38,9 @@ List<String> subjectName = [
   'DBMs(2T)(A/B)',
   'Break',
   'Computer Graphics(1L)',
-  'Computer Organization and Architecture(2P)(A)',
-  'Numerical Method(2L)',
-  'Database Management System(2T)(A/B)',
-  'Break',
-  'Computer Graphics(1L)',
 ];
 
-List<Widget> fetchRoutine(String day, BuildContext context) {
+List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
   //fetch all data from database
   //items to be fetched and convert to list
   //todo make list empty and add from database
@@ -72,12 +52,13 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
       height: 86,
       width: double.infinity,
       decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(
-              color: isClassLive(startingTime[i], endingTime[i])
-                  ? Colors.green
-                  : Colors.transparent),
-          color: isLightMode ? const Color(0xffECC9EE) : Colors.black),
+        color: !isLightMode ? Colors.black : const Color(0xffECC9EE),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+            color: isClassLive(startingTime[i], endingTime[i])
+                ? Colors.green
+                : Colors.transparent),
+      ),
       padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -149,9 +130,9 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
                     maxLines: 2,
                     maxFontSize: 15,
                     minFontSize: 12,
-                    teacherName[i],
+                    className[i],
                     overflowReplacement: Text(
-                      teacherName[i],
+                      className[i],
                       style: const TextStyle(fontSize: 10),
                     ),
                     style: const TextStyle(
@@ -177,23 +158,23 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
 List<Widget> showRoutine(String dayIndex, BuildContext context) {
   switch (dayIndex) {
     case '1':
-      return fetchRoutine('MON', context);
+      return fetchTeacherRoutine('MON', context);
 
     case '2':
-      return fetchRoutine('TUE', context);
+      return fetchTeacherRoutine('TUE', context);
     case '3':
-      return fetchRoutine('WED', context);
+      return fetchTeacherRoutine('WED', context);
     case '4':
-      return fetchRoutine('THU', context);
+      return fetchTeacherRoutine('THU', context);
 
     case '5':
-      return fetchRoutine('FRI', context);
+      return fetchTeacherRoutine('FRI', context);
 
     case '6':
-      return fetchRoutine('SAT', context);
+      return fetchTeacherRoutine('SAT', context);
 
     case '7':
-      return fetchRoutine('SUN', context);
+      return fetchTeacherRoutine('SUN', context);
     default:
       return [];
   }

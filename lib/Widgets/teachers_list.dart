@@ -8,8 +8,11 @@ import 'package:flutter/material.dart';
 List<String> teachersNameList = [
   'Select your name',
   'Pralhad Shrestha',
-  'Udaya raj Dhungana sdsa sdsdssdsdsdsdsdsdss sd',
-  'Prem Gurung'
+  'Udaya raj Dhungana ',
+  'Prem Gurung',
+  'Dr.Rammani Adhikari',
+  'Er.Rishi Sharan Khanal',
+  'Dr.Rammani Adhikari2',
 ];
 
 //function to convert string list of teachers into dropdownitemlist

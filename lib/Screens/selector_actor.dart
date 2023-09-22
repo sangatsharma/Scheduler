@@ -4,6 +4,7 @@ import 'package:scheduler/Screens/admin/admin_login.dart';
 import 'package:scheduler/Screens/student/student_login.dart';
 import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Widgets/next_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectActor extends StatefulWidget {
   const SelectActor({Key? key}) : super(key: key);
@@ -31,15 +32,18 @@ class _SelectActorState extends State<SelectActor> {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 80),
-              child: const CircleAvatar(
-                  radius: 100,
-                  backgroundColor: Colors.transparent,
-                  child: Image(
-                    image: AssetImage(
-                      'Assets/images/logo.jpg',
-                    ),
-                    fit: BoxFit.cover,
-                  )),
+              child: CircleAvatar(
+                radius: 100, backgroundColor: Colors.transparent,
+                child: SvgPicture.asset(
+                  'Assets/images/logo.svg',
+                ),
+                // Image(
+                //   image: AssetImage(
+                //     'Assets/images/logo.svg',
+                //   ),
+                //   fit: BoxFit.cover,
+                // )
+              ),
             ),
             SizedBox(
               width: 300,

@@ -36,7 +36,7 @@ class _StudentClassSelectState extends State<StudentClassSelect> {
                     backgroundColor: Colors.transparent,
                     child: Image(
                       image: AssetImage(
-                        'Assets/images/logo.jpg',
+                        'Assets/images/logo.png',
                       ),
                       fit: BoxFit.cover,
                     ),
