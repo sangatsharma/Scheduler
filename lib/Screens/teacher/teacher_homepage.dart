@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Screens/selector_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
-import 'package:scheduler/Screens/student/student_class_select.dart';
 import 'databaseFetch_teacher.dart';
 import 'package:scheduler/Widgets/themes.dart';
 import 'teacher_name_select.dart';
@@ -57,7 +56,7 @@ class _TeacherHomepageState extends State<TeacherHomepage>
                         backgroundColor: MaterialStatePropertyAll<Color>(
                             isLightMode
                                 ? const Color(0xffB1B2FF)
-                                : Colors.black),
+                                : Colors.pinkAccent),
                         foregroundColor: MaterialStatePropertyAll<Color>(
                             isLightMode ? Colors.black : Colors.white)),
                     onPressed: () => exit(0),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:scheduler/Screens/student/student_homepage.dart';
+import 'teacher_homepage.dart';
 
 List<String> startingTime = [
-  '09:57',
+  '08:35',
   '09:58',
   '10:00',
   '10:05',
@@ -13,7 +13,7 @@ List<String> startingTime = [
 ];
 //List can be of type dateTime
 List<String> endingTime = [
-  '08:38',
+  '08:45',
   '10:25',
   '10:35',
   '10:45',
@@ -52,7 +52,7 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
       height: 86,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: !isLightMode ? Colors.black : const Color(0xffECC9EE),
+        color: isLightMode ? const Color(0xffECC9EE) : Colors.black,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(
             color: isClassLive(startingTime[i], endingTime[i])
