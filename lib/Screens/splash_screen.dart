@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:scheduler/Screens/selector_actor.dart';
+import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Screens/student/databaseFetch_student.dart';
 import 'package:scheduler/Screens/student/student_homepage.dart';
 import '../Notification/notification_services.dart';

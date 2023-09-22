@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
-import 'package:scheduler/Screens/selector_actor.dart';
+import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'databaseFetch_teacher.dart';
 import 'package:scheduler/Widgets/themes.dart';

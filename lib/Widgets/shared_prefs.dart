@@ -14,10 +14,16 @@ Future<bool?> selectedThemeMode() async {
 }
 
 bool isStudentLogin = false;
+bool isAdminLogin = false;
 //function to set theme
 void setStudentLoginStatus(bool isLoggedIn) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('isStudentLoggedIn', isLoggedIn);
+}
+
+void setAdminLoginStatus(bool isLoggedIn) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool('isAdminLoggedIn', isLoggedIn);
 }
 
 //Returns bool for the saved value of theme mode

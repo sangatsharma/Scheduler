@@ -6,6 +6,10 @@ import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Widgets/next_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+//default set to light mode
+// from themes.dart
+bool isLightMode = true;
+
 class SelectActor extends StatefulWidget {
   const SelectActor({Key? key}) : super(key: key);
 

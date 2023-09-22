@@ -47,7 +47,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
                     backgroundColor: Colors.transparent,
                     child: const Image(
                       image: AssetImage(
-                        'Assets/images/logo.jpg',
+                        'Assets/images/logo.png',
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -174,29 +174,26 @@ class _AdminSignUpState extends State<AdminSignUp> {
                                   borderRadius: BorderRadius.circular(10))),
                           backgroundColor: const MaterialStatePropertyAll(
                               Colors.blueAccent)),
-
-                      onPressed: () async{
+                      onPressed: () async {
                         // Validate input fields
                         bool validateSuccess = loginUser(_formKey);
 
                         if (validateSuccess) {
-
                           //Try to register new user
                           var user = await Authenticate.registerWithEmail(
                               email: _adminSignUpEmail,
                               password: _adminSignUpPassword,
-                              context: context
-                          );
+                              context: context);
                           // TOdo (maybe): try logging out the user if different build context
                           // If login successful and same context is mounted, redirect to login page
                           if (user != null && context.mounted) {
                             // Navigator.of(context).push(MaterialPageRoute(
                             //     builder: (context) => TempWidget(user: user)));
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EmailVerify()));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const EmailVerify()));
                           }
                         }
                       },
-
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(
@@ -238,11 +235,13 @@ class _AdminSignUpState extends State<AdminSignUp> {
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: () async{
+                      onTap: () async {
                         //todo Route to signUp  with google account
-                        var user = await Authenticate.signInWithGoogle(context: context);
-                        if(user != null){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => TempWidget(user: user)));
+                        var user = await Authenticate.signInWithGoogle(
+                            context: context);
+                        if (user != null) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => TempWidget(user: user)));
                         }
                       },
                       child: Container(
@@ -252,7 +251,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
                           borderRadius: BorderRadius.circular(150),
                         ),
                         child: const Padding(
-                          padding: const EdgeInsets.all(5.0),
+                          padding: EdgeInsets.all(5.0),
                           child: Image(
                               height: 30,
                               image: AssetImage('Assets/images/Google.png')),

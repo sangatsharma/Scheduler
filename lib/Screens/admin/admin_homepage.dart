@@ -1,24 +1,23 @@
-import 'dart:core';
 import 'dart:io';
-import 'package:date_picker_timeline/date_picker_widget.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flash/flash.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; //formats date
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import '../../Widgets/shared_prefs.dart';
+import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
-import 'package:scheduler/Widgets/shared_prefs.dart';
-import 'package:scheduler/Screens/student/student_class_select.dart';
-import 'databaseFetch_student.dart';
-import 'package:scheduler/Widgets/themes.dart';
+import 'getAdmin_institution.dart';
 
-class StudentHomepage extends StatefulWidget {
-  const StudentHomepage({Key? key}) : super(key: key);
-  static const String screen = 'studentHomepage';
+class AdminHomepage extends StatefulWidget {
+  const AdminHomepage({Key? key}) : super(key: key);
+  static const String screen = 'AdminHomepage';
   @override
-  State<StudentHomepage> createState() => _StudentHomepageState();
+  State<AdminHomepage> createState() => _AdminHomepageState();
 }
 
-class _StudentHomepageState extends State<StudentHomepage>
-    with SingleTickerProviderStateMixin {
-  //function to show when back button is pressed
+class _AdminHomepageState extends State<AdminHomepage> {
   Future<bool> showExitPopup() async {
     return await showDialog(
           barrierColor: Colors.transparent.withOpacity(0.6),
@@ -78,58 +77,9 @@ class _StudentHomepageState extends State<StudentHomepage>
         false; //if showDialog had returned null, then return false
   }
 
-  late AnimationController _controller;
-  final ScrollController _scrollController = ScrollController();
-  String _selectedDateIndex = DateTime.now().weekday.toString();
-  int nextIndex = 100;
-  int previousIndex = int.parse(DateTime.now().day.toString());
-  DateTime selectedDate = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    //list of routines
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 350),
-      vsync: this,
-    );
-
-    //Start the animation after a short delay (e.g., 500 milliseconds)
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        _controller.forward();
-      }
-    });
-  }
-
-  void _resetAnimation() {
-    _controller.reset();
-    _controller.forward();
-  }
-
-  void _scrollToTop() {
-    _scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  List<Widget> routines = [];
-  void _addItems(BuildContext context) {
-    routines = showRoutine(_selectedDateIndex, context);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    _addItems(context);
+    setAdminLoginStatus(true);
     return WillPopScope(
       onWillPop: showExitPopup,
       child: MaterialApp(
@@ -150,7 +100,6 @@ class _StudentHomepageState extends State<StudentHomepage>
                           setState(() {
                             isLightMode = !isLightMode;
                             setThemeMode(isLightMode);
-                            _resetAnimation();
                           });
                         },
                         child: Container(
@@ -186,13 +135,13 @@ class _StudentHomepageState extends State<StudentHomepage>
                             hoverColor: Colors.transparent,
                             alignment: Alignment.center,
                             onPressed: () {
-                              setStudentLoginStatus(false);
+                              setAdminLoginStatus(false);
                               Navigator.pushNamed(context, SelectActor.screen);
                             },
                             icon: const Icon(
-                              Icons.account_circle,
+                              Icons.logout_outlined,
                               size: 40,
-                              color: Colors.blue,
+                              color: Colors.redAccent,
                             ),
                           ),
                         ),
@@ -230,93 +179,148 @@ class _StudentHomepageState extends State<StudentHomepage>
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,
-                                padding: const EdgeInsets.only(left: 5),
-                                child: Text(
-                                  'Today',
-                                  style: TextStyle(
-                                      fontFamily: 'poppins',
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
-                                      color: isLightMode
-                                          ? Colors.black
-                                          : Colors.white),
+                                padding:
+                                    const EdgeInsets.only(left: 8, bottom: 5),
+                                child: AutoSizeText(
+                                  textAlign: TextAlign.left,
+                                  maxLines: 4,
+                                  maxFontSize: 25,
+                                  minFontSize: 15,
+                                  overflowReplacement: Text(
+                                    institutionName,
+                                    style: const TextStyle(fontSize: 25),
+                                  ),
+                                  institutionName,
+                                  style: const TextStyle(fontFamily: 'poppins'),
                                 ),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(right: 20),
-                                child: Text(selectedClass,
-                                    style: TextStyle(
-                                        fontFamily: 'poppins',
-                                        fontSize: 15,
-                                        color: isLightMode
-                                            ? Colors.black
-                                            : Colors.white)),
+                                child: Row(
+                                  children: [
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        child: const Icon(
+                                          Icons.copy,
+                                          size: 20,
+                                        ),
+                                        onTap: () async {
+                                          await Clipboard.setData(
+                                              ClipboardData(text: inviteCode));
+                                          context.showSuccessBar(
+                                              position: FlashPosition.top,
+                                              content: const Text(
+                                                  'Code copied to clipboard!',
+                                                  style: TextStyle(
+                                                      color: Colors.green)));
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(inviteCode,
+                                        style: TextStyle(
+                                            fontFamily: 'poppins',
+                                            fontSize: 15,
+                                            color: isLightMode
+                                                ? Colors.black
+                                                : Colors.white))
+                                  ],
+                                ),
                               ),
+
+                              // Text(
+                              //   institutionName,
+                              //   style: TextStyle(
+                              //       fontFamily: 'poppins',
+                              //       fontSize: 25,
+                              //       fontWeight: FontWeight.w500,
+                              //       color: isLightMode
+                              //           ? Colors.black
+                              //           : Colors.white),
+                              // )
                             ],
                           )
                         ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                            bottom: 10, left: 5, right: 5, top: 5),
-                        decoration: BoxDecoration(
-                            color: isLightMode
-                                ? const Color(0xff9DB2BF)
-                                : Colors.black,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8))),
-                        child: buildDatePicker(context, selectedDate),
                       ),
                     ],
                   ),
                 ),
                 Expanded(
-                  // child: showRoutine(_selectedDateIndex),
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(
+                        bottom: 10, left: 5, right: 5, top: 5),
+                    decoration: BoxDecoration(
+                        color: isLightMode
+                            ? const Color(0xff9DB2BF)
+                            : Colors.black,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8))),
                     child: Column(
-                      children: List.generate(
-                        routines.length,
-                        (index) {
-                          final delay =
-                              const Duration(milliseconds: 0) * (index + 1);
-                          return FutureBuilder(
-                            future: Future.delayed(delay),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                return AnimatedBuilder(
-                                  animation: _controller,
-                                  builder: (context, child) {
-                                    return FadeTransition(
-                                      opacity: Tween<double>(
-                                        begin: 0.0,
-                                        end: 2.0,
-                                      ).animate(CurvedAnimation(
-                                        parent: _controller,
-                                        curve: Curves.easeIn,
-                                      )),
-                                      child: SlideTransition(
-                                        position: Tween<Offset>(
-                                                begin: const Offset(0.0, .5),
-                                                end: const Offset(0.0, 0.0))
-                                            .animate(CurvedAnimation(
-                                          parent: _controller,
-                                          curve: Curves.easeIn,
-                                        )),
-                                        child: child,
-                                      ),
-                                    );
-                                  },
-                                  child: routines[index],
-                                );
-                              } else {
-                                return Container(); // Placeholder while waiting for animation
-                              }
-                            },
-                          );
-                        },
-                      ),
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll<Color>(isLightMode
+                                        ? const Color(0xffB1B2FF)
+                                        : Colors.pinkAccent),
+                                foregroundColor:
+                                    MaterialStatePropertyAll<Color>(isLightMode
+                                        ? Colors.black
+                                        : Colors.white)),
+                            onPressed: () => Navigator.of(context).pop(false),
+                            //return false when click on "NO"
+                            child: Text(
+                              'Manage Teacher Details',
+                              style: TextStyle(
+                                  color:
+                                      isLightMode ? Colors.black : Colors.white,
+                                  fontSize: 25,
+                                  fontFamily: 'poppins'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll<Color>(isLightMode
+                                        ? const Color(0xffB1B2FF)
+                                        : Colors.pinkAccent),
+                                foregroundColor:
+                                    MaterialStatePropertyAll<Color>(isLightMode
+                                        ? Colors.black
+                                        : Colors.white)),
+                            onPressed: () => Navigator.of(context).pop(false),
+                            //return false when click on "NO"
+                            child: Text(
+                              'Manage Routines',
+                              style: TextStyle(
+                                  color:
+                                      isLightMode ? Colors.black : Colors.white,
+                                  fontSize: 25,
+                                  fontFamily: 'poppins'),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -325,46 +329,6 @@ class _StudentHomepageState extends State<StudentHomepage>
           ),
         ),
       ),
-    );
-  }
-
-  DatePicker buildDatePicker(BuildContext context, DateTime initialDate) {
-    return DatePicker(
-      DateTime.now(),
-      height: 90,
-      width: MediaQuery.of(context).size.width * 0.123, //0.123
-      deactivatedColor: Colors.white,
-      initialSelectedDate: initialDate,
-      selectionColor: Colors.pinkAccent,
-      daysCount: 7,
-      selectedTextColor: Colors.white,
-      dateTextStyle: TextStyle(
-          fontSize: 10,
-          color: isLightMode ? Colors.black : Colors.white,
-          fontFamily: 'poppins',
-          fontWeight: FontWeight.w200),
-      dayTextStyle: TextStyle(
-          fontSize: 11,
-          color: isLightMode ? Colors.black : Colors.white,
-          fontFamily: 'poppins',
-          fontWeight: FontWeight.w600),
-      monthTextStyle: TextStyle(
-          fontSize: 10,
-          color: isLightMode ? Colors.black : Colors.white,
-          fontFamily: 'poppins',
-          fontWeight: FontWeight.w300),
-      onDateChange: (date) {
-        // New date selected
-
-        if (selectedDate != date) {
-          setState(() {
-            _selectedDateIndex = date.weekday.toString();
-            selectedDate = date;
-            _resetAnimation();
-          });
-        }
-        _scrollToTop();
-      },
     );
   }
 }

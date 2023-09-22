@@ -11,6 +11,8 @@ import 'package:scheduler/tmp/temp_file.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flash/flash.dart';
 
+import 'getAdmin_institution.dart';
+
 class AdminLogin extends StatefulWidget {
   const AdminLogin({Key? key}) : super(key: key);
   static const String screen = 'AdminLogin';
@@ -64,7 +66,7 @@ class _AdminLoginState extends State<AdminLogin> {
                       backgroundColor: Colors.transparent,
                       child: const Image(
                         image: AssetImage(
-                          'Assets/images/logo.jpg',
+                          'Assets/images/logo.png',
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -185,9 +187,9 @@ class _AdminLoginState extends State<AdminLogin> {
                         width: 280,
                         child: GestureDetector(
                           onTap: () {
-
                             // Navigate to password reset page
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetPassword()));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ResetPassword()));
                           },
                           child: const Text(
                             'Forgot password?',
@@ -208,38 +210,31 @@ class _AdminLoginState extends State<AdminLogin> {
                                     borderRadius: BorderRadius.circular(10))),
                             backgroundColor: const MaterialStatePropertyAll(
                                 Colors.pinkAccent)),
-
-                        onPressed: () async{
+                        onPressed: () async {
                           // Validate input fields
                           bool validateSuccess = loginUser(_formKey);
 
                           // If successfully validated
-                          if(validateSuccess) {
-
+                          if (validateSuccess) {
                             // Try to sign the user in
                             var user = await Authenticate.signInWithEmail(
                                 email: _adminLogInEmail,
                                 password: _adminLogInPassword,
-                                context: context
-                            );
+                                context: context);
 
                             // If sign-in was success, load corresponding page
                             // Also make sure the present context is mounted
                             if (user != null && context.mounted) {
-
                               // If email didn't finish the verify process
-                              if(user.emailVerified == false){
+                              if (user.emailVerified == false) {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const EmailVerify()
-                                ));
-                              }
-                              else{
+                                    builder: (context) => const EmailVerify()));
+                              } else {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                    TempWidget(user: user)));
-                                }
+                                    builder: (context) =>
+                                        GetInstitutionDetails(user: user)));
                               }
-
+                            }
                           }
                         },
                         child: const Text(
@@ -300,7 +295,7 @@ class _AdminLoginState extends State<AdminLogin> {
                               if (user != null) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        TempWidget(user: user)));
+                                        GetInstitutionDetails(user: user)));
                                 //Show success message
                                 context.showSuccessBar(
                                     content: const Text(
