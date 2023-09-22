@@ -114,7 +114,7 @@ class _StudentHomepageState extends State<StudentHomepage>
   void _scrollToTop() {
     _scrollController.animateTo(
       0,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
