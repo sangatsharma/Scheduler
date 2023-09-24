@@ -231,8 +231,9 @@ class _AdminLoginState extends State<AdminLogin> {
                                     builder: (context) => const EmailVerify()));
                               } else {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        GetInstitutionDetails(user: user)));
+                                    builder: (context) => GetInstitutionDetails(
+                                          user: user,
+                                        )));
                               }
                             }
                           }
@@ -294,8 +295,9 @@ class _AdminLoginState extends State<AdminLogin> {
                               showLoading = false;
                               if (user != null) {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        GetInstitutionDetails(user: user)));
+                                    builder: (context) => GetInstitutionDetails(
+                                          user: user,
+                                        )));
                                 //Show success message
                                 context.showSuccessBar(
                                     content: const Text(

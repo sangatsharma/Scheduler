@@ -1,17 +1,21 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../../Auth/auth_service.dart';
 import '../../Widgets/shared_prefs.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'getAdmin_institution.dart';
 
 class AdminHomepage extends StatefulWidget {
-  const AdminHomepage({Key? key}) : super(key: key);
+  const AdminHomepage({super.key, required this.user});
+  final User? user;
+
   static const String screen = 'AdminHomepage';
   @override
   State<AdminHomepage> createState() => _AdminHomepageState();
@@ -79,7 +83,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
 
   @override
   Widget build(BuildContext context) {
-    setAdminLoginStatus(true);
+    var photoUrl = widget.user?.photoURL ??
+        'https://upload.wikimedia.org/wikipedia/commons/f/f7/Facebook_default_male_avatar.gif';
     return WillPopScope(
       onWillPop: showExitPopup,
       child: MaterialApp(
@@ -134,9 +139,14 @@ class _AdminHomepageState extends State<AdminHomepage> {
                             splashColor: Colors.transparent,
                             hoverColor: Colors.transparent,
                             alignment: Alignment.center,
-                            onPressed: () {
-                              setAdminLoginStatus(false);
-                              Navigator.pushNamed(context, SelectActor.screen);
+                            onPressed: () async {
+                              bool success =
+                                  await Authenticate.signOut(context: context);
+                              if (success && context.mounted) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context)
+                                    .pushNamed(SelectActor.screen);
+                              }
                             },
                             icon: const Icon(
                               Icons.logout_outlined,
@@ -230,17 +240,6 @@ class _AdminHomepageState extends State<AdminHomepage> {
                                   ],
                                 ),
                               ),
-
-                              // Text(
-                              //   institutionName,
-                              //   style: TextStyle(
-                              //       fontFamily: 'poppins',
-                              //       fontSize: 25,
-                              //       fontWeight: FontWeight.w500,
-                              //       color: isLightMode
-                              //           ? Colors.black
-                              //           : Colors.white),
-                              // )
                             ],
                           )
                         ],
@@ -281,15 +280,25 @@ class _AdminHomepageState extends State<AdminHomepage> {
                                         ? Colors.black
                                         : Colors.white)),
                             onPressed: () => Navigator.of(context).pop(false),
-                            //return false when click on "NO"
-                            child: Text(
+                            child: const AutoSizeText(
+                              textAlign: TextAlign.left,
+                              maxLines: 4,
+                              minFontSize: 20,
+                              overflowReplacement: Text(
+                                'Manage Teacher Details',
+                              ),
                               'Manage Teacher Details',
-                              style: TextStyle(
-                                  color:
-                                      isLightMode ? Colors.black : Colors.white,
-                                  fontSize: 25,
-                                  fontFamily: 'poppins'),
+                              style: TextStyle(fontFamily: 'poppins'),
                             ),
+                            //return false when click on "NO"
+                            // child: Text(
+                            //   'Manage Teacher Details',
+                            //   style: TextStyle(
+                            //       color:
+                            //           isLightMode ? Colors.black : Colors.white,
+                            //       fontSize: 25,
+                            //       fontFamily: 'poppins'),
+                            // ),
                           ),
                         ),
                         const SizedBox(
@@ -320,6 +329,11 @@ class _AdminHomepageState extends State<AdminHomepage> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Image.network(photoUrl),
+                        )
                       ],
                     ),
                   ),

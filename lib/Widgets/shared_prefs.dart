@@ -14,21 +14,27 @@ Future<bool?> selectedThemeMode() async {
 }
 
 bool isStudentLogin = false;
-bool isAdminLogin = false;
+bool isTeacherLogin = false;
 //function to set theme
 void setStudentLoginStatus(bool isLoggedIn) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('isStudentLoggedIn', isLoggedIn);
 }
 
-void setAdminLoginStatus(bool isLoggedIn) async {
+void setTeacherLoginStatus(bool isLoggedIn) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('isAdminLoggedIn', isLoggedIn);
+  prefs.setBool('isTeacherLoggedIn', isLoggedIn);
 }
 
 //Returns bool for the saved value of theme mode
 Future<bool?> checkStudentLogInStatus() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   bool check = prefs.getBool('isStudentLoggedIn') ?? false;
+  return check;
+}
+
+Future<bool?> checkTeacherLogInStatus() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool check = prefs.getBool('isTeacherLoggedIn') ?? false;
   return check;
 }

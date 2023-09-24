@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Screens/student/databaseFetch_student.dart';
 import 'package:scheduler/Screens/student/student_homepage.dart';
+import 'package:scheduler/Screens/teacher/teacher_homepage.dart';
 import '../Notification/notification_services.dart';
 import '../Widgets/shared_prefs.dart';
-import '../tmp/temp_file.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'admin/admin_homepage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -20,10 +21,13 @@ Widget defaultScreen = const SelectActor();
 
 class _SplashScreenState extends State<SplashScreen> {
   bool checkIsStudentLogin = false;
+  bool checkIsTeacherLogin = false;
   void updateStatus() async {
-    bool? checkIfLoggedIn = await checkStudentLogInStatus();
+    bool? checkIfStudentLoggedIn = await checkStudentLogInStatus();
+    bool? checkIfTeacherLoggedIn = await checkTeacherLogInStatus();
     setState(() {
-      checkIsStudentLogin = checkIfLoggedIn ?? false;
+      checkIsStudentLogin = checkIfStudentLoggedIn ?? false;
+      checkIsTeacherLogin = checkIfTeacherLoggedIn ?? false;
     });
   }
 
@@ -36,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // notificationServices.zoneScheduleNotifications(
     //     'Test', 'This is body', timeList, const Duration(minutes: 1));
 
-    //check login status of student
+    //check login status of student and teacher
     updateStatus();
     //updateTheme after user logins
     updateTheme();
@@ -65,6 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (checkIsStudentLogin) {
       defaultScreen = const StudentHomepage();
+    } else if (checkIsTeacherLogin) {
+      defaultScreen = const TeacherHomepage();
     } else {
       // If user is not logged in or has an unverified email, load SelectActor screen
       if (currentUser == null || !currentUser.emailVerified) {
@@ -75,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
       // Else load TempWidget
       else {
-        defaultScreen = TempWidget(user: currentUser);
+        defaultScreen = AdminHomepage(user: currentUser);
       }
     }
     Timer(

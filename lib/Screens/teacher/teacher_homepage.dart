@@ -17,10 +17,6 @@ class TeacherHomepage extends StatefulWidget {
   State<TeacherHomepage> createState() => _TeacherHomepageState();
 }
 
-//default set to light mode
-//from themes.dart
-bool isLightMode = true;
-
 class _TeacherHomepageState extends State<TeacherHomepage>
     with SingleTickerProviderStateMixin {
   //function to show when back button is pressed
@@ -191,7 +187,7 @@ class _TeacherHomepageState extends State<TeacherHomepage>
                             hoverColor: Colors.transparent,
                             alignment: Alignment.center,
                             onPressed: () {
-                              setStudentLoginStatus(false);
+                              setTeacherLoginStatus(false);
                               Navigator.pushNamed(context, SelectActor.screen);
                             },
                             icon: const Icon(

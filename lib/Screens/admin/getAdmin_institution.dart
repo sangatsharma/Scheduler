@@ -10,8 +10,7 @@ import 'package:scheduler/Widgets/appbar_func.dart';
 
 class GetInstitutionDetails extends StatefulWidget {
   const GetInstitutionDetails({super.key, required this.user});
-  final User? user;
-
+  final User user;
   static const String screen = 'GetInstitutionDetails';
 
   @override
@@ -133,7 +132,11 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                     onTap: () {
                       loginUser(_formKey);
                       if (loginUser(_formKey) && isClicked == true) {
-                        Navigator.pushNamed(context, AdminHomepage.screen);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AdminHomepage(user: widget.user)));
                       } else if (loginUser(_formKey) && isClicked == false) {
                         context.showErrorBar(
                             position: FlashPosition.top,

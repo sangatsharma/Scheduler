@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/teacher/teacher_homepage.dart';
+import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'package:scheduler/Widgets/teachers_list.dart';
 import 'package:scheduler/Screens/teacher/teacher_login.dart';
 
@@ -128,6 +129,10 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                   onTap: () {
                     //validation for selected name
                     if (selectedTeacherName != teachersNameList[0]) {
+                      setState(() {
+                        isTeacherLogin = true;
+                      });
+                      setTeacherLoginStatus(isTeacherLogin);
                       // route to next page
                       Navigator.pushNamed(context, TeacherHomepage.screen);
                     } else {

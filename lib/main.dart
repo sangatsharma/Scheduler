@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:scheduler/Screens/admin/admin_homepage.dart';
 import 'package:scheduler/Screens/admin/admin_login.dart';
-import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
+import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Screens/splash_screen.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
@@ -44,7 +43,10 @@ class MyApp extends StatelessWidget {
         StudentHomepage.screen: (context) => const StudentHomepage(),
         SplashScreen.screen: (context) => const SplashScreen(),
         TeacherHomepage.screen: (context) => const TeacherHomepage(),
-        AdminHomepage.screen: (context) => const AdminHomepage(),
+        TeacherDetailsEntry.screen: (context) => const TeacherDetailsEntry()
+        // AdminHomepage.screen: (context) => const AdminHomepage(user: null),
+        // GetInstitutionDetails.screen: (context) =>
+        //     const GetInstitutionDetails(),
       },
     );
   }
