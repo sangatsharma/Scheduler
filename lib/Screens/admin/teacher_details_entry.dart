@@ -280,7 +280,7 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                             child: Form(
                               key: _formKey,
                               child: Container(
-                                margin: EdgeInsets.only(bottom: 40),
+                                margin: const EdgeInsets.only(bottom: 40),
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Row(
                                   mainAxisAlignment:
@@ -306,6 +306,8 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                                 : Colors.white,
                                           ),
                                           labelText: 'Teacher Id',
+                                          errorStyle: TextStyle(
+                                              fontSize: width * 0.018),
                                           border: const OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(10),
@@ -315,9 +317,14 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
 
                                         //****  VALIDATION LOGIC ****//
                                         validator: (value) {
+                                          final RegExp pattern =
+                                              RegExp(r'^[1-9]\d*$');
+
                                           // Make sure that input field is not Empty neither null
                                           if (value == null || value.isEmpty) {
                                             return 'Id ?';
+                                          } else if (!pattern.hasMatch(value)) {
+                                            return 'Invalid Id';
                                           }
                                           // If everything is good, return null
                                           return null;
@@ -347,6 +354,8 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                                 : Colors.white,
                                           ),
                                           labelText: 'Name',
+                                          errorStyle: TextStyle(
+                                              fontSize: width * 0.018),
                                           border: const OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(10),
@@ -356,9 +365,14 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
 
                                         //****  VALIDATION LOGIC ****//
                                         validator: (value) {
+                                          final RegExp pattern =
+                                              RegExp(r'^[A-Za-z][A-Za-z ]*$');
+
                                           // Make sure that input field is not Empty neither null
                                           if (value == null || value.isEmpty) {
                                             return 'Name ?';
+                                          } else if (!pattern.hasMatch(value)) {
+                                            return 'Invalid Name';
                                           }
                                           // If everything is good, return null
                                           return null;
@@ -415,6 +429,8 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                                 : Colors.white,
                                           ),
                                           labelText: 'Subject 1',
+                                          errorStyle: TextStyle(
+                                              fontSize: width * 0.018),
                                           border: const OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(10),
@@ -424,9 +440,14 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
 
                                         // ****  VALIDATION LOGIC ****//
                                         validator: (value) {
+                                          final RegExp pattern = RegExp(
+                                              r'^[A-Za-z][A-Za-z0-9 +\-]*$');
+
                                           // Make sure that input field is not Empty neither null
                                           if (value == null || value.isEmpty) {
                                             return 'Subject ?';
+                                          } else if (!pattern.hasMatch(value)) {
+                                            return 'Invalid Subject';
                                           }
                                           // If everything is good, return null
                                           return null;
@@ -444,11 +465,11 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                         onPressed: () {
                                           loginUser(_formKey);
                                           if (loginUser(_formKey)) {
-                                            //todo add this to clooection
-                                            // print(teacherId);
-                                            // print(teacherName);
-                                            // print(teacherSubjNo);
-                                            // print(subject);
+                                            //todo add this to collection
+                                            print(teacherId);
+                                            print(teacherName);
+                                            print(teacherSubjNo);
+                                            print(subject);
                                           }
                                         },
                                         child: const Text('Add')),
