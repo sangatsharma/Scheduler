@@ -7,6 +7,7 @@ import 'package:scheduler/Screens/admin/admin_homepage.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import 'package:scheduler/Widgets/appbar_func.dart';
+import 'package:scheduler/Models/db_operations.dart';
 
 class GetInstitutionDetails extends StatefulWidget {
   const GetInstitutionDetails({super.key, required this.user});
@@ -129,14 +130,21 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                   ),
                   SizedBox(height: 85, child: showCode(isClicked, context)),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       loginUser(_formKey);
                       if (loginUser(_formKey) && isClicked == true) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AdminHomepage(user: widget.user)));
+
+                        // Upload admin instituion detail to DB
+                        bool mapping = await MappingCollectionOp.uploadMapping(
+                        widget.user.uid, widget.user.email ?? "", institutionName, inviteCode);
+
+                        if (mapping == true && context.mounted) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AdminHomepage(user: widget.user,)));
+                        }
                       } else if (loginUser(_formKey) && isClicked == false) {
                         context.showErrorBar(
                             position: FlashPosition.top,

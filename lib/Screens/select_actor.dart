@@ -5,7 +5,7 @@ import 'package:scheduler/Screens/student/student_login.dart';
 import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Widgets/next_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:scheduler/tmp/db.dart';
 //default set to light mode
 // from themes.dart
 bool isLightMode = true;
@@ -28,7 +28,7 @@ class _SelectActorState extends State<SelectActor> {
   Widget build(BuildContext context) {
     // notificationServices.sendNotifications(
     //     'Welcome', 'App loaded successfully');
-
+    funrun();
     return Scaffold(
       body: Center(
         child: Column(

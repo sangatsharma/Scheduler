@@ -18,7 +18,7 @@ class MappingCollectionOp {
   }
 
   // USAGE: <MAP/null> MappingCollectionOp.fetchMapping(...);
-  static Future<Map<String, dynamic>?> fetchMapping(String aid) async{
+  static Future<Map<String, dynamic>?> fetchMapping(String? aid) async{
     final docRef = await db.collection("mapping-collection").doc(aid).get();
     if(docRef.exists) {
       return docRef.data();

@@ -12,17 +12,37 @@ import '../../Widgets/shared_prefs.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'getAdmin_institution.dart';
-
+import 'package:scheduler/Models/db_operations.dart';
 class AdminHomepage extends StatefulWidget {
   const AdminHomepage({super.key, required this.user});
   final User? user;
 
   static const String screen = 'AdminHomepage';
+
   @override
   State<AdminHomepage> createState() => _AdminHomepageState();
 }
 
 class _AdminHomepageState extends State<AdminHomepage> {
+
+  // Startup Helper
+  void startupWork(var a) {
+    setState(() {
+      inviteCode = a["code"];
+      institutionName = a["institution_name"];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Fetch Institution name and Invite code during startup
+    MappingCollectionOp.fetchMapping(widget.user?.uid).then((value) => 
+      startupWork(value)
+    );
+  }
+
   Future<bool> showExitPopup() async {
     return await showDialog(
           barrierColor: Colors.transparent.withOpacity(0.6),

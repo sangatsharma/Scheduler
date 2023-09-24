@@ -1,16 +1,16 @@
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Auth/auth_service.dart';
+import 'package:scheduler/Screens/admin/admin_homepage.dart';
 import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/Screens/admin/email_verify.dart';
 import 'package:scheduler/Screens/admin/reset_password.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import '../../Widgets/appbar_func.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:scheduler/tmp/temp_file.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flash/flash.dart';
-
+import 'package:scheduler/Models/db_operations.dart';
 import 'getAdmin_institution.dart';
 
 class AdminLogin extends StatefulWidget {
@@ -230,10 +230,24 @@ class _AdminLoginState extends State<AdminLogin> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const EmailVerify()));
                               } else {
-                                Navigator.of(context).push(MaterialPageRoute(
+
+                                  // Check if Admin already has institution info and invite code
+                                  final mapping = await MappingCollectionOp.fetchMapping(user.uid);
+
+                                  // If not, then load GetInstitutionDetails 
+                                  if(mapping == null && context.mounted) {
+                                    Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => GetInstitutionDetails(
                                           user: user,
                                         )));
+                                  }
+
+                                  // Else simply head to admin home page
+                                  else if(context.mounted){
+                                    Navigator.of(context).push(MaterialPageRoute(builder: 
+                                      (context) => AdminHomepage(user: user)
+                                    ));
+                                  }
                               }
                             }
                           }
