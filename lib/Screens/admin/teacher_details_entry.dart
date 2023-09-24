@@ -10,7 +10,6 @@ import 'getAdmin_institution.dart';
 
 class TeacherDetailsEntry extends StatefulWidget {
   const TeacherDetailsEntry({Key? key}) : super(key: key);
-  // final User? user;
 
   static const String screen = 'TeacherDetailsEntry';
   @override
@@ -27,8 +26,6 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
   Future<bool> showExitPopup() async {
     return await showDialog(
           barrierColor: Colors.transparent.withOpacity(0.6),
-          //show confirm dialogue
-          //the return value will be from "Yes" or "No" options
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor:
@@ -91,9 +88,6 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
         Row t = Row(
           children: [
             SizedBox(
-              width: width * 0.02,
-            ),
-            SizedBox(
               width: width * 0.16,
               child: TextFormField(
                 onChanged: (value) {
@@ -117,7 +111,10 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                   ),
                 ),
               ),
-            )
+            ),
+            SizedBox(
+              width: width * 0.02,
+            ),
           ],
         );
         inputFieldList.add(t);
@@ -126,6 +123,7 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
     }
 
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: showExitPopup,
       child: MaterialApp(
@@ -262,329 +260,377 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            child: Text('Enter Details :',
-                                style: TextStyle(
-                                  fontFamily: 'poppins',
-                                  fontSize: 15,
-                                  color:
-                                      isLightMode ? Colors.black : Colors.white,
-                                )),
-                          ),
-                          const SizedBox(height: 10),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Form(
-                              key: _formKey,
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 40),
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                child: Text('Enter Details :',
+                                    style: TextStyle(
+                                      fontFamily: 'poppins',
+                                      fontSize: 15,
+                                      color: isLightMode
+                                          ? Colors.black
+                                          : Colors.white,
+                                    )),
+                              ),
+                              const SizedBox(height: 10),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Form(
+                                  key: _formKey,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(bottom: 40),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: width * 0.1,
+                                          child: TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {
+                                                teacherId = value;
+                                              });
+                                            },
+                                            style: TextStyle(
+                                              fontFamily: 'poppins',
+                                              fontSize: width * 0.015,
+                                            ),
+                                            decoration: InputDecoration(
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'poppins',
+                                                color: isLightMode
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                              ),
+                                              labelText: 'Id',
+                                              errorStyle: TextStyle(
+                                                  fontSize: width * 0.018),
+                                              border: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+
+                                            //****  VALIDATION LOGIC ****//
+                                            validator: (value) {
+                                              final RegExp pattern =
+                                                  RegExp(r'^[1-9]\d*$');
+
+                                              // Make sure that input field is not Empty neither null
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Id ?';
+                                              } else if (!pattern
+                                                  .hasMatch(value)) {
+                                                return 'Invalid Id';
+                                              }
+                                              // If everything is good, return null
+                                              return null;
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.02,
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.15,
+                                          child: TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {
+                                                teacherName = value;
+                                              });
+                                            },
+                                            style: TextStyle(
+                                              fontFamily: 'poppins',
+                                              fontSize: width * 0.015,
+                                            ),
+                                            decoration: InputDecoration(
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'poppins',
+                                                color: isLightMode
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                              ),
+                                              labelText: 'Name',
+                                              errorStyle: TextStyle(
+                                                  fontSize: width * 0.018),
+                                              border: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+
+                                            //****  VALIDATION LOGIC ****//
+                                            validator: (value) {
+                                              final RegExp pattern = RegExp(
+                                                  r'^[A-Za-z][A-Za-z ]*$');
+
+                                              // Make sure that input field is not Empty neither null
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Name ?';
+                                              } else if (!pattern
+                                                  .hasMatch(value)) {
+                                                return 'Invalid Name';
+                                              }
+                                              // If everything is good, return null
+                                              return null;
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.02,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              'No of subject:',
+                                              style: TextStyle(
+                                                fontSize: width * 0.015,
+                                                fontFamily: 'poppins',
+                                                color: isLightMode
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                              ),
+                                            ),
+                                            SizedBox(width: width * 0.02),
+                                            DropdownButton<int>(
+                                              value: teacherSubjNo,
+                                              onChanged: (int? newValue) {
+                                                setState(() {
+                                                  teacherSubjNo = newValue!;
+                                                });
+                                              },
+                                              items: <int>[1, 2, 3, 4]
+                                                  .map((int value) {
+                                                return DropdownMenuItem<int>(
+                                                  value: value,
+                                                  child: Text(
+                                                    value.toString(),
+                                                    style: TextStyle(
+                                                      fontSize: width * 0.02,
+                                                      fontFamily: 'poppins',
+                                                      color: isLightMode
+                                                          ? Colors.black
+                                                          : Colors.white,
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.02,
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.16,
+                                          child: TextFormField(
+                                            onChanged: (value) {
+                                              subject[0] = value;
+                                              setState(() {});
+                                            },
+                                            style: TextStyle(
+                                              fontFamily: 'poppins',
+                                              fontSize: width * 0.015,
+                                            ),
+                                            decoration: InputDecoration(
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'poppins',
+                                                color: isLightMode
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                              ),
+                                              labelText: 'Subject 1',
+                                              errorStyle: TextStyle(
+                                                  fontSize: width * 0.018),
+                                              border: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+
+                                            // ****  VALIDATION LOGIC ****//
+                                            validator: (value) {
+                                              final RegExp pattern = RegExp(
+                                                  r'^[A-Za-z][A-Za-z0-9 +\-]*$');
+
+                                              // Make sure that input field is not Empty neither null
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Subject ?';
+                                              } else if (!pattern
+                                                  .hasMatch(value)) {
+                                                return 'Invalid Subject';
+                                              }
+                                              // If everything is good, return null
+                                              return null;
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                margin: const EdgeInsets.only(right: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: width * 0.15,
-                                      child: TextFormField(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            teacherId = value;
-                                          });
-                                        },
-                                        style: TextStyle(
-                                          fontFamily: 'poppins',
-                                          fontSize: width * 0.015,
-                                        ),
-                                        decoration: InputDecoration(
-                                          labelStyle: TextStyle(
-                                            fontFamily: 'poppins',
-                                            color: isLightMode
-                                                ? Colors.black
-                                                : Colors.white,
-                                          ),
-                                          labelText: 'Teacher Id',
-                                          errorStyle: TextStyle(
-                                              fontSize: width * 0.018),
-                                          border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-
-                                        //****  VALIDATION LOGIC ****//
-                                        validator: (value) {
-                                          final RegExp pattern =
-                                              RegExp(r'^[1-9]\d*$');
-
-                                          // Make sure that input field is not Empty neither null
-                                          if (value == null || value.isEmpty) {
-                                            return 'Id ?';
-                                          } else if (!pattern.hasMatch(value)) {
-                                            return 'Invalid Id';
-                                          }
-                                          // If everything is good, return null
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.15,
-                                      child: TextFormField(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            teacherName = value;
-                                          });
-                                        },
-                                        style: TextStyle(
-                                          fontFamily: 'poppins',
-                                          fontSize: width * 0.015,
-                                        ),
-                                        decoration: InputDecoration(
-                                          labelStyle: TextStyle(
-                                            fontFamily: 'poppins',
-                                            color: isLightMode
-                                                ? Colors.black
-                                                : Colors.white,
-                                          ),
-                                          labelText: 'Name',
-                                          errorStyle: TextStyle(
-                                              fontSize: width * 0.018),
-                                          border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-
-                                        //****  VALIDATION LOGIC ****//
-                                        validator: (value) {
-                                          final RegExp pattern =
-                                              RegExp(r'^[A-Za-z][A-Za-z ]*$');
-
-                                          // Make sure that input field is not Empty neither null
-                                          if (value == null || value.isEmpty) {
-                                            return 'Name ?';
-                                          } else if (!pattern.hasMatch(value)) {
-                                            return 'Invalid Name';
-                                          }
-                                          // If everything is good, return null
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    Text(
-                                      'No of subject:',
-                                      style: TextStyle(
-                                        fontSize: width * 0.015,
-                                        fontFamily: 'poppins',
-                                        color: isLightMode
-                                            ? Colors.black
-                                            : Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(width: width * 0.02),
-                                    DropdownButton<int>(
-                                      value: teacherSubjNo,
-                                      onChanged: (int? newValue) {
-                                        setState(() {
-                                          teacherSubjNo = newValue!;
-                                        });
-                                      },
-                                      items: <int>[1, 2, 3, 4].map((int value) {
-                                        return DropdownMenuItem<int>(
-                                          value: value,
-                                          child: Text(value.toString()),
-                                        );
-                                      }).toList(),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.16,
-                                      child: TextFormField(
-                                        onChanged: (value) {
-                                          subject[0] = value;
-                                          setState(() {});
-                                        },
-                                        style: TextStyle(
-                                          fontFamily: 'poppins',
-                                          fontSize: width * 0.015,
-                                        ),
-                                        decoration: InputDecoration(
-                                          labelStyle: TextStyle(
-                                            fontFamily: 'poppins',
-                                            color: isLightMode
-                                                ? Colors.black
-                                                : Colors.white,
-                                          ),
-                                          labelText: 'Subject 1',
-                                          errorStyle: TextStyle(
-                                              fontSize: width * 0.018),
-                                          border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-
-                                        // ****  VALIDATION LOGIC ****//
-                                        validator: (value) {
-                                          final RegExp pattern = RegExp(
-                                              r'^[A-Za-z][A-Za-z0-9 +\-]*$');
-
-                                          // Make sure that input field is not Empty neither null
-                                          if (value == null || value.isEmpty) {
-                                            return 'Subject ?';
-                                          } else if (!pattern.hasMatch(value)) {
-                                            return 'Invalid Subject';
-                                          }
-                                          // If everything is good, return null
-                                          return null;
-                                        },
-                                      ),
-                                    ),
                                     Row(
-                                      children: generateSubjectField(
-                                          teacherSubjNo, width),
+                                      children: [
+                                        Row(
+                                          children: generateSubjectField(
+                                              teacherSubjNo, width),
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.02,
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              loginUser(_formKey);
+                                              if (loginUser(_formKey)) {
+                                                //todo add this to collection
+                                                print(teacherId);
+                                                print(teacherName);
+                                                print(teacherSubjNo);
+                                                print(subject);
+                                                //Clear all the input field
+                                                _formKey.currentState?.reset();
+                                              }
+                                            },
+                                            child: SizedBox(
+                                              height: height * 0.05,
+                                              child: const Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Add',
+                                                    style: TextStyle(),
+                                                  ),
+                                                  Icon(Icons.add),
+                                                ],
+                                              ),
+                                            )),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      width: width * 0.02,
+                                    const SizedBox(
+                                      height: 20,
                                     ),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          loginUser(_formKey);
-                                          if (loginUser(_formKey)) {
-                                            //todo add this to collection
-                                            print(teacherId);
-                                            print(teacherName);
-                                            print(teacherSubjNo);
-                                            print(subject);
-                                          }
-                                        },
-                                        child: const Text('Add')),
+                                    Text('Teacher Details',
+                                        style: TextStyle(
+                                            fontFamily: 'poppins',
+                                            fontSize: width * 0.03,
+                                            color: isLightMode
+                                                ? Colors.black
+                                                : Colors.white)),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
                                   ],
                                 ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            margin: const EdgeInsets.only(right: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Teacher Details',
-                                    style: TextStyle(
-                                        fontFamily: 'poppins',
-                                        fontSize: width * 0.03,
-                                        color: isLightMode
-                                            ? Colors.black
-                                            : Colors.white)),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            color: isLightMode ? Colors.black26 : Colors.white,
-                            thickness: 2,
-                          ),
-                          DataTable(
-                            showCheckboxColumn: true,
-                            columns: const <DataColumn>[
-                              DataColumn(
-                                label: Expanded(
-                                  child: Text(
-                                    'Name',
-                                    style: TextStyle(
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                              Divider(
+                                color:
+                                    isLightMode ? Colors.black26 : Colors.white,
+                                thickness: 2,
                               ),
-                              DataColumn(
-                                label: Expanded(
-                                  child: Text(
-                                    'Age',
-                                    style:
-                                        TextStyle(fontStyle: FontStyle.italic),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Expanded(
-                                  child: Text(
-                                    'Edit',
-                                    style:
-                                        TextStyle(fontStyle: FontStyle.italic),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Expanded(
-                                  child: Text(
-                                    'Delete',
-                                    style:
-                                        TextStyle(fontStyle: FontStyle.italic),
-                                  ),
-                                ),
-                              ),
-                            ],
-                            rows: <DataRow>[
-                              DataRow(
-                                cells: <DataCell>[
-                                  DataCell(Text('Sarah')),
-                                  DataCell(Text('19')),
-                                  DataCell(
-                                    Icon(Icons.edit),
-                                    onTap: () {},
-                                  ),
-                                  DataCell(
-                                    Icon(Icons.delete),
-                                    onTap: () {},
-                                  ),
-                                ],
-                              ),
-                              DataRow(
-                                cells: <DataCell>[
-                                  DataCell(Text('Janine')),
-                                  DataCell(Text('43')),
-                                  DataCell(
-                                    Icon(Icons.edit),
-                                    onTap: () {},
-                                  ),
-                                  DataCell(
-                                    Icon(Icons.delete),
-                                    onTap: () {},
-                                  ),
-                                ],
-                              ),
-                              DataRow(
-                                cells: <DataCell>[
-                                  DataCell(Text('William')),
-                                  DataCell(Text('27')),
-                                  DataCell(
-                                    Icon(Icons.edit),
-                                    onTap: () {},
-                                  ),
-                                  DataCell(
-                                    Icon(Icons.delete),
-                                    onTap: () {},
+                              Column(
+                                children: [
+                                  DataTable(
+                                    showCheckboxColumn: true,
+                                    columns: const <DataColumn>[
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Name',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Age',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Edit',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Delete',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    rows: <DataRow>[
+                                      DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(Text('Sarah')),
+                                          DataCell(Text('19')),
+                                          DataCell(
+                                            Icon(Icons.edit),
+                                            onTap: () {},
+                                          ),
+                                          DataCell(
+                                            Icon(Icons.delete),
+                                            onTap: () {},
+                                          ),
+                                        ],
+                                      ),
+                                      DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(Text('Janine')),
+                                          DataCell(Text('43')),
+                                          DataCell(
+                                            Icon(Icons.edit),
+                                            onTap: () {},
+                                          ),
+                                          DataCell(
+                                            Icon(Icons.delete),
+                                            onTap: () {},
+                                          ),
+                                        ],
+                                      ),
+                                      DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(Text('William')),
+                                          DataCell(Text('27')),
+                                          DataCell(
+                                            Icon(Icons.edit),
+                                            onTap: () {},
+                                          ),
+                                          DataCell(
+                                            Icon(Icons.delete),
+                                            onTap: () {},
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

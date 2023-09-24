@@ -6,6 +6,7 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/shared_prefs.dart';
 import '../../Widgets/themes.dart';
@@ -279,7 +280,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
                                     MaterialStatePropertyAll<Color>(isLightMode
                                         ? Colors.black
                                         : Colors.white)),
-                            onPressed: () => Navigator.of(context).pop(false),
+                            onPressed: () => Navigator.pushNamed(
+                                context, TeacherDetailsEntry.screen),
                             child: const AutoSizeText(
                               textAlign: TextAlign.left,
                               maxLines: 4,

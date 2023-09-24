@@ -29,7 +29,7 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          appBar: buildAppBar(context, 'Student'),
+          appBar: buildAppBar(context, 'Admin'),
           body: Center(
               child: SingleChildScrollView(
             child: Form(
