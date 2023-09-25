@@ -11,7 +11,7 @@ import 'package:scheduler/Models/db_operations.dart';
 
 class GetInstitutionDetails extends StatefulWidget {
   const GetInstitutionDetails({super.key, required this.user});
-  final User user;
+  final User? user;
   static const String screen = 'GetInstitutionDetails';
 
   @override
@@ -106,18 +106,18 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                           backgroundColor: MaterialStatePropertyAll<Color>(
                               Colors.pinkAccent),
                         ),
-                        onPressed: () async{
-
-                        // Check if institution Name already exists or not
-                        if(await MappingCollectionOp.institutionNameExists(institutionName)) {
-                          if(context.mounted) {
-                            context.showErrorBar(
-                                position: FlashPosition.top,
-                                content: const Text('Institution Name exists',
-                                    style: TextStyle(color: Colors.red)));
+                        onPressed: () async {
+                          // Check if institution Name already exists or not
+                          if (await MappingCollectionOp.institutionNameExists(
+                              institutionName)) {
+                            if (context.mounted) {
+                              context.showErrorBar(
+                                  position: FlashPosition.top,
+                                  content: const Text('Institution Name exists',
+                                      style: TextStyle(color: Colors.red)));
                               return;
-                          }    
-                        }
+                            }
+                          }
                           loginUser(_formKey);
                           if (loginUser(_formKey)) {
                             isClicked && context.mounted
@@ -144,12 +144,10 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                     onTap: () async {
                       loginUser(_formKey);
                       if (loginUser(_formKey) && isClicked == true) {
-
-                        
                         // Upload admin instituion detail to DB
                         bool mapping = await MappingCollectionOp.uploadMapping(
-                            widget.user.uid,
-                            widget.user.email ?? "",
+                            widget.user!.uid,
+                            widget.user?.email ?? "",
                             institutionName,
                             inviteCode);
 
@@ -171,7 +169,7 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                     child: Container(
                       height: 45,
                       width: 70,
-                      margin: const EdgeInsets.only(top: 30),
+                      margin: const EdgeInsets.only(top: 10),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.elliptical(35, 35),
