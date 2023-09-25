@@ -25,4 +25,9 @@ class MappingCollectionOp {
     }
     return null;
   }
+
+  static Future<bool> instituionNameExists(String? name) async {
+    final docRef = await db.collection("mapping-collection").where("institution_name", isEqualTo: name).get();
+    return docRef.docs.isNotEmpty;
+  }
 }
