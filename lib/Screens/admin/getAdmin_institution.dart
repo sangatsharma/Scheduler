@@ -92,6 +92,10 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                             } else if (value.length > 25) {
                               return 'Name must be at most 25 character';
                             }
+                            if (value == 'Pokhara') {
+                              // todo check if institute already exist
+                              return 'Institue with this name already exist';
+                            }
                             // If everything is good, return null
                             return null;
                           },
@@ -129,28 +133,20 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                     onTap: () async {
                       loginUser(_formKey);
                       if (loginUser(_formKey) && isClicked == true) {
-
-                        // Check if institution Name already exists or not
-                        if(await MappingCollectionOp.instituionNameExists(institutionName)) {
-                          if(context.mounted) {
-                            context.showErrorBar(
-                                position: FlashPosition.top,
-                                content: const Text('Institution Name exists',
-                                    style: TextStyle(color: Colors.red)));
-                              return;
-                          }    
-                        }
-
                         // Upload admin instituion detail to DB
                         bool mapping = await MappingCollectionOp.uploadMapping(
-                        widget.user.uid, widget.user.email ?? "", institutionName, inviteCode);
+                            widget.user.uid,
+                            widget.user.email ?? "",
+                            institutionName,
+                            inviteCode);
 
                         if (mapping == true && context.mounted) {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      AdminHomepage(user: widget.user,)));
+                                  builder: (context) => AdminHomepage(
+                                        user: widget.user,
+                                      )));
                         }
                       } else if (loginUser(_formKey) && isClicked == false) {
                         context.showErrorBar(

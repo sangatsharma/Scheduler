@@ -11,8 +11,10 @@ import '../../Auth/auth_service.dart';
 import '../../Widgets/shared_prefs.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
+import 'course_details_entry.dart';
 import 'getAdmin_institution.dart';
 import 'package:scheduler/Models/db_operations.dart';
+
 class AdminHomepage extends StatefulWidget {
   const AdminHomepage({super.key, required this.user});
   final User? user;
@@ -24,7 +26,6 @@ class AdminHomepage extends StatefulWidget {
 }
 
 class _AdminHomepageState extends State<AdminHomepage> {
-
   // Startup Helper
   void startupWork(var a) {
     setState(() {
@@ -38,9 +39,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
     super.initState();
 
     // Fetch Institution name and Invite code during startup
-    MappingCollectionOp.fetchMapping(widget.user?.uid).then((value) => 
-      startupWork(value)
-    );
+    MappingCollectionOp.fetchMapping(widget.user?.uid)
+        .then((value) => startupWork(value));
   }
 
   Future<bool> showExitPopup() async {
@@ -116,76 +116,101 @@ class _AdminHomepageState extends State<AdminHomepage> {
             appBar: AppBar(
                 elevation: 0,
                 backgroundColor:
-                    isLightMode ? const Color(0xffB1B2FF) : Colors.transparent,
+                    isLightMode ? const Color(0xffB1B2FF) : Colors.black,
                 leadingWidth: double.infinity,
                 leading: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
+                  children: [
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
                         onTap: () {
-                          setState(() {
-                            isLightMode = !isLightMode;
-                            setThemeMode(isLightMode);
-                          });
+                          Navigator.of(context).pop();
                         },
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1,
-                                  color: isLightMode
-                                      ? Colors.black
-                                      : Colors.white),
-                              borderRadius: BorderRadius.circular(20)),
-                          margin: const EdgeInsets.only(left: 15),
-                          child: isLightMode
-                              ? const Icon(
-                                  Icons.nightlight,
-                                  size: 20,
-                                  color: Colors.black,
-                                )
-                              : const Icon(
-                                  Icons.sunny,
-                                  size: 20,
-                                  color: Colors.white,
-                                ),
+                        child: Icon(
+                          Icons.west,
+                          color: isLightMode ? Colors.black : Colors.white,
+                          size: 30,
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(right: 20),
-                        child: Center(
-                          child: IconButton(
-                            splashRadius: 15,
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            splashColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            alignment: Alignment.center,
-                            onPressed: () async {
-                              bool success =
-                                  await Authenticate.signOut(context: context);
-                              if (success && context.mounted) {
-                                Navigator.of(context).pop();
-                                Navigator.of(context)
-                                    .pushNamed(SelectActor.screen);
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.logout_outlined,
-                              size: 40,
-                              color: Colors.redAccent,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isLightMode = !isLightMode;
+                                  setThemeMode(isLightMode);
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1,
+                                        color: isLightMode
+                                            ? Colors.black
+                                            : Colors.white),
+                                    borderRadius: BorderRadius.circular(20)),
+                                margin: const EdgeInsets.only(left: 15),
+                                child: isLightMode
+                                    ? const Icon(
+                                        Icons.nightlight,
+                                        size: 20,
+                                        color: Colors.black,
+                                      )
+                                    : const Icon(
+                                        Icons.sunny,
+                                        size: 20,
+                                        color: Colors.white,
+                                      ),
+                              ),
                             ),
-                          ),
-                        ),
-                      )
-                    ])),
+                            Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              child: Center(
+                                child: IconButton(
+                                  splashRadius: 15,
+                                  mouseCursor:
+                                      MaterialStateMouseCursor.clickable,
+                                  splashColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  alignment: Alignment.center,
+                                  onPressed: () async {
+                                    bool success = await Authenticate.signOut(
+                                        context: context);
+                                    if (success && context.mounted) {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context)
+                                          .pushNamed(SelectActor.screen);
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.logout_outlined,
+                                    size: 40,
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ]),
+                    ),
+                  ],
+                )),
             body: Container(
-              color: isLightMode ? Colors.white : Colors.transparent,
+              color: isLightMode ? Colors.white : Colors.black12,
               child: Column(children: [
                 Container(
                   decoration: BoxDecoration(
-                      color: isLightMode
-                          ? const Color(0xffB1B2FF)
-                          : Colors.transparent,
+                      color:
+                          isLightMode ? const Color(0xffB1B2FF) : Colors.black,
                       borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15))),
@@ -214,9 +239,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                                     const EdgeInsets.only(left: 8, bottom: 5),
                                 child: AutoSizeText(
                                   textAlign: TextAlign.left,
-                                  maxLines: 4,
-                                  maxFontSize: 25,
-                                  minFontSize: 15,
+                                  maxLines: 1,
+                                  maxFontSize: 35,
+                                  minFontSize: 25,
                                   overflowReplacement: Text(
                                     institutionName,
                                     style: const TextStyle(fontSize: 25),
@@ -284,6 +309,33 @@ class _AdminHomepageState extends State<AdminHomepage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll<Color>(isLightMode
+                                        ? const Color(0xffB1B2FF)
+                                        : Colors.pinkAccent),
+                                foregroundColor:
+                                    MaterialStatePropertyAll<Color>(isLightMode
+                                        ? Colors.black
+                                        : Colors.white)),
+                            onPressed: () => Navigator.pushNamed(
+                                context, CourseDetailsEntry.screen),
+                            child: const AutoSizeText(
+                              textAlign: TextAlign.left,
+                              maxLines: 4,
+                              minFontSize: 20,
+                              overflowReplacement: Text(
+                                'Manage Course Details',
+                              ),
+                              'Manage Course Details',
+                              style: TextStyle(fontFamily: 'poppins'),
+                            ),
+                          ),
+                        ),
                         const SizedBox(
                           height: 30,
                         ),
