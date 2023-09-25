@@ -133,6 +133,18 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                     onTap: () async {
                       loginUser(_formKey);
                       if (loginUser(_formKey) && isClicked == true) {
+
+                        // Check if institution Name already exists or not
+                        if(await MappingCollectionOp.institutionNameExists(institutionName)) {
+                          if(context.mounted) {
+                            context.showErrorBar(
+                                position: FlashPosition.top,
+                                content: const Text('Institution Name exists',
+                                    style: TextStyle(color: Colors.red)));
+                              return;
+                          }    
+                        }
+                        
                         // Upload admin instituion detail to DB
                         bool mapping = await MappingCollectionOp.uploadMapping(
                             widget.user.uid,
