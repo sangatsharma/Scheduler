@@ -25,7 +25,7 @@ class MappingCollectionOp {
     return null;
   }
 
-  static Future<bool> instituionNameExists(String? name) async {
+  static Future<bool> institutionNameExists(String? name) async {
     final docRef = await db
         .collection("mapping-collection")
         .where("institution_name", isEqualTo: name)
