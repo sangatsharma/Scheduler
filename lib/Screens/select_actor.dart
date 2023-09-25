@@ -28,7 +28,6 @@ class _SelectActorState extends State<SelectActor> {
   Widget build(BuildContext context) {
     // notificationServices.sendNotifications(
     //     'Welcome', 'App loaded successfully');
-    funrun();
     return Scaffold(
       body: Center(
         child: Column(

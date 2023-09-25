@@ -304,21 +304,36 @@ class _AdminLoginState extends State<AdminLogin> {
                             var user = await Authenticate.signInWithGoogle(
                                 context: context);
                             // Open the temp page
-                            setState(() {
+                            setState(() async{
                               //loading spinner stops to spin after Login
                               showLoading = false;
                               if (user != null) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => GetInstitutionDetails(
-                                          user: user,
-                                        )));
-                                //Show success message
-                                context.showSuccessBar(
-                                    content: const Text(
-                                      'Logged in Successfully',
-                                      style: TextStyle(color: Colors.green),
-                                    ),
+
+                                // After user logs in, check to see if his mapping already exists
+                                final google_mapping = await MappingCollectionOp.fetchMapping(user.uid);
+                                  
+                                // If not, get to GetInstitutionDetails page
+                                if(google_mapping == null && context.mounted) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => GetInstitutionDetails(
+                                            user: user,
+                                          )));
+                                  //Show success message
+                                  context.showSuccessBar(
+                                      content: const Text(
+                                        'Logged in Successfully',
+                                        style: TextStyle(color: Colors.green),
+                                      ),
                                     position: FlashPosition.top);
+                                }
+
+                                // Else, just log the user in
+                                else if(context.mounted) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => AdminHomepage(
+                                            user: user,
+                                          )));
+                                }
                               }
                             });
                           } catch (e) {
