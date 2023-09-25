@@ -26,3 +26,20 @@ class MappingCollection {
     };
   }
 }
+
+class CourseDetails {
+  final String cid;
+  final String cname;
+
+  CourseDetails({
+    required this.cid,
+    required this.cname
+  });
+
+  Map<String, dynamic> toMap(){
+    return {
+      'course_id': cid,
+      'course_name': cname,
+    };
+  }
+}
