@@ -30,4 +30,9 @@ class MappingCollectionOp {
     final docRef = await db.collection("mapping-collection").where("institution_name", isEqualTo: name).get();
     return docRef.docs.isNotEmpty;
   }
+
+  static Future<bool> institutionCodeExists(String? code) async {
+    final docRef = await db.collection("mapping-collection").where("code", isEqualTo: code).get();
+    return docRef.docs.isNotEmpty;
+  }
 }

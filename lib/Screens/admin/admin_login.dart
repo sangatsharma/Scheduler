@@ -311,6 +311,7 @@ class _AdminLoginState extends State<AdminLogin> {
 
                                 // After user logs in, check to see if his mapping already exists
                                 final google_mapping = await MappingCollectionOp.fetchMapping(user.uid);
+                                print(google_mapping);
                                   
                                 // If not, get to GetInstitutionDetails page
                                 if(google_mapping == null && context.mounted) {

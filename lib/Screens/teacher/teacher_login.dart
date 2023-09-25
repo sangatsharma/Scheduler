@@ -1,10 +1,12 @@
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import 'package:scheduler/Widgets/next_button.dart';
 import 'package:scheduler/Widgets/login_users.dart';
+import 'package:flash/flash.dart';
 
 import '../../Widgets/appbar_func.dart';
-
+import 'package:scheduler/Models/db_operations.dart';
 class TeacherLogin extends StatefulWidget {
   const TeacherLogin({Key? key}) : super(key: key);
   static const String screen = 'TeacherLogin';
@@ -81,6 +83,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your Institution Code';
                         }
+
                         // If everything is good, return null
                         teacherInstitutionCode = value;
                         return null;
@@ -88,14 +91,32 @@ class _TeacherLoginState extends State<TeacherLogin> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async{
                       // The TeacherNameSelect screen only loads if the validation
                       // was success
                       if (loginUser(_formKey)) {
                         // The TeacherLogin screen is popped before loading
                         // TeacherNameSelect screen
-                        Navigator.of(context).pop();
-                        Navigator.pushNamed(context, TeacherNameSelect.screen);
+
+                        // Fetch institution code
+                        bool validKey = await MappingCollectionOp.institutionCodeExists(teacherInstitutionCode);
+                        
+                        // Validate institution code
+                        if(!validKey && context.mounted) {
+                          context.showErrorBar(
+                            content: const Text(
+                              'Institution code dosen\'t exist',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            position: FlashPosition.top);
+
+                            return;
+                          }
+
+                        if(context.mounted) {
+                          Navigator.of(context).pop();
+                          Navigator.pushNamed(context, TeacherNameSelect.screen);
+                        }
                       }
                     },
                     //hero is used for simple animation similar to morph in powerpoint
