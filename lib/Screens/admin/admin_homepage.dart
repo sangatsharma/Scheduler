@@ -322,8 +322,11 @@ class _AdminHomepageState extends State<AdminHomepage> {
                                     MaterialStatePropertyAll<Color>(isLightMode
                                         ? Colors.black
                                         : Colors.white)),
-                            onPressed: () => Navigator.pushNamed(
-                                context, CourseDetailsEntry.screen, arguments: institutionName),
+                            onPressed: () => {
+                              Navigator.pushNamed(
+                                  context, CourseDetailsEntry.screen,
+                                  arguments: institutionName)
+                            },
                             child: const AutoSizeText(
                               textAlign: TextAlign.left,
                               maxLines: 4,

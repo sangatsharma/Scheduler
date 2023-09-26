@@ -107,7 +107,6 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                               Colors.pinkAccent),
                         ),
                         onPressed: () async {
-<<<<<<< HEAD
                           if(institutionName.isEmpty) {
                               context.showErrorBar(
                                   position: FlashPosition.top,
@@ -124,17 +123,6 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                                   content: const Text('Institution Name exists',
                                       style: TextStyle(color: Colors.red)));
                               return;
-=======
-                          // Check if institution Name already exists or not
-                          if (await MappingCollectionOp.institutionNameExists(
-                              institutionName)) {
-                            if (context.mounted) {
-                              context.showErrorBar(
-                                  position: FlashPosition.top,
-                                  content: const Text('Institution Name exists',
-                                      style: TextStyle(color: Colors.red)));
-                              return;
->>>>>>> 713475c53cc015801d8765a47b7b129a08548ee1
                             }
                           }
                           loginUser(_formKey);

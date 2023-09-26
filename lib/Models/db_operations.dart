@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:scheduler/Models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -64,5 +66,10 @@ class InstituteCollection {
         .collection(name)
         .get();
     return true;
+  }
+
+  static Future<Map<String, dynamic>?> getCourseDetails(String iname) async {
+    final docRef = await db.collection(iname).doc("CourseDetails").get();
+    return docRef.data();
   }
 }

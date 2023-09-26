@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:scheduler/Models/models.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
@@ -20,17 +21,33 @@ class CourseDetailsEntry extends StatefulWidget {
 
 String courseId = '';
 String courseName = '';
-int i = 1;
+List<dynamic>? courseDetails;
 
 class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
   final _formKey = GlobalKey<FormState>();
+
+  void first() {
+    final t = ModalRoute.of(context)!.settings.arguments.toString();
+    InstituteCollection.getCourseDetails(t).then((res) {
+      setState(() {
+        courseDetails = res?["course_list"];
+      });
+    });
+  }
+
+  bool firstTime = true;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    final args = ModalRoute.of(context)!.settings.arguments.toString();
+    if(firstTime) {
+      firstTime = false;
+      first();
+    }
 
+    final args = ModalRoute.of(context)!.settings.arguments.toString();
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
       debugShowCheckedModeBanner: false,
@@ -327,6 +344,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                                         color: Colors.green),
                                                   ),
                                                 );
+                                                courseDetails?.add({"course_id": courseId, "course_name": courseName});
                                               }
                                             }
                                           }
@@ -426,54 +444,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                       ),
                                     ),
                                   ],
-                                  rows: <DataRow>[
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Text('${i++}')),
-                                        DataCell(Text('Mth112')),
-                                        DataCell(Text('Engineering Maths I')),
-                                        DataCell(
-                                          Icon(Icons.edit),
-                                          onTap: () {},
-                                        ),
-                                        DataCell(
-                                          Icon(Icons.delete),
-                                          onTap: () {},
-                                        ),
-                                      ],
-                                    ),
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Text('${i++}')),
-                                        DataCell(Text('Cmp 221')),
-                                        DataCell(Text('Computer Graphics')),
-                                        DataCell(
-                                          Icon(Icons.edit),
-                                          onTap: () {},
-                                        ),
-                                        DataCell(
-                                          Icon(Icons.delete),
-                                          onTap: () {},
-                                        ),
-                                      ],
-                                    ),
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Text('${i++}')),
-                                        DataCell(Text('Dbm 331')),
-                                        DataCell(
-                                            Text('Database Management System')),
-                                        DataCell(
-                                          Icon(Icons.edit),
-                                          onTap: () {},
-                                        ),
-                                        DataCell(
-                                          Icon(Icons.delete),
-                                          onTap: () {},
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  rows: dataCellForCourses(courseDetails),
                                 ),
                               ],
                             ),
@@ -490,4 +461,34 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
       ),
     );
   }
+}
+
+List<DataRow> dataCellForCourses(final cd) {
+  List<DataRow> res = [];
+
+  if(cd == null) {
+    return res;
+  }
+  int i = 1;
+  for (var course in cd) {
+    DataRow tmp = DataRow(
+      cells: <DataCell>[
+        DataCell(Text(i.toString())),
+        DataCell(Text(course["course_id"])),
+        DataCell(Text(course["course_name"])),
+        DataCell(
+          const Icon(Icons.edit),
+          onTap: () {},
+        ),
+        DataCell(
+          const Icon(Icons.delete),
+          onTap: () {},
+        ),
+      ],
+    );
+    i++;
+    res.add(tmp);
+  }
+
+  return res;
 }
