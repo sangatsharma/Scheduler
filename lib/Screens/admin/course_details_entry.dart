@@ -42,7 +42,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    if(firstTime) {
+    if (firstTime) {
       firstTime = false;
       first();
     }
@@ -344,7 +344,11 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                                         color: Colors.green),
                                                   ),
                                                 );
-                                                courseDetails?.add({"course_id": courseId, "course_name": courseName});
+                                                courseDetails?.add({
+                                                  "course_id": courseId,
+                                                  "course_name": courseName
+                                                });
+                                                first();
                                               }
                                             }
                                           }
@@ -466,7 +470,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
 List<DataRow> dataCellForCourses(final cd) {
   List<DataRow> res = [];
 
-  if(cd == null) {
+  if (cd == null) {
     return res;
   }
   int i = 1;
@@ -489,6 +493,5 @@ List<DataRow> dataCellForCourses(final cd) {
     i++;
     res.add(tmp);
   }
-
   return res;
 }
