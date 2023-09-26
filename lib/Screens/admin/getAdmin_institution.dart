@@ -11,7 +11,7 @@ import 'package:scheduler/Models/db_operations.dart';
 
 class GetInstitutionDetails extends StatefulWidget {
   const GetInstitutionDetails({super.key, required this.user});
-  final User user;
+  final User? user;
   static const String screen = 'GetInstitutionDetails';
 
   @override
@@ -107,6 +107,7 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                               Colors.pinkAccent),
                         ),
                         onPressed: () async {
+<<<<<<< HEAD
                           if(institutionName.isEmpty) {
                               context.showErrorBar(
                                   position: FlashPosition.top,
@@ -123,6 +124,17 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                                   content: const Text('Institution Name exists',
                                       style: TextStyle(color: Colors.red)));
                               return;
+=======
+                          // Check if institution Name already exists or not
+                          if (await MappingCollectionOp.institutionNameExists(
+                              institutionName)) {
+                            if (context.mounted) {
+                              context.showErrorBar(
+                                  position: FlashPosition.top,
+                                  content: const Text('Institution Name exists',
+                                      style: TextStyle(color: Colors.red)));
+                              return;
+>>>>>>> 713475c53cc015801d8765a47b7b129a08548ee1
                             }
                           }
                           loginUser(_formKey);
@@ -152,8 +164,8 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                       if (loginUser(_formKey) && isClicked == true) {
                         // Upload admin instituion detail to DB
                         bool mapping = await MappingCollectionOp.uploadMapping(
-                            widget.user.uid,
-                            widget.user.email ?? "",
+                            widget.user!.uid,
+                            widget.user?.email ?? "",
                             institutionName,
                             inviteCode);
                         try {
@@ -183,7 +195,7 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                     child: Container(
                       height: 45,
                       width: 70,
-                      margin: const EdgeInsets.only(top: 30),
+                      margin: const EdgeInsets.only(top: 10),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.elliptical(35, 35),
