@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../Auth/auth_service.dart';
@@ -7,6 +8,7 @@ import '../../Widgets/shared_prefs.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'getAdmin_institution.dart';
+import 'package:scheduler/Models/db_operations.dart';
 
 class CourseDetailsEntry extends StatefulWidget {
   const CourseDetailsEntry({Key? key}) : super(key: key);
@@ -22,11 +24,13 @@ int i = 1;
 
 class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
+    final args = ModalRoute.of(context)!.settings.arguments.toString();
+
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
       debugShowCheckedModeBanner: false,
@@ -306,14 +310,25 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                       width: width * 0.02,
                                     ),
                                     ElevatedButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           loginUser(_formKey);
                                           if (loginUser(_formKey)) {
                                             //todo add this to collection
-                                            print(courseName);
-                                            print(courseId);
                                             //Clear all the input field
                                             _formKey.currentState?.reset();
+                                            if (await CourseCollectionOp
+                                                .uploadCourse(args, courseName,
+                                                    courseId)) {
+                                              if (context.mounted) {
+                                                context.showSuccessBar(
+                                                  content: const Text(
+                                                    "Added",
+                                                    style: TextStyle(
+                                                        color: Colors.green),
+                                                  ),
+                                                );
+                                              }
+                                            }
                                           }
                                         },
                                         child: SizedBox(

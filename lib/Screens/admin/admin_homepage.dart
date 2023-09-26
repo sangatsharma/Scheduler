@@ -323,7 +323,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
                                         ? Colors.black
                                         : Colors.white)),
                             onPressed: () => Navigator.pushNamed(
-                                context, CourseDetailsEntry.screen),
+                                context, CourseDetailsEntry.screen, arguments: institutionName),
                             child: const AutoSizeText(
                               textAlign: TextAlign.left,
                               maxLines: 4,

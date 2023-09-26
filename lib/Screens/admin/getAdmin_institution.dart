@@ -106,18 +106,25 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                           backgroundColor: MaterialStatePropertyAll<Color>(
                               Colors.pinkAccent),
                         ),
-                        onPressed: () async{
-
-                        // Check if institution Name already exists or not
-                        if(await MappingCollectionOp.institutionNameExists(institutionName)) {
-                          if(context.mounted) {
-                            context.showErrorBar(
-                                position: FlashPosition.top,
-                                content: const Text('Institution Name exists',
-                                    style: TextStyle(color: Colors.red)));
+                        onPressed: () async {
+                          if(institutionName.isEmpty) {
+                              context.showErrorBar(
+                                  position: FlashPosition.top,
+                                  content: const Text('Empty fields not allowed',
+                                      style: TextStyle(color: Colors.red)));
                               return;
-                          }    
-                        }
+                          }
+                          // Check if institution Name already exists or not
+                          if (await MappingCollectionOp.institutionNameExists(
+                              institutionName)) {
+                            if (context.mounted) {
+                              context.showErrorBar(
+                                  position: FlashPosition.top,
+                                  content: const Text('Institution Name exists',
+                                      style: TextStyle(color: Colors.red)));
+                              return;
+                            }
+                          }
                           loginUser(_formKey);
                           if (loginUser(_formKey)) {
                             isClicked && context.mounted
@@ -128,7 +135,6 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                                         style: TextStyle(color: Colors.red)))
                                 : setState(() {
                                     isClicked = true;
-                                    print(isClicked);
                                   });
                           }
                         },
@@ -144,14 +150,20 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                     onTap: () async {
                       loginUser(_formKey);
                       if (loginUser(_formKey) && isClicked == true) {
-
-                        
                         // Upload admin instituion detail to DB
                         bool mapping = await MappingCollectionOp.uploadMapping(
                             widget.user.uid,
                             widget.user.email ?? "",
                             institutionName,
                             inviteCode);
+                        try {
+                          await InstituteCollection.create(institutionName);
+                        } catch (e) {
+                          if (context.mounted) {
+                            context.showErrorBar(
+                                content: const Text("Error! Something went wrong", style: TextStyle(color: Colors.red),));
+                          }
+                        }
 
                         if (mapping == true && context.mounted) {
                           Navigator.pushReplacement(

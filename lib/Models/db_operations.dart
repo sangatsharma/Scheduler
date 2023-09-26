@@ -42,16 +42,27 @@ class MappingCollectionOp {
   }
 }
 
-
 class CourseCollectionOp {
-  static Future<bool> uploadCourse(String aid, String cname, String cid) async {
+  static Future<bool> uploadCourse(
+      String? aid, String cname, String cid) async {
     CourseDetails courseDetails = CourseDetails(cid: cid, cname: cname);
-
+    if (aid == null) {
+      return false;
+    }
     final docRef = db.collection(aid).doc("CourseDetails");
 
     // Append to the end of course_list
     return await docRef.set({
       'course_list': FieldValue.arrayUnion([courseDetails.toMap()])
     }, SetOptions(merge: true)).then((value) => true);
+  }
+}
+
+class InstituteCollection {
+  static Future<bool> create(String name) async {
+    await db
+        .collection(name)
+        .get();
+    return true;
   }
 }
