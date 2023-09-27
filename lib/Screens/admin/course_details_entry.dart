@@ -35,6 +35,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
     });
   }
 
+
   bool firstTime = true;
 
   @override
@@ -46,6 +47,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
       firstTime = false;
       first();
     }
+    RoutineOp.fetchRoutine();
     final args = ModalRoute.of(context)!.settings.arguments.toString();
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
@@ -343,14 +345,11 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                                         color: Colors.green),
                                                   ),
                                                 );
-<<<<<<< HEAD
-=======
                                                 courseDetails?.add({
                                                   "course_id": courseId,
                                                   "course_name": courseName
                                                 });
                                                 first();
->>>>>>> 7f868dec6b7db07f724490fbefa0a4f1f341cdc1
                                               }
                                             }
                                           }
@@ -486,6 +485,7 @@ List<DataRow> dataCellForCourses(final cd) {
           const Icon(Icons.edit),
           onTap: () async {
             //TODO edit
+            CourseCollectionOp.removeCourse(institutionName ,course["course_id"]);
           },
         ),
         DataCell(

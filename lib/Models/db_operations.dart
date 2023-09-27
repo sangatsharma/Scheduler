@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:scheduler/Models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scheduler/Screens/student/databaseFetch_student.dart';
+import 'package:scheduler/tmp/db_schema.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -60,8 +63,7 @@ class CourseCollectionOp {
   }
 
   // Remove a course
-  static Future<bool> removeCourse(
-      String? aid, String cid) async {
+  static Future<bool> removeCourse(String? aid, String cid) async {
     if (aid == null) {
       return false;
     }
@@ -83,9 +85,7 @@ class CourseCollectionOp {
 
   // Update a course
   static Future<bool> updateCourse(
-    String? aid, String cid, String ncid, String ncname
-  ) async {
-
+      String? aid, String cid, String ncid, String ncname) async {
     if (aid == null) {
       return false;
     }
@@ -120,5 +120,58 @@ class InstituteCollection {
   static Future<Map<String, dynamic>?> getCourseDetails(String iname) async {
     final docRef = await db.collection(iname).doc("CourseDetails").get();
     return docRef.data();
+  }
+}
+
+class RoutineOp {
+  static int _weekDay(String w) {
+    if (w == "Sunday")
+      return 0;
+    else if (w == "Monday")
+      return 1;
+    else if (w == "Tuesday")
+      return 2;
+    else if (w == "Wednesday")
+      return 3;
+    else if (w == "Thrusday")
+      return 4;
+    else if (w == "Friday") return 5;
+    return 6;
+  }
+
+  static Future<Map<String, dynamic>> fetchRoutine() async {
+    final classColRef = await db
+        .collection("demo-admin")
+        .doc("Routine")
+        .collection("BSE-4th")
+        .get();
+
+    Map<String, List<dynamic>> res = {
+      "starting_times": [],
+      "ending_times": [],
+      "teachers_name": [],
+      "subjects": []
+    };
+
+    for (var doc in classColRef.docs) {
+      List<String> starting_time = [];
+      List<String> ending_time = [];
+      List<String> teachers_name = [];
+      List<String> subjects = [];
+
+      final a = doc.get("periods");
+      for (var b in a) {
+        print(b);
+        starting_time.add(b["starting_time"]);
+        ending_time.add(b["ending_time"]);
+        teachers_name.add(b["teacher_name"]);
+        subjects.add(b["subject"]);
+      }
+      res["starting_times"]?.add({_weekDay(doc.get("week_day")): starting_time});
+      res["ending_times"]?.add({_weekDay(doc.get("week_day")): starting_time});
+      res["teachers_name"]?.add({_weekDay(doc.get("week_day")): starting_time});
+      res["subjects"]?.add({_weekDay(doc.get("week_day")): starting_time});
+    }
+    return res;
   }
 }
