@@ -54,6 +54,7 @@ class NotificationServices {
     NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     tz.initializeTimeZones();
+
     for (int i = 0; i < timeList.length; i++) {
       DateTime now = DateTime.now();
 

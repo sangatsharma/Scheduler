@@ -107,12 +107,12 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                               Colors.pinkAccent),
                         ),
                         onPressed: () async {
-                          if(institutionName.isEmpty) {
-                              context.showErrorBar(
-                                  position: FlashPosition.top,
-                                  content: const Text('Empty fields not allowed',
-                                      style: TextStyle(color: Colors.red)));
-                              return;
+                          if (institutionName.isEmpty) {
+                            context.showErrorBar(
+                                position: FlashPosition.top,
+                                content: const Text('Empty fields not allowed',
+                                    style: TextStyle(color: Colors.red)));
+                            return;
                           }
                           // Check if institution Name already exists or not
                           if (await MappingCollectionOp.institutionNameExists(
@@ -161,7 +161,10 @@ class _GetInstitutionDetailsState extends State<GetInstitutionDetails> {
                         } catch (e) {
                           if (context.mounted) {
                             context.showErrorBar(
-                                content: const Text("Error! Something went wrong", style: TextStyle(color: Colors.red),));
+                                content: const Text(
+                              "Error! Something went wrong",
+                              style: TextStyle(color: Colors.red),
+                            ));
                           }
                         }
 
