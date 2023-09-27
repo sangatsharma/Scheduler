@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../select_actor.dart';
 
-List<String> startingTime = [
-  '08:35',
-  '09:58',
-  '10:00',
-  '10:05',
-  '10:08',
-  '11:15',
-  '11:35',
+List<String> startingTimeTeacher = [
+  '17:17',
+  '17:19',
+  '17:10',
+  '17:21',
+  '14:57',
+  '14:58',
+  '14:59',
 ];
 //List can be of type dateTime
-List<String> endingTime = [
+List<String> endingTimeTeacher = [
   '08:45',
   '10:25',
   '10:35',
@@ -21,7 +21,7 @@ List<String> endingTime = [
   '11:35',
   '12:05',
 ];
-List<String> className = [
+List<String> classNameTeacher = [
   'BSE 4th sem',
   'BSE 3rd sem',
   'BSE 2nd sem',
@@ -30,7 +30,7 @@ List<String> className = [
   'BSE 7th sem',
   'BSE 8th sem',
 ];
-List<String> subjectName = [
+List<String> subjectNameTeacher = [
   'Computer Organization and Architecture(2P)(A)',
   'Numerical Method(2L)',
   'Database Management System(2T)(A/B)',
@@ -46,7 +46,7 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
   //todo make list empty and add from database
   //List can be of type dateTime
   List<Widget> allRoutine = [];
-  for (int i = 0; i < startingTime.length; i++) {
+  for (int i = 0; i < startingTimeTeacher.length; i++) {
     Widget tempContainer = Container(
       margin: const EdgeInsets.only(top: 2, left: 4, right: 4, bottom: 3),
       height: 86,
@@ -55,7 +55,7 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
         color: isLightMode ? const Color(0xffECC9EE) : Colors.black,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(
-            color: isClassLive(startingTime[i], endingTime[i])
+            color: isClassLive(startingTimeTeacher[i], endingTimeTeacher[i])
                 ? Colors.green
                 : Colors.transparent),
       ),
@@ -69,7 +69,7 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
             child: Row(
               children: [
                 Text(
-                  startingTime[i],
+                  startingTimeTeacher[i],
                   style: TextStyle(
                     fontFamily: 'poppins',
                     fontSize: MediaQuery.of(context).size.width * 0.036,
@@ -86,7 +86,7 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
                   width: 2,
                 ),
                 Text(
-                  endingTime[i],
+                  endingTimeTeacher[i],
                   style: TextStyle(
                     fontFamily: 'poppins',
                     fontSize: MediaQuery.of(context).size.width * 0.036,
@@ -97,7 +97,7 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
           ),
           VerticalDivider(
               thickness: 2,
-              color: isClassLive(startingTime[i], endingTime[i])
+              color: isClassLive(startingTimeTeacher[i], endingTimeTeacher[i])
                   ? Colors.green
                   : Colors.pinkAccent),
           Container(
@@ -115,10 +115,10 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
                     maxFontSize: 28,
                     minFontSize: 17,
                     overflowReplacement: Text(
-                      subjectName[i],
+                      subjectNameTeacher[i],
                       style: const TextStyle(fontSize: 14),
                     ),
-                    subjectName[i],
+                    subjectNameTeacher[i],
                     style: const TextStyle(fontFamily: 'poppins'),
                   ),
                 ),
@@ -130,9 +130,9 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
                     maxLines: 2,
                     maxFontSize: 15,
                     minFontSize: 12,
-                    className[i],
+                    classNameTeacher[i],
                     overflowReplacement: Text(
-                      className[i],
+                      classNameTeacher[i],
                       style: const TextStyle(fontSize: 10),
                     ),
                     style: const TextStyle(

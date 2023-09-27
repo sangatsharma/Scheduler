@@ -2,10 +2,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
-class NotificationServices {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
+class NotificationServices {
   final AndroidInitializationSettings _androidInitializationSettings =
       const AndroidInitializationSettings('logo');
 
@@ -40,6 +40,7 @@ class NotificationServices {
       String title,
       String body,
       List<String> subjList,
+      List<String> classList,
       List<String> timeList,
       /*List<String> amOrPm,*/ Duration duration) async {
     AndroidNotificationDetails androidNotificationDetails =
@@ -67,7 +68,7 @@ class NotificationServices {
       await flutterLocalNotificationsPlugin.zonedSchedule(
         i, // Use a unique notification ID
         title,
-        '${subjList[i]} $body',
+        '${classList[i]} ${subjList[i]} $body',
         tz.TZDateTime.from(notificationTime, tz.local),
         notificationDetails,
         uiLocalNotificationDateInterpretation:
@@ -77,6 +78,13 @@ class NotificationServices {
     }
   }
 }
+
+Future<void> cancelNotification() async {
+  await flutterLocalNotificationsPlugin.cancelAll();
+}
+
+// await flutterLocalNotificationsPlugin.cancelAll();
+// await flutterLocalNotificationsPlugin.cancel(notificationId);
 
 //to show notification use below code
 //notificationServices.sendNotifications('example', 'This is an example');

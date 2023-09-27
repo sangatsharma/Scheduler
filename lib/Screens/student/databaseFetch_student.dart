@@ -2,19 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 
+var startingTime1 = {
+  '0': [
+    //7=>sunday when 7 change to 0
+//todo fetch data from database using function and paramter to pass date index,selected class name
+    '09:57',
+    '09:58',
+    '10:00',
+    '10:05',
+    '10:08',
+    '11:15',
+    '11:35',
+    '12:05',
+    '12:15',
+    '13:15',
+    '13:17',
+    '13:19'
+  ],
+  '1': [
+    //1=>monday
+//todo fetch data from database using function and paramter to pass date index,selected class name
+    '09:57',
+    '09:58',
+    '10:00',
+    '10:05',
+    '10:08',
+    '11:15',
+    '11:35',
+    '12:05',
+    '12:15',
+    '14:37',
+    '14:38',
+    '15:28'
+  ],
+  //perform same for below.
+  '2': 'argon',
+  '3': 'helium',
+  '4': 'neon',
+  '5': 'argon',
+  '6': 'helium',
+};
+// final prefs = await SharedPreferences.getInstance();
+// prefs.setString('startingTime1', jsonEncode(startingTime1));
+// final jsonData = prefs.getString('startingTime1');
+// if (jsonData != null) {
+// final Map<String, dynamic> parsedData = jsonDecode(jsonData);
+// print(parsedData
+//     .map((key, value) => MapEntry(key, List<String>.from(value)))['0']?[0]);
+// }
+// await prefs.remove('startingTime1');
 List<String> startingTime = [
-  '09:57',
-  '09:58',
-  '10:00',
-  '10:05',
+  '17:07',
+  '17:09',
+  '17:11',
+  '17:15',
   '10:08',
   '11:15',
   '11:35',
   '12:05',
   '12:15',
-  '14:37',
-  '14:38',
-  '15:28',
+  '13:15',
+  '15:02',
+  '15:01'
 ];
 //List can be of type dateTime
 List<String> endingTime = [
@@ -170,8 +219,6 @@ List<Widget> fetchRoutine(String day, BuildContext context) {
   return allRoutine;
 }
 
-//List to fetch routine from database caled by passing day as a string
-//can be change day string to index according to the input field in admin section
 //List to fetch routine from database caled by passing day as a string
 //can be change day string to index according to the input field in admin section
 List<Widget> showRoutine(String dayIndex, BuildContext context) {

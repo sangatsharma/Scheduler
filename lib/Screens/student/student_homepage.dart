@@ -6,6 +6,7 @@ import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
+import '../../Notification/notification_services.dart';
 import 'databaseFetch_student.dart';
 import 'package:scheduler/Widgets/themes.dart';
 
@@ -88,7 +89,24 @@ class _StudentHomepageState extends State<StudentHomepage>
   @override
   void initState() {
     super.initState();
-    //list of routines
+
+    //scheduleNotification
+    NotificationServices notificationServices = NotificationServices();
+    WidgetsFlutterBinding.ensureInitialized();
+    notificationServices.initializeNotifications();
+    // notificationServices.zoneScheduleNotifications(
+    //     'Test', 'This is body', timeList, const Duration(minutes: 1));
+    //send notification function
+    notificationServices.sendNotifications(
+        'Test', 'application Loaded successfully');
+    notificationServices.zoneScheduleNotifications(
+        'Next Class in 5 minutes.',
+        'Class will start shortly',
+        subjectName,
+        [],
+        startingTime,
+        const Duration(minutes: 5));
+
     _controller = AnimationController(
       duration: const Duration(milliseconds: 350),
       vsync: this,
@@ -190,7 +208,7 @@ class _StudentHomepageState extends State<StudentHomepage>
                               Navigator.pushNamed(context, SelectActor.screen);
                             },
                             icon: const Icon(
-                              Icons.account_circle,
+                              Icons.logout_rounded,
                               size: 40,
                               color: Colors.blue,
                             ),

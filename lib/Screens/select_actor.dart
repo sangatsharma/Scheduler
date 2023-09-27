@@ -6,6 +6,8 @@ import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Widgets/next_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../Notification/notification_services.dart';
+
 //default set to light mode
 // from themes.dart
 bool isLightMode = true;
@@ -23,6 +25,12 @@ class _SelectActorState extends State<SelectActor> {
   //initial selected actor=student
   String labelText = 'I am a';
   String selectedActor = 'Student';
+
+  @override
+  void initState() {
+    super.initState();
+    cancelNotification();
+  }
 
   @override
   Widget build(BuildContext context) {
