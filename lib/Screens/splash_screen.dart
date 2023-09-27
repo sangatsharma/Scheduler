@@ -10,7 +10,6 @@ import '../Widgets/shared_prefs.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'admin/admin_homepage.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
   static const String screen = 'splashScreen';
@@ -34,28 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    //scheduleNotification
-    NotificationServices notificationServices = NotificationServices();
-    WidgetsFlutterBinding.ensureInitialized();
-    notificationServices.initializeNotifications();
-    // notificationServices.zoneScheduleNotifications(
-    //     'Test', 'This is body', timeList, const Duration(minutes: 1));
-
     //check login status of student and teacher
     updateStatus();
     //updateTheme after user logins
     updateTheme();
     super.initState();
-
-    //send notification function
-    notificationServices.sendNotifications(
-        'Test', 'application Loaded successfully');
-    notificationServices.zoneScheduleNotifications(
-        'Next Class in 5 minutes.',
-        'Class will start shortly',
-        subjectName,
-        startingTime,
-        const Duration(minutes: 5));
   }
 
   void updateTheme() async {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
+import '../../Notification/notification_services.dart';
 import 'databaseFetch_teacher.dart';
 import 'package:scheduler/Widgets/themes.dart';
 import 'teacher_name_select.dart';
@@ -89,7 +90,24 @@ class _TeacherHomepageState extends State<TeacherHomepage>
   @override
   void initState() {
     super.initState();
-    //list of routines
+
+    //scheduleNotification for teacher
+    NotificationServices notificationServices = NotificationServices();
+    WidgetsFlutterBinding.ensureInitialized();
+    notificationServices.initializeNotifications();
+    // notificationServices.zoneScheduleNotifications(
+    //     'Test', 'This is body', timeList, const Duration(minutes: 1));
+    //send notification function
+    notificationServices.sendNotifications(
+        'Test', 'application Loaded successfully');
+    notificationServices.zoneScheduleNotifications(
+        'You have a Class in 5 minutes.',
+        'Class will start shortly.',
+        subjectNameTeacher,
+        classNameTeacher,
+        startingTimeTeacher,
+        const Duration(minutes: 5));
+
     _controller = AnimationController(
       duration: const Duration(milliseconds: 350),
       vsync: this,
@@ -191,7 +209,7 @@ class _TeacherHomepageState extends State<TeacherHomepage>
                               Navigator.pushNamed(context, SelectActor.screen);
                             },
                             icon: const Icon(
-                              Icons.account_circle,
+                              Icons.logout_rounded,
                               size: 40,
                               color: Colors.blue,
                             ),
