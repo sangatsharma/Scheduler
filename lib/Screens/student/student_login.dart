@@ -1,7 +1,11 @@
+import 'package:flash/flash.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
 import 'package:scheduler/Widgets/login_users.dart';
 import 'package:scheduler/Widgets/appbar_func.dart';
+import 'package:scheduler/Models/db_operations.dart';
 
 class StudentLogin extends StatefulWidget {
   const StudentLogin({Key? key}) : super(key: key);
@@ -118,7 +122,16 @@ class _StudentLoginState extends State<StudentLogin> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      bool value = await MappingCollectionOp.institutionCodeExists(studentInstitutionCode);
+                      if (!value && context.mounted) {
+                          context.showErrorBar(content: const Text(
+                            "Institution code dosen't exist"
+                            , style: TextStyle(color: Colors.red),
+                          ), position: FlashPosition.top);
+                          return;
+                      }
+                      
                       loginUser(_formKey);
                       if (loginUser(_formKey)) {
                         Navigator.pushNamed(context, StudentClassSelect.screen);
