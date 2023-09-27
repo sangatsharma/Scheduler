@@ -58,13 +58,62 @@ class CourseCollectionOp {
       'course_list': FieldValue.arrayUnion([courseDetails.toMap()])
     }, SetOptions(merge: true)).then((value) => true);
   }
+
+  // Remove a course
+  static Future<bool> removeCourse(
+      String? aid, String cid) async {
+    if (aid == null) {
+      return false;
+    }
+    final docRef = db.collection(aid).doc("CourseDetails");
+    final dataRef = await docRef.get();
+    var data = [];
+
+    dataRef.data()?["course_list"].forEach((value) {
+      if (value["course_id"] != cid) {
+        data.add(value);
+      }
+    });
+
+    await docRef.set({
+      'course_list': data,
+    });
+    return true;
+  }
+
+  // Update a course
+  static Future<bool> updateCourse(
+    String? aid, String cid, String ncid, String ncname
+  ) async {
+
+    if (aid == null) {
+      return false;
+    }
+    final docRef = db.collection(aid).doc("CourseDetails");
+    final dataRef = await docRef.get();
+    var data = [];
+
+    dataRef.data()?["course_list"].forEach((value) {
+      if (value["course_id"] != cid) {
+        data.add(value);
+      } else {
+        data.add({
+          "course_id": ncid,
+          "course_name": ncname,
+        });
+      }
+    });
+
+    await docRef.set({
+      'course_list': data,
+    });
+    return true;
+  }
 }
 
 class InstituteCollection {
   static Future<bool> create(String name) async {
-    await db
-        .collection(name)
-        .get();
+    await db.collection(name).get();
     return true;
   }
 

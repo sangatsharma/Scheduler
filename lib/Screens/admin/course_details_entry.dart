@@ -46,7 +46,6 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
       firstTime = false;
       first();
     }
-
     final args = ModalRoute.of(context)!.settings.arguments.toString();
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
@@ -344,7 +343,6 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                                         color: Colors.green),
                                                   ),
                                                 );
-                                                courseDetails?.add({"course_id": courseId, "course_name": courseName});
                                               }
                                             }
                                           }
@@ -478,7 +476,9 @@ List<DataRow> dataCellForCourses(final cd) {
         DataCell(Text(course["course_name"])),
         DataCell(
           const Icon(Icons.edit),
-          onTap: () {},
+          onTap: () async {
+            //TODO edit
+          },
         ),
         DataCell(
           const Icon(Icons.delete),
