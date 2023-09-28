@@ -47,7 +47,8 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
       firstTime = false;
       first();
     }
-    RoutineOp.fetchRoutine();
+    // TODO real class name
+    RoutineOp.fetchRoutine("BSE-4th");
     final args = ModalRoute.of(context)!.settings.arguments.toString();
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,

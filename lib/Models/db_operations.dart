@@ -1,10 +1,6 @@
-import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:scheduler/Models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:scheduler/Screens/student/databaseFetch_student.dart';
-import 'package:scheduler/tmp/db_schema.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -124,33 +120,36 @@ class InstituteCollection {
 }
 
 class RoutineOp {
-  static int _weekDay(String w) {
+  static String _weekDay(String w) {
     if (w == "Sunday")
-      return 0;
+      return "7";
     else if (w == "Monday")
-      return 1;
+      return "1";
     else if (w == "Tuesday")
-      return 2;
+      return "2";
     else if (w == "Wednesday")
-      return 3;
+      return "3";
     else if (w == "Thrusday")
-      return 4;
-    else if (w == "Friday") return 5;
-    return 6;
+      return "4";
+    else if (w == "Friday") return "5";
+    return "6";
   }
 
-  static Future<Map<String, dynamic>> fetchRoutine() async {
+  static Future<Map<String, Map<String,List<String>>>> fetchRoutine(String cn) async {
     final classColRef = await db
         .collection("demo-admin")
         .doc("Routine")
-        .collection("BSE-4th")
+        .collection(cn)
         .get();
 
-    Map<String, List<dynamic>> res = {
-      "starting_times": [],
-      "ending_times": [],
-      "teachers_name": [],
-      "subjects": []
+    Map<String, Map<String,List<String>>> res = {
+      "7": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
+      "1": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
+      "2": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
+      "3": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
+      "4": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
+      "5": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
+      "6": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
     };
 
     for (var doc in classColRef.docs) {
@@ -161,16 +160,15 @@ class RoutineOp {
 
       final a = doc.get("periods");
       for (var b in a) {
-        print(b);
         starting_time.add(b["starting_time"]);
         ending_time.add(b["ending_time"]);
         teachers_name.add(b["teacher_name"]);
         subjects.add(b["subject"]);
       }
-      res["starting_times"]?.add({_weekDay(doc.get("week_day")): starting_time});
-      res["ending_times"]?.add({_weekDay(doc.get("week_day")): starting_time});
-      res["teachers_name"]?.add({_weekDay(doc.get("week_day")): starting_time});
-      res["subjects"]?.add({_weekDay(doc.get("week_day")): starting_time});
+      res[_weekDay(doc.get("week_day"))]?["starting_times"]?.addAll(starting_time);
+      res[_weekDay(doc.get("week_day"))]?["ending_times"]?.addAll(ending_time);
+      res[_weekDay(doc.get("week_day"))]?["teachers_name"]?.addAll(teachers_name);
+      res[_weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects) ;
     }
     return res;
   }
