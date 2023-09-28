@@ -194,265 +194,298 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                  margin: const EdgeInsets.only(
-                      bottom: 5, left: 5, right: 5, top: 5),
-                  decoration: BoxDecoration(
-                      color:
-                          isLightMode ? const Color(0xff9DB2FD) : Colors.black,
-                      borderRadius: const BorderRadius.all(Radius.circular(8))),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: [
-                        Column(
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
+                decoration: BoxDecoration(
+                    color: isLightMode ? const Color(0xff9DB2FD) : Colors.black,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      child: Text('Enter Course Details :',
+                          style: TextStyle(
+                            fontFamily: 'poppins',
+                            fontSize: 15,
+                            color: isLightMode ? Colors.black : Colors.white,
+                          )),
+                    ),
+                    const SizedBox(height: 10),
+                    Form(
+                      key: _formKey,
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              child: Text('Enter Course Details :',
-                                  style: TextStyle(
+                              width: width * 0.15,
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  courseId = value;
+                                },
+                                style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontSize: width * 0.015,
+                                ),
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(
                                     fontFamily: 'poppins',
-                                    fontSize: 15,
                                     color: isLightMode
                                         ? Colors.black
                                         : Colors.white,
-                                  )),
-                            ),
-                            const SizedBox(height: 10),
-                            Form(
-                              key: _formKey,
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 40),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: width * 0.15,
-                                      child: TextFormField(
-                                        onChanged: (value) {
-                                          courseId = value;
-                                        },
-                                        style: TextStyle(
-                                          fontFamily: 'poppins',
-                                          fontSize: width * 0.015,
-                                        ),
-                                        decoration: InputDecoration(
-                                          labelStyle: TextStyle(
-                                            fontFamily: 'poppins',
-                                            color: isLightMode
-                                                ? Colors.black
-                                                : Colors.white,
-                                          ),
-                                          labelText: 'Id',
-                                          errorStyle: TextStyle(
-                                              fontSize: width * 0.018),
-                                          border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-
-                                        //****  VALIDATION LOGIC ****//
-                                        validator: (value) {
-                                          final RegExp pattern = RegExp(
-                                              r'^[A-Za-z][A-Za-z0-9 +\-]*$');
-
-                                          // Make sure that input field is not Empty neither null
-                                          if (value == null || value.isEmpty) {
-                                            return 'Id ?';
-                                          } else if (!pattern.hasMatch(value)) {
-                                            return 'Invalid Id';
-                                          }
-                                          // If everything is good, return null
-                                          return null;
-                                        },
-                                      ),
+                                  ),
+                                  labelText: 'Id',
+                                  errorStyle:
+                                      TextStyle(fontSize: width * 0.018),
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
                                     ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.18,
-                                      child: TextFormField(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            courseName = value;
-                                          });
-                                        },
-                                        style: TextStyle(
-                                          fontFamily: 'poppins',
-                                          fontSize: width * 0.015,
-                                        ),
-                                        decoration: InputDecoration(
-                                          labelStyle: TextStyle(
-                                            fontFamily: 'poppins',
-                                            color: isLightMode
-                                                ? Colors.black
-                                                : Colors.white,
-                                          ),
-                                          labelText: 'Course name',
-                                          errorStyle: TextStyle(
-                                              fontSize: width * 0.018),
-                                          border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-
-                                        //****  VALIDATION LOGIC ****//
-                                        validator: (value) {
-                                          final RegExp pattern = RegExp(
-                                              r'^[A-Za-z][A-Za-z0-9 +\-]*$');
-
-                                          // Make sure that input field is not Empty neither null
-                                          if (value == null || value.isEmpty) {
-                                            return 'Course name ?';
-                                          } else if (!pattern.hasMatch(value)) {
-                                            return 'Invalid course name';
-                                          }
-                                          // If everything is good, return null
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () async {
-                                          loginUser(_formKey);
-                                          if (loginUser(_formKey)) {
-                                            //todo add this to collection
-                                            //Clear all the input field
-                                            _formKey.currentState?.reset();
-                                            if (await CourseCollectionOp
-                                                .uploadCourse(args, courseName,
-                                                    courseId)) {
-                                              if (context.mounted) {
-                                                context.showSuccessBar(
-                                                  content: const Text(
-                                                    "Added",
-                                                    style: TextStyle(
-                                                        color: Colors.green),
-                                                  ),
-                                                );
-<<<<<<< HEAD
-=======
-                                                courseDetails?.add({
-                                                  "course_id": courseId,
-                                                  "course_name": courseName
-                                                });
-                                                first();
->>>>>>> 7f868dec6b7db07f724490fbefa0a4f1f341cdc1
-                                              }
-                                            }
-                                          }
-                                        },
-                                        child: SizedBox(
-                                          height: height * 0.05,
-                                          child: const Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Add',
-                                                style: TextStyle(),
-                                              ),
-                                              Icon(Icons.add),
-                                            ],
-                                          ),
-                                        )),
-                                  ],
+                                  ),
                                 ),
+
+                                //****  VALIDATION LOGIC ****//
+                                validator: (value) {
+                                  final RegExp pattern =
+                                      RegExp(r'^[A-Za-z][A-Za-z0-9 +\-]*$');
+
+                                  // Make sure that input field is not Empty neither null
+                                  if (value == null || value.isEmpty) {
+                                    return 'Id ?';
+                                  } else if (!pattern.hasMatch(value)) {
+                                    return 'Invalid Id';
+                                  }
+                                  // If everything is good, return null
+                                  return null;
+                                },
                               ),
                             ),
-                            Container(
-                              width: double.infinity,
-                              margin: const EdgeInsets.only(right: 20),
+                            SizedBox(
+                              width: width * 0.02,
+                            ),
+                            SizedBox(
+                              width: width * 0.18,
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  setState(() {
+                                    courseName = value;
+                                  });
+                                },
+                                style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontSize: width * 0.015,
+                                ),
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'poppins',
+                                    color: isLightMode
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
+                                  labelText: 'Course name',
+                                  errorStyle:
+                                      TextStyle(fontSize: width * 0.018),
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                ),
+
+                                //****  VALIDATION LOGIC ****//
+                                validator: (value) {
+                                  final RegExp pattern =
+                                      RegExp(r'^[A-Za-z][A-Za-z0-9 +\-]*$');
+
+                                  // Make sure that input field is not Empty neither null
+                                  if (value == null || value.isEmpty) {
+                                    return 'Course name ?';
+                                  } else if (!pattern.hasMatch(value)) {
+                                    return 'Invalid course name';
+                                  }
+                                  // If everything is good, return null
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: width * 0.02,
+                            ),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  loginUser(_formKey);
+                                  if (loginUser(_formKey)) {
+                                    //todo add this to collection
+                                    //Clear all the input field
+                                    _formKey.currentState?.reset();
+                                    if (await CourseCollectionOp.uploadCourse(
+                                        args, courseName, courseId)) {
+                                      if (context.mounted) {
+                                        context.showSuccessBar(
+                                          content: const Text(
+                                            "Added",
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          ),
+                                        );
+
+                                        courseDetails?.add({
+                                          "course_id": courseId,
+                                          "course_name": courseName
+                                        });
+                                        first();
+                                      }
+                                    }
+                                  }
+                                },
+                                child: SizedBox(
+                                  height: height * 0.05,
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Add',
+                                        style: TextStyle(),
+                                      ),
+                                      Icon(Icons.add),
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(right: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Course Details',
+                              style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  color: isLightMode
+                                      ? Colors.black
+                                      : Colors.white)),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      color: isLightMode ? Colors.black26 : Colors.white,
+                      thickness: 2,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  margin: const EdgeInsets.only(
+                    bottom: 5,
+                    left: 5,
+                    right: 5,
+                  ),
+                  decoration: BoxDecoration(
+                      color:
+                          isLightMode ? const Color(0xff9DB2FD) : Colors.black,
+                      borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(8),
+                          bottomLeft: Radius.circular(8))),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: [
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Course Details',
-                                      style: TextStyle(
-                                          fontFamily: 'poppins',
-                                          color: isLightMode
-                                              ? Colors.black
-                                              : Colors.white)),
-                                  const SizedBox(
-                                    width: 10,
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        DataTable(
+                                          showCheckboxColumn: true,
+                                          columns: const <DataColumn>[
+                                            DataColumn(
+                                              label: Expanded(
+                                                child: Text(
+                                                  'S.N.',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            DataColumn(
+                                              label: Expanded(
+                                                child: Text(
+                                                  'Course Id',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            DataColumn(
+                                              label: Expanded(
+                                                child: Text(
+                                                  'Course Name',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            DataColumn(
+                                              label: Expanded(
+                                                child: Text(
+                                                  'Edit',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic),
+                                                ),
+                                              ),
+                                            ),
+                                            DataColumn(
+                                              label: Expanded(
+                                                child: Text(
+                                                  'Delete',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                          rows:
+                                              dataCellForCourses(courseDetails),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Divider(
-                              color:
-                                  isLightMode ? Colors.black26 : Colors.white,
-                              thickness: 2,
-                            ),
-                            Column(
-                              children: [
-                                DataTable(
-                                  showCheckboxColumn: true,
-                                  columns: const <DataColumn>[
-                                    DataColumn(
-                                      label: Expanded(
-                                        child: Text(
-                                          'S.N.',
-                                          style: TextStyle(
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                    DataColumn(
-                                      label: Expanded(
-                                        child: Text(
-                                          'Course Id',
-                                          style: TextStyle(
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                    DataColumn(
-                                      label: Expanded(
-                                        child: Text(
-                                          'Course Name',
-                                          style: TextStyle(
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                    DataColumn(
-                                      label: Expanded(
-                                        child: Text(
-                                          'Edit',
-                                          style: TextStyle(
-                                              fontStyle: FontStyle.italic),
-                                        ),
-                                      ),
-                                    ),
-                                    DataColumn(
-                                      label: Expanded(
-                                        child: Text(
-                                          'Delete',
-                                          style: TextStyle(
-                                              fontStyle: FontStyle.italic),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  rows: dataCellForCourses(courseDetails),
-                                ),
-                              ],
                             ),
                           ],
                         ),

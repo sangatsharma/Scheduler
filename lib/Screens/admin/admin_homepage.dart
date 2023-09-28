@@ -6,6 +6,7 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:scheduler/Screens/admin/class_routine_entry.dart';
 import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/shared_prefs.dart';
@@ -367,15 +368,6 @@ class _AdminHomepageState extends State<AdminHomepage> {
                               'Manage Teacher Details',
                               style: TextStyle(fontFamily: 'poppins'),
                             ),
-                            //return false when click on "NO"
-                            // child: Text(
-                            //   'Manage Teacher Details',
-                            //   style: TextStyle(
-                            //       color:
-                            //           isLightMode ? Colors.black : Colors.white,
-                            //       fontSize: 25,
-                            //       fontFamily: 'poppins'),
-                            // ),
                           ),
                         ),
                         const SizedBox(
@@ -394,7 +386,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
                                     MaterialStatePropertyAll<Color>(isLightMode
                                         ? Colors.black
                                         : Colors.white)),
-                            onPressed: () => Navigator.of(context).pop(false),
+                            onPressed: () => Navigator.pushNamed(
+                                context, ClassRoutineEntry.screen),
                             //return false when click on "NO"
                             child: Text(
                               'Manage Routines',
