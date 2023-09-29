@@ -4,6 +4,7 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Widgets/dialogbox_teachcer_edit.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
@@ -466,11 +467,11 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                           "teacher_name": teacherName,
                                           "subjects": subject,
                                         };
-                                      context.showSuccessBar(
-                                          content: const Text(
-                                            'Added',
-                                            style: TextStyle(color: Colors.green),
-                                          ));
+                                        context.showSuccessBar(
+                                            content: const Text(
+                                          'Added',
+                                          style: TextStyle(color: Colors.green),
+                                        ));
                                       });
                                     } else {
                                       //Show error message
@@ -668,7 +669,20 @@ List<DataRow> dataCellForTeachers(final td, BuildContext context) {
       DataCell(Text(value["subjects"][1])),
       DataCell(Text(value["subjects"][2])),
       DataCell(Text(value["subjects"][3])),
-      DataCell(const Icon(Icons.edit), onTap: () {}),
+      DataCell(const Icon(Icons.edit), onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const TeacherDetailsEditBox(
+                index: 0,
+                selectedSubject: ['Maths', 'Science', '-', '-'],
+                selectedTeacherId: '120',
+                selectedTeacherName: 'Ram lal',
+                subjNo: 2,
+              );
+            },
+          );
+      }),
       DataCell(
         const Icon(Icons.delete),
         onTap: () {},

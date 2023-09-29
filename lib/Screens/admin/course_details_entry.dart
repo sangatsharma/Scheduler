@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,7 @@ import 'package:scheduler/Models/models.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
-import '../../Widgets/show_custom_dialog.dart';
+import '../../Widgets/dialogbox_course_edit.dart.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'getAdmin_institution.dart';
@@ -520,17 +521,20 @@ List<DataRow> dataCellForCourses(final cd, var first, BuildContext context) {
         DataCell(Text(i.toString())),
         DataCell(Text(course["course_id"])),
         DataCell(Text(course["course_name"])),
-        DataCell(const Icon(Icons.edit), onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return CourseDetailsEditBox(
-                  index: cd.indexOf(course),
-                  selectedCourseId: course["course_id"],
-                  selectedCourseName: course["course_name"]);
-            },
-          );
-        }),
+        DataCell(
+          const Icon(Icons.edit),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CourseDetailsEditBox(
+                    index: cd.indexOf(course),
+                    selectedCourseId: course["course_id"],
+                    selectedCourseName: course["course_name"]);
+              },
+            );
+          },
+        ),
         DataCell(
           const Icon(Icons.delete),
           onTap: () async {
@@ -541,10 +545,11 @@ List<DataRow> dataCellForCourses(final cd, var first, BuildContext context) {
               courseDetails?.remove(course);
             });
             context.showSuccessBar(
+                position: FlashPosition.top,
                 content: const Text(
-              "Removed",
-              style: TextStyle(color: Colors.green),
-            ));
+                  "Removed",
+                  style: TextStyle(color: Colors.green),
+                ));
           },
         ),
       ],

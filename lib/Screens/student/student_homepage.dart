@@ -8,7 +8,6 @@ import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
-import 'package:scheduler/tmp/db_schema.dart';
 import '../../Notification/notification_services.dart';
 import 'databaseFetch_student.dart';
 import 'package:scheduler/Widgets/themes.dart';
