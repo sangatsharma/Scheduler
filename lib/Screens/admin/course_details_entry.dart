@@ -337,7 +337,6 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                                 TextStyle(color: Colors.green),
                                           ),
                                         );
-
                                         courseDetails?.add({
                                           "course_id": courseId,
                                           "course_name": courseName
@@ -482,7 +481,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                             ),
                                           ],
                                           rows:
-                                              dataCellForCourses(courseDetails),
+                                              dataCellForCourses(courseDetails, setState, context),
                                         ),
                                       ],
                                     ),
@@ -505,7 +504,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
   }
 }
 
-List<DataRow> dataCellForCourses(final cd) {
+List<DataRow> dataCellForCourses(final cd, var first, BuildContext context) {
   List<DataRow> res = [];
 
   if (cd == null) {
@@ -522,12 +521,22 @@ List<DataRow> dataCellForCourses(final cd) {
           const Icon(Icons.edit),
           onTap: () async {
             //TODO edit
-            CourseCollectionOp.removeCourse(institutionName ,course["course_id"]);
+            // CourseCollectionOp.removeCourse(institutionName ,course["course_id"]);
           },
         ),
         DataCell(
           const Icon(Icons.delete),
-          onTap: () {},
+          onTap: () async{
+            // print(course["course_id"]);
+            CourseCollectionOp.removeCourse(institutionName, course["course_id"]);
+            first((){
+              courseDetails?.remove(course);
+            });
+            context.showSuccessBar(content: const Text(
+              "Removed",
+              style: TextStyle(color: Colors.green),
+            ));
+          },
         ),
       ],
     );
