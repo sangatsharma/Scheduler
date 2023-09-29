@@ -107,7 +107,6 @@ class _StudentHomepageState extends State<StudentHomepage>
     startupLoad();
     List<String>? subjectName = data[_selectedDateIndex]?["subjects"]??[];
     List<String>? startingTime = data[_selectedDateIndex]?["starting_times"]??[];
-    demo;
     //scheduleNotification
     NotificationServices notificationServices = NotificationServices();
     WidgetsFlutterBinding.ensureInitialized();

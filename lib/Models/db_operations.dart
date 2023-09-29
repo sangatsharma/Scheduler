@@ -1,3 +1,4 @@
+import 'package:flash/flash_helper.dart';
 import 'package:scheduler/Models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -43,6 +44,12 @@ class MappingCollectionOp {
 }
 
 class CourseCollectionOp {
+  static Future<List<String>> fetchCourse(String iname) async {
+    final res = await db.collection(iname).doc("CourseDetails").get();
+    final t = res.data()?["course_list"].map((e) => e["course_name"]);
+    return List.from(t);
+  }
+
   static Future<bool> uploadCourse(
       String? aid, String cname, String cid) async {
     CourseDetails courseDetails = CourseDetails(cid: cid, cname: cname);
@@ -134,21 +141,54 @@ class RoutineOp {
     return "6";
   }
 
-  static Future<Map<String, Map<String,List<String>>>> fetchRoutine(String cn) async {
-    final classColRef = await db
-        .collection("demo-admin")
-        .doc("Routine")
-        .collection(cn)
-        .get();
+  static Future<Map<String, Map<String, List<String>>>> fetchRoutine(
+      String cn) async {
+    final classColRef =
+        await db.collection("demo-admin").doc("Routine").collection(cn).get();
 
-    Map<String, Map<String,List<String>>> res = {
-      "7": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
-      "1": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
-      "2": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
-      "3": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
-      "4": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
-      "5": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
-      "6": {"starting_times" : [], "ending_times": [], "teachers_name": [], "subjects": []},
+    Map<String, Map<String, List<String>>> res = {
+      "7": {
+        "starting_times": [],
+        "ending_times": [],
+        "teachers_name": [],
+        "subjects": []
+      },
+      "1": {
+        "starting_times": [],
+        "ending_times": [],
+        "teachers_name": [],
+        "subjects": []
+      },
+      "2": {
+        "starting_times": [],
+        "ending_times": [],
+        "teachers_name": [],
+        "subjects": []
+      },
+      "3": {
+        "starting_times": [],
+        "ending_times": [],
+        "teachers_name": [],
+        "subjects": []
+      },
+      "4": {
+        "starting_times": [],
+        "ending_times": [],
+        "teachers_name": [],
+        "subjects": []
+      },
+      "5": {
+        "starting_times": [],
+        "ending_times": [],
+        "teachers_name": [],
+        "subjects": []
+      },
+      "6": {
+        "starting_times": [],
+        "ending_times": [],
+        "teachers_name": [],
+        "subjects": []
+      },
     };
 
     for (var doc in classColRef.docs) {
@@ -164,11 +204,35 @@ class RoutineOp {
         teachers_name.add(b["teacher_name"]);
         subjects.add(b["subject"]);
       }
-      res[_weekDay(doc.get("week_day"))]?["starting_times"]?.addAll(starting_time);
+      res[_weekDay(doc.get("week_day"))]?["starting_times"]
+          ?.addAll(starting_time);
       res[_weekDay(doc.get("week_day"))]?["ending_times"]?.addAll(ending_time);
-      res[_weekDay(doc.get("week_day"))]?["teachers_name"]?.addAll(teachers_name);
-      res[_weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects) ;
+      res[_weekDay(doc.get("week_day"))]?["teachers_name"]
+          ?.addAll(teachers_name);
+      res[_weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects);
     }
     return res;
+  }
+}
+
+
+class TeacherCollectionOp {
+  static Future<bool> addTeacher(String iname, String tid, String tname, List<String> course) async{
+    TeacherDetail td = TeacherDetail(tname: tname, subjects: course);
+
+    final docRef = db.collection(iname).doc("Teachers");
+
+    await docRef.set({
+      tid: td.toMap(),
+    }, SetOptions(merge: true)).then((value) => true);
+
+
+    return true;
+  }
+
+  static Future<Map<String, dynamic>> fetchAllTeachers(String iname) async {
+    final docRef = await db.collection(iname).doc("Teachers").get();
+    final d = docRef.data()??{};
+    return d;
   }
 }

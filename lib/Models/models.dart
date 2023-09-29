@@ -1,5 +1,5 @@
 //    MappingCollection(collection)
-//                 | 
+//                 |
 //                 | [doc name = admin_id]
 //                 |
 //    --------------------------(data)
@@ -12,11 +12,8 @@ class MappingCollection {
   final String iname;
   final String code;
 
-  MappingCollection({
-      required this.aname,
-      required this.iname, 
-      required this.code
-    });
+  MappingCollection(
+      {required this.aname, required this.iname, required this.code});
 
   Map<String, dynamic> toMap() {
     return {
@@ -31,15 +28,29 @@ class CourseDetails {
   final String cid;
   final String cname;
 
-  CourseDetails({
-    required this.cid,
-    required this.cname
-  });
+  CourseDetails({required this.cid, required this.cname});
 
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
       'course_id': cid,
       'course_name': cname,
+    };
+  }
+}
+
+class TeacherDetail {
+  final String tname;
+  final List<String> subjects;
+
+  TeacherDetail({
+    required this.tname,
+    required this.subjects,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      "teacher_name": tname,
+      "subjects": subjects,
     };
   }
 }
