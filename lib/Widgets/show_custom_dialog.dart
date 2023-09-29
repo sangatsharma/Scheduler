@@ -1,6 +1,10 @@
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/course_details_entry.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
+import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
 import '../Screens/select_actor.dart';
 import 'login_users.dart';
 
@@ -154,28 +158,30 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
                               ),
                             );
                           }
-                          // if (await CourseCollectionOp.uploadCourse(
-                          //     args, courseName, courseId)) {
-                          //   if (context.mounted) {
-                          //     context.showSuccessBar(
-                          //       content: const Text(
-                          //         "Edited successfully.",
-                          //         style:
-                          //         TextStyle(color: Colors.green),
-                          //       ),
-                          //     );
-                          //
-                          //     // courseDetails?.add({
-                          //     //   "course_id": courseId,
-                          //     //   "course_name": courseName
-                          //     // });
-                          //     // first();
-                          //   }
-                          // }
-                          print(editedId);
-                          print(editedCourse);
-                          setState(() {});
-                          Navigator.of(context).pop();
+                          else if (await CourseCollectionOp.updateCourse(
+                              institutionName,
+                              widget.selectedCourseId,
+                              editedId,
+                              editedCourse)) {
+                            if (context.mounted) {
+                              context.showSuccessBar(
+                                content: const Text(
+                                  "Edited successfully.",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              );
+                            setState(() {
+                              courseDetails?.removeAt(widget.index);
+                              courseDetails?.insert(widget.index, {
+                                "course_id": editedId,
+                                "course_name": editedCourse,
+                              });
+                            });
+                            }
+                          }
+                          if(context.mounted) {
+                            Navigator.of(context).pop();
+                          }
                         }
                       },
                       child: SizedBox(
