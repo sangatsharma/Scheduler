@@ -3,6 +3,7 @@ import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:scheduler/Widgets/dialogbox_teachcer_edit.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
@@ -562,7 +563,27 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                           DataCell(Text('19')),
                                           DataCell(
                                             Icon(Icons.edit),
-                                            onTap: () {},
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const TeacherDetailsEditBox(
+                                                    index: 0,
+                                                    selectedSubject: [
+                                                      'Maths',
+                                                      'Science',
+                                                      '-',
+                                                      '-'
+                                                    ],
+                                                    selectedTeacherId: '120',
+                                                    selectedTeacherName:
+                                                        'Ram lal',
+                                                    subjNo: 2,
+                                                  );
+                                                },
+                                              );
+                                            },
                                           ),
                                           DataCell(
                                             Icon(Icons.delete),

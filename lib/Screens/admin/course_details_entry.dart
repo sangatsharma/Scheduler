@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,7 @@ import 'package:scheduler/Models/models.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
-import '../../Widgets/show_custom_dialog.dart';
+import '../../Widgets/dialogbox_course_edit.dart.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'getAdmin_institution.dart';
@@ -47,6 +48,8 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
       firstTime = false;
       first();
     }
+    // TODO real class name
+    RoutineOp.fetchRoutine("BSE-4th");
     final args = ModalRoute.of(context)!.settings.arguments.toString();
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
@@ -336,7 +339,6 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                                 color: Colors.green),
                                           ),
                                         );
-
                                         courseDetails?.add({
                                           "course_id": courseId,
                                           "course_name": courseName
@@ -483,7 +485,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                             ),
                                           ],
                                           rows: dataCellForCourses(
-                                              courseDetails, context),
+                                              courseDetails, setState, context),
                                         ),
                                       ],
                                     ),
@@ -506,7 +508,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
   }
 }
 
-List<DataRow> dataCellForCourses(final cd, BuildContext context) {
+List<DataRow> dataCellForCourses(final cd, var first, BuildContext context) {
   List<DataRow> res = [];
 
   if (cd == null) {
@@ -535,7 +537,20 @@ List<DataRow> dataCellForCourses(final cd, BuildContext context) {
         ),
         DataCell(
           const Icon(Icons.delete),
-          onTap: () {},
+          onTap: () async {
+            // print(course["course_id"]);
+            CourseCollectionOp.removeCourse(
+                institutionName, course["course_id"]);
+            first(() {
+              courseDetails?.remove(course);
+            });
+            context.showSuccessBar(
+                position: FlashPosition.top,
+                content: const Text(
+                  "Removed",
+                  style: TextStyle(color: Colors.green),
+                ));
+          },
         ),
       ],
     );

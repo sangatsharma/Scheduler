@@ -35,7 +35,7 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
     double height = MediaQuery.of(context).size.height;
     return AlertDialog(
       backgroundColor: Colors.white,
-      title: Text('Edit Course Details:${widget.index}'),
+      title: Text('Edit Course Details: ${widget.index + 1}'),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -97,9 +97,7 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
                     child: TextFormField(
                       initialValue: widget.selectedCourseName,
                       onChanged: (value) {
-                        setState(() {
-                          editedCourse = value;
-                        });
+                        editedCourse = value;
                       },
                       style: TextStyle(
                         fontFamily: 'poppins',

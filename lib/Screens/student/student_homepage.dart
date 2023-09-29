@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
+import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
 import '../../Notification/notification_services.dart';
 import 'databaseFetch_student.dart';
 import 'package:scheduler/Widgets/themes.dart';
+import 'package:scheduler/Screens/student/student_homepage.dart';
 
 class StudentHomepage extends StatefulWidget {
   const StudentHomepage({Key? key}) : super(key: key);
@@ -16,6 +19,7 @@ class StudentHomepage extends StatefulWidget {
   @override
   State<StudentHomepage> createState() => _StudentHomepageState();
 }
+
 
 class _StudentHomepageState extends State<StudentHomepage>
     with SingleTickerProviderStateMixin {
@@ -86,10 +90,22 @@ class _StudentHomepageState extends State<StudentHomepage>
   int previousIndex = int.parse(DateTime.now().day.toString());
   DateTime selectedDate = DateTime.now();
 
+  Map<String, Map<String,List<String>>> data = {};
+  void startupLoad() {
+    // TODO real class Name
+    RoutineOp.fetchRoutine("BSE-4th").then((value){
+      setState(() {
+        data = value;
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
+    startupLoad();
+    List<String>? subjectName = data[_selectedDateIndex]?["subjects"]??[];
+    List<String>? startingTime = data[_selectedDateIndex]?["starting_times"]??[];
     //scheduleNotification
     NotificationServices notificationServices = NotificationServices();
     WidgetsFlutterBinding.ensureInitialized();
@@ -135,7 +151,7 @@ class _StudentHomepageState extends State<StudentHomepage>
 
   List<Widget> routines = [];
   void _addItems(BuildContext context) {
-    routines = showRoutine(_selectedDateIndex, context);
+    routines = showRoutine(_selectedDateIndex, data, context);
   }
 
   @override
