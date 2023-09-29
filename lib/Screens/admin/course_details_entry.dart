@@ -47,6 +47,8 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
       firstTime = false;
       first();
     }
+    // TODO real class name
+    RoutineOp.fetchRoutine("BSE-4th");
     final args = ModalRoute.of(context)!.settings.arguments.toString();
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
@@ -336,7 +338,6 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                                 color: Colors.green),
                                           ),
                                         );
-
                                         courseDetails?.add({
                                           "course_id": courseId,
                                           "course_name": courseName
@@ -483,7 +484,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                             ),
                                           ],
                                           rows: dataCellForCourses(
-                                              courseDetails, context),
+                                              courseDetails, setState, context),
                                         ),
                                       ],
                                     ),
@@ -506,7 +507,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
   }
 }
 
-List<DataRow> dataCellForCourses(final cd, BuildContext context) {
+List<DataRow> dataCellForCourses(final cd, var first, BuildContext context) {
   List<DataRow> res = [];
 
   if (cd == null) {
@@ -519,23 +520,32 @@ List<DataRow> dataCellForCourses(final cd, BuildContext context) {
         DataCell(Text(i.toString())),
         DataCell(Text(course["course_id"])),
         DataCell(Text(course["course_name"])),
-        DataCell(
-          const Icon(Icons.edit),
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CourseDetailsEditBox(
-                    index: cd.indexOf(course),
-                    selectedCourseId: course["course_id"],
-                    selectedCourseName: course["course_name"]);
-              },
-            );
-          },
-        ),
+        DataCell(const Icon(Icons.edit), onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CourseDetailsEditBox(
+                  index: cd.indexOf(course),
+                  selectedCourseId: course["course_id"],
+                  selectedCourseName: course["course_name"]);
+            },
+          );
+        }),
         DataCell(
           const Icon(Icons.delete),
-          onTap: () {},
+          onTap: () async {
+            // print(course["course_id"]);
+            CourseCollectionOp.removeCourse(
+                institutionName, course["course_id"]);
+            first(() {
+              courseDetails?.remove(course);
+            });
+            context.showSuccessBar(
+                content: const Text(
+              "Removed",
+              style: TextStyle(color: Colors.green),
+            ));
+          },
         ),
       ],
     );
