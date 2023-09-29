@@ -230,24 +230,26 @@ class _AdminLoginState extends State<AdminLogin> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const EmailVerify()));
                               } else {
+                                // Check if Admin already has institution info and invite code
+                                final mapping =
+                                    await MappingCollectionOp.fetchMapping(
+                                        user.uid);
 
-                                  // Check if Admin already has institution info and invite code
-                                  final mapping = await MappingCollectionOp.fetchMapping(user.uid);
+                                // If not, then load GetInstitutionDetails
+                                if (mapping == null && context.mounted) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          GetInstitutionDetails(
+                                            user: user,
+                                          )));
+                                }
 
-                                  // If not, then load GetInstitutionDetails 
-                                  if(mapping == null && context.mounted) {
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => GetInstitutionDetails(
-                                          user: user,
-                                        )));
-                                  }
-
-                                  // Else simply head to admin home page
-                                  else if(context.mounted){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: 
-                                      (context) => AdminHomepage(user: user)
-                                    ));
-                                  }
+                                // Else simply head to admin home page
+                                else if (context.mounted) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          AdminHomepage(user: user)));
+                                }
                               }
                             }
                           }
@@ -304,32 +306,36 @@ class _AdminLoginState extends State<AdminLogin> {
                             var user = await Authenticate.signInWithGoogle(
                                 context: context);
                             // Open the temp page
-                            setState(() async{
+                            setState(() async {
                               //loading spinner stops to spin after Login
                               showLoading = false;
                               if (user != null) {
-
                                 // After user logs in, check to see if his mapping already exists
-                                final google_mapping = await MappingCollectionOp.fetchMapping(user.uid);
+                                final google_mapping =
+                                    await MappingCollectionOp.fetchMapping(
+                                        user.uid);
                                 print(google_mapping);
-                                  
+
                                 // If not, get to GetInstitutionDetails page
-                                if(google_mapping == null && context.mounted) {
+                                if (google_mapping == null && context.mounted) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => GetInstitutionDetails(
+                                      builder: (context) =>
+                                          GetInstitutionDetails(
                                             user: user,
                                           )));
                                   //Show success message
                                   context.showSuccessBar(
                                       content: const Text(
                                         'Logged in Successfully',
-                                        style: TextStyle(color: Colors.green),
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontFamily: 'poppins'),
                                       ),
-                                    position: FlashPosition.top);
+                                      position: FlashPosition.top);
                                 }
 
                                 // Else, just log the user in
-                                else if(context.mounted) {
+                                else if (context.mounted) {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => AdminHomepage(
                                             user: user,

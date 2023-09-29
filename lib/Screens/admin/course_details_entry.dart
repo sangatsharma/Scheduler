@@ -6,6 +6,7 @@ import 'package:scheduler/Models/models.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
+import '../../Widgets/show_custom_dialog.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'getAdmin_institution.dart';
@@ -330,8 +331,9 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                         context.showSuccessBar(
                                           content: const Text(
                                             "Added",
-                                            style:
-                                                TextStyle(color: Colors.green),
+                                            style: TextStyle(
+                                                fontFamily: 'poppins',
+                                                color: Colors.green),
                                           ),
                                         );
 
@@ -351,7 +353,9 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                     children: [
                                       Text(
                                         'Add',
-                                        style: TextStyle(),
+                                        style: TextStyle(
+                                          fontFamily: 'poppins',
+                                        ),
                                       ),
                                       Icon(Icons.add),
                                     ],
@@ -478,8 +482,8 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
                                               ),
                                             ),
                                           ],
-                                          rows:
-                                              dataCellForCourses(courseDetails),
+                                          rows: dataCellForCourses(
+                                              courseDetails, context),
                                         ),
                                       ],
                                     ),
@@ -502,7 +506,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
   }
 }
 
-List<DataRow> dataCellForCourses(final cd) {
+List<DataRow> dataCellForCourses(final cd, BuildContext context) {
   List<DataRow> res = [];
 
   if (cd == null) {
@@ -517,8 +521,16 @@ List<DataRow> dataCellForCourses(final cd) {
         DataCell(Text(course["course_name"])),
         DataCell(
           const Icon(Icons.edit),
-          onTap: () async {
-            //TODO edit
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CourseDetailsEditBox(
+                    index: cd.indexOf(course),
+                    selectedCourseId: course["course_id"],
+                    selectedCourseName: course["course_name"]);
+              },
+            );
           },
         ),
         DataCell(
