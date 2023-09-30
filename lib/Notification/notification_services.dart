@@ -39,7 +39,7 @@ class NotificationServices {
   Future<void> zoneScheduleNotifications(
       String title,
       String body,
-      Map<String, Map<String, List<String>>> data,
+      Map<String, Map<String, List<String>>> res,
       /*List<String> amOrPm,*/ Duration duration) async {
     AndroidNotificationDetails androidNotificationDetails =
         const AndroidNotificationDetails(
@@ -53,32 +53,33 @@ class NotificationServices {
     NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     tz.initializeTimeZones();
-    int notificationId = uniqueId++;
-    for (int day = 1; day <= 7; day++) {
-      for (int i = 0;
-          i < data[day.toString()]!["starting_times"]!.length;
-          i++) {
+
+    for (String dayOfWeek in res.keys) {
+      // Convert the dayOfWeek to an integer (0 for Monday, 1 for Tuesday, etc.)
+      int day = int.parse(dayOfWeek);
+
+      for (int i = 0; i < res[dayOfWeek]!["starting_times"]!.length; i++) {
         String title = 'Your Title';
         String body = 'Your Body';
-        String? time = data[day.toString()]!["starting_times"]?[i];
+        String? time = res[dayOfWeek]!["starting_times"]?[i];
 
         // Construct the notification time for the current day and time
         DateTime now = DateTime.now();
-        // DateTime dateTime = DateTime(now.year, now.month, now.day,
-        //     int.parse(time!.split(":")[0]), int.parse(time.split(":")[1]));
         final String dateTimeString =
-            '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} $time:00';
+            '${now.year}-${now.month.toString().padLeft(2, '0')}-${(now.day + day - now.weekday).toString().padLeft(2, '0')} $time:00';
         DateTime dateTime = DateTime.parse(dateTimeString);
+
         // Calculate the notification time for the current day
         Duration duration =
             const Duration(minutes: 5); // You can adjust this as needed
         DateTime notificationTime = dateTime.subtract(duration);
+        int notificationId = uniqueId++;
 
         // Schedule the notification
         await flutterLocalNotificationsPlugin.zonedSchedule(
           notificationId, // Use a unique notification ID
           title,
-          '$body ${data[day.toString()]!["teachers_name"]?[i]} ${data[day.toString()]!["subjects"]?[i]}',
+          '$body ${res[dayOfWeek]!["teachers_name"]?[i]} ${res[dayOfWeek]!["subjects"]?[i]}',
           tz.TZDateTime.from(notificationTime, tz.local),
           notificationDetails,
           uiLocalNotificationDateInterpretation:
@@ -145,4 +146,40 @@ Future<void> cancelNotification() async {
 //       matchDateTimeComponents: DateTimeComponents.time,
 //     );
 //   }
+// }
+
+//
+// for (int day = 1; day <= 7; day++) {
+// for (int i = 0;
+// i < data[day.toString()]!["starting_times"]!.length;
+// i++) {
+// String title = 'Your Title';
+// String body = 'Your Body';
+// String? time = data[day.toString()]!["starting_times"]?[i];
+//
+// // Construct the notification time for the current day and time
+// DateTime now = DateTime.now();
+// // DateTime dateTime = DateTime(now.year, now.month, now.day,
+// //     int.parse(time!.split(":")[0]), int.parse(time.split(":")[1]));
+// final String dateTimeString =
+// '${now.year}-${now.month.toString().padLeft(2, '0')}-${(now.day + day - 1).toString().padLeft(2, '0')} $time:00';
+// DateTime dateTime = DateTime.parse(dateTimeString);
+// print(dateTimeString);
+// // Calculate the notification time for the current day
+// Duration duration =
+// const Duration(minutes: 5); // You can adjust this as needed
+// DateTime notificationTime = dateTime.subtract(duration);
+// int notificationId = uniqueId++;
+// // Schedule the notification
+// await flutterLocalNotificationsPlugin.zonedSchedule(
+// notificationId, // Use a unique notification ID
+// title,
+// '$body ${data[day.toString()]!["teachers_name"]?[i]} ${data[day.toString()]!["subjects"]?[i]}',
+// tz.TZDateTime.from(notificationTime, tz.local),
+// notificationDetails,
+// uiLocalNotificationDateInterpretation:
+// UILocalNotificationDateInterpretation.absoluteTime,
+// matchDateTimeComponents: DateTimeComponents.time,
+// );
+// }
 // }

@@ -33,10 +33,20 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
     editedCourse = widget.selectedCourseName;
   }
 
+  void first() {
+    final t = ModalRoute.of(context)!.settings.arguments.toString();
+    InstituteCollection.getCourseDetails(t).then((res) {
+      setState(() {
+        courseDetails = res?["course_list"];
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Text('Edit Course Details: ${widget.index + 1}'),
@@ -155,8 +165,7 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
                                     fontFamily: 'poppins', color: Colors.black),
                               ),
                             );
-                          }
-                          else if (await CourseCollectionOp.updateCourse(
+                          } else if (await CourseCollectionOp.updateCourse(
                               institutionName,
                               widget.selectedCourseId,
                               editedId,
@@ -168,16 +177,17 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
                                   style: TextStyle(color: Colors.green),
                                 ),
                               );
-                            setState(() {
-                              courseDetails?.removeAt(widget.index);
-                              courseDetails?.insert(widget.index, {
-                                "course_id": editedId,
-                                "course_name": editedCourse,
+                              setState(() {
+                                //note here
+                                courseDetails?.removeAt(widget.index);
+                                courseDetails?.insert(widget.index, {
+                                  "course_id": editedId,
+                                  "course_name": editedCourse,
+                                });
                               });
-                            });
                             }
                           }
-                          if(context.mounted) {
+                          if (context.mounted) {
                             Navigator.of(context).pop();
                           }
                         }
