@@ -93,6 +93,13 @@ class _StudentHomepageState extends State<StudentHomepage>
   void startupLoad() {
     // TODO real class Name
     RoutineOp.fetchRoutine("BSE-4th").then((value) {
+      NotificationServices notificationServices = NotificationServices();
+      WidgetsFlutterBinding.ensureInitialized();
+      notificationServices.initializeNotifications();
+      notificationServices.sendNotifications(
+          'Test', 'application Loaded successfully');
+      notificationServices.zoneScheduleNotifications('Next Class in 5 minutes.',
+          'Class will start shortly', value, const Duration(minutes: 5));
       setState(() {
         data = value;
       });
@@ -118,6 +125,16 @@ class _StudentHomepageState extends State<StudentHomepage>
     notificationServices.zoneScheduleNotifications('Next Class in 5 minutes.',
         'Class will start shortly', data, const Duration(minutes: 5));
 
+    //notification schedule
+    //scheduleNotification
+    // WidgetsFlutterBinding.ensureInitialized();
+    // NotificationServices notificationServices = NotificationServices();
+    // notificationServices.initializeNotifications();
+    // notificationServices.sendNotifications(
+    //     'Test', 'application Loaded successfully');
+    // notificationServices.zoneScheduleNotifications('Next Class in 5 minutes.',
+    //     'Class will start shortly', data, const Duration(minutes: 5));
+//end
     _controller = AnimationController(
       duration: const Duration(milliseconds: 350),
       vsync: this,

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/Screens/admin/admin_login.dart';
@@ -15,7 +13,6 @@ import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import 'package:scheduler/Screens/admin/admin_signup.dart';
 import 'package:scheduler/firebase_options.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/teacher/teacher_homepage.dart';
 
 void main() async {
