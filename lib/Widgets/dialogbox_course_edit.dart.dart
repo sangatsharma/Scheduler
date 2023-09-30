@@ -1,6 +1,10 @@
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/course_details_entry.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
+import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
 import '../Screens/select_actor.dart';
 import 'login_users.dart';
 
@@ -29,10 +33,20 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
     editedCourse = widget.selectedCourseName;
   }
 
+  void first() {
+    final t = ModalRoute.of(context)!.settings.arguments.toString();
+    InstituteCollection.getCourseDetails(t).then((res) {
+      setState(() {
+        courseDetails = res?["course_list"];
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Text('Edit Course Details: ${widget.index + 1}'),
@@ -151,29 +165,31 @@ class _CourseDetailsEditBoxState extends State<CourseDetailsEditBox> {
                                     fontFamily: 'poppins', color: Colors.black),
                               ),
                             );
+                          } else if (await CourseCollectionOp.updateCourse(
+                              institutionName,
+                              widget.selectedCourseId,
+                              editedId,
+                              editedCourse)) {
+                            if (context.mounted) {
+                              context.showSuccessBar(
+                                content: const Text(
+                                  "Edited successfully.",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              );
+                              setState(() {
+                                //note here
+                                courseDetails?.removeAt(widget.index);
+                                courseDetails?.insert(widget.index, {
+                                  "course_id": editedId,
+                                  "course_name": editedCourse,
+                                });
+                              });
+                            }
                           }
-                          // if (await CourseCollectionOp.uploadCourse(
-                          //     args, courseName, courseId)) {
-                          //   if (context.mounted) {
-                          //     context.showSuccessBar(
-                          //       content: const Text(
-                          //         "Edited successfully.",
-                          //         style:
-                          //         TextStyle(color: Colors.green),
-                          //       ),
-                          //     );
-                          //
-                          //     // courseDetails?.add({
-                          //     //   "course_id": courseId,
-                          //     //   "course_name": courseName
-                          //     // });
-                          //     // first();
-                          //   }
-                          // }
-                          print(editedId);
-                          print(editedCourse);
-                          setState(() {});
-                          Navigator.of(context).pop();
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
                         }
                       },
                       child: SizedBox(

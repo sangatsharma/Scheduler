@@ -43,11 +43,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
-    if (firstTime) {
-      firstTime = false;
-      first();
-    }
+    first();
     // TODO real class name
     RoutineOp.fetchRoutine("BSE-4th");
     final args = ModalRoute.of(context)!.settings.arguments.toString();
@@ -541,9 +537,7 @@ List<DataRow> dataCellForCourses(final cd, var first, BuildContext context) {
             // print(course["course_id"]);
             CourseCollectionOp.removeCourse(
                 institutionName, course["course_id"]);
-            first(() {
-              courseDetails?.remove(course);
-            });
+            first();
             context.showSuccessBar(
                 position: FlashPosition.top,
                 content: const Text(

@@ -3,6 +3,7 @@ import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:scheduler/Models/db_operations.dart';
 import 'package:scheduler/Widgets/dialogbox_teachcer_edit.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
@@ -34,13 +35,32 @@ List<String> subject = ['-', '-', '-', '-'];
 //todo when user leaves select your class as it is we check if it is equal we throw error text.
 List<String> fetchAllCourse = <String>[
   'Select course',
-  'Maths',
-  'Science',
-  'English'
 ];
+
+Map<String, dynamic> data = {};
 
 class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
   final _formKey = GlobalKey<FormState>();
+
+  void startup() async {
+    //TODO no dummy
+    final res = await CourseCollectionOp.fetchCourse(institutionName);
+    final tRes = await TeacherCollectionOp.fetchAllTeachers(institutionName);
+
+    // await TeacherCollectionOp.addTeacher("demo-admin", "1", "tname", 1, "cname");
+    if (fetchAllCourse.length == 1) {
+      setState(() {
+        fetchAllCourse = fetchAllCourse + res;
+        data = tRes;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startup();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -421,15 +441,16 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                 width: width * 0.015,
                               ),
                               ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     loginUser(_formKey);
                                     if (loginUser(_formKey) &&
                                         validateDropDown(teacherSubjNo)) {
                                       //todo add this to collection
-                                      print(teacherId);
-                                      print(teacherName);
-                                      print(teacherSubjNo);
-                                      print(subject);
+                                      await TeacherCollectionOp.addTeacher(
+                                          institutionName,
+                                          teacherId,
+                                          teacherName,
+                                          subject);
                                       //Clear all the input field
                                       _formKey.currentState?.reset();
                                       setState(() {
@@ -440,6 +461,17 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                           'Select course',
                                           'Select course',
                                         ];
+                                      });
+                                      setState(() {
+                                        data[teacherId] = {
+                                          "teacher_name": teacherName,
+                                          "subjects": subject,
+                                        };
+                                        context.showSuccessBar(
+                                            content: const Text(
+                                          'Added',
+                                          style: TextStyle(color: Colors.green),
+                                        ));
                                       });
                                     } else {
                                       //Show error message
@@ -521,7 +553,7 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                       DataColumn(
                                         label: Expanded(
                                           child: Text(
-                                            'Name',
+                                            'S.N',
                                             style: TextStyle(
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.bold),
@@ -531,7 +563,43 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                       DataColumn(
                                         label: Expanded(
                                           child: Text(
-                                            'Age',
+                                            'Name',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.normal),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Subject 1',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Subject 2',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Subject 3',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Subject 4',
                                             style: TextStyle(
                                                 fontStyle: FontStyle.italic),
                                           ),
@@ -556,70 +624,7 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                         ),
                                       ),
                                     ],
-                                    rows: <DataRow>[
-                                      DataRow(
-                                        cells: <DataCell>[
-                                          DataCell(Text('Sarah')),
-                                          DataCell(Text('19')),
-                                          DataCell(
-                                            Icon(Icons.edit),
-                                            onTap: () {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return const TeacherDetailsEditBox(
-                                                    index: 0,
-                                                    selectedSubject: [
-                                                      'Maths',
-                                                      'Science',
-                                                      '-',
-                                                      '-'
-                                                    ],
-                                                    selectedTeacherId: '120',
-                                                    selectedTeacherName:
-                                                        'Ram lal',
-                                                    subjNo: 2,
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          ),
-                                          DataCell(
-                                            Icon(Icons.delete),
-                                            onTap: () {},
-                                          ),
-                                        ],
-                                      ),
-                                      DataRow(
-                                        cells: <DataCell>[
-                                          DataCell(Text('Janine')),
-                                          DataCell(Text('43')),
-                                          DataCell(
-                                            Icon(Icons.edit),
-                                            onTap: () {},
-                                          ),
-                                          DataCell(
-                                            Icon(Icons.delete),
-                                            onTap: () {},
-                                          ),
-                                        ],
-                                      ),
-                                      DataRow(
-                                        cells: <DataCell>[
-                                          DataCell(Text('William')),
-                                          DataCell(Text('27')),
-                                          DataCell(
-                                            Icon(Icons.edit),
-                                            onTap: () {},
-                                          ),
-                                          DataCell(
-                                            Icon(Icons.delete),
-                                            onTap: () {},
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                    rows: dataCellForTeachers(data, context),
                                   ),
                                 ],
                               ),
@@ -647,4 +652,44 @@ bool validateDropDown(int num) {
     }
   }
   return flag;
+}
+
+List<DataRow> dataCellForTeachers(final td, BuildContext context) {
+  List<DataRow> res = [];
+
+  if (td == null) {
+    return res;
+  }
+
+  td.forEach((key, value) {
+    DataRow tmp = DataRow(cells: <DataCell>[
+      DataCell(Text(key)),
+      DataCell(Text(value["teacher_name"])),
+      DataCell(Text(value["subjects"][0])),
+      DataCell(Text(value["subjects"][1])),
+      DataCell(Text(value["subjects"][2])),
+      DataCell(Text(value["subjects"][3])),
+      DataCell(const Icon(Icons.edit), onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const TeacherDetailsEditBox(
+                index: 0,
+                selectedSubject: ['Maths', 'Science', '-', '-'],
+                selectedTeacherId: '120',
+                selectedTeacherName: 'Ram lal',
+                subjNo: 2,
+              );
+            },
+          );
+      }),
+      DataCell(
+        const Icon(Icons.delete),
+        onTap: () {},
+      ),
+    ]);
+
+    res.add(tmp);
+  });
+  return res;
 }
