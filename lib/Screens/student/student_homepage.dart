@@ -110,20 +110,6 @@ class _StudentHomepageState extends State<StudentHomepage>
   void initState() {
     super.initState();
     startupLoad();
-    List<String>? subjectName = data[_selectedDateIndex]?["subjects"] ?? [];
-    List<String>? startingTime =
-        data[_selectedDateIndex]?["starting_times"] ?? [];
-    //scheduleNotification
-    NotificationServices notificationServices = NotificationServices();
-    WidgetsFlutterBinding.ensureInitialized();
-    notificationServices.initializeNotifications();
-    // notificationServices.zoneScheduleNotifications(
-    //     'Test', 'This is body', timeList, const Duration(minutes: 1));
-    //send notification function
-    notificationServices.sendNotifications(
-        'Test', 'application Loaded successfully');
-    notificationServices.zoneScheduleNotifications('Next Class in 5 minutes.',
-        'Class will start shortly', data, const Duration(minutes: 5));
 
     //notification schedule
     //scheduleNotification
