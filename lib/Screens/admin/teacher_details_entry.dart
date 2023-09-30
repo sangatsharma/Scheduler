@@ -670,18 +670,18 @@ List<DataRow> dataCellForTeachers(final td, BuildContext context) {
       DataCell(Text(value["subjects"][2])),
       DataCell(Text(value["subjects"][3])),
       DataCell(const Icon(Icons.edit), onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const TeacherDetailsEditBox(
-                index: 0,
-                selectedSubject: ['Maths', 'Science', '-', '-'],
-                selectedTeacherId: '120',
-                selectedTeacherName: 'Ram lal',
-                subjNo: 2,
-              );
-            },
-          );
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const TeacherDetailsEditBox(
+              index: 0,
+              selectedSubject: ['aa1', '-', '-', '-'],
+              selectedTeacherId: '120',
+              selectedTeacherName: 'Ram lal',
+              subjNo: 1,
+            );
+          },
+        );
       }),
       DataCell(
         const Icon(Icons.delete),
