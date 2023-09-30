@@ -35,6 +35,8 @@ List<String> subject = ['-', '-', '-', '-'];
 //todo when user leaves select your class as it is we check if it is equal we throw error text.
 List<String> fetchAllCourse = <String>[
   'Select course',
+  'Maths',
+  'Science',
 ];
 
 Map<String, dynamic> data = {};
@@ -624,7 +626,40 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                         ),
                                       ),
                                     ],
-                                    rows: dataCellForTeachers(data, context),
+                                    rows: [
+                                      DataRow(cells: <DataCell>[
+                                        const DataCell(Text('id')),
+                                        const DataCell(Text('Ram lal')),
+                                        const DataCell(Text('Maths')),
+                                        const DataCell(Text('Science')),
+                                        const DataCell(Text('-')),
+                                        const DataCell(Text('-')),
+                                        DataCell(const Icon(Icons.edit),
+                                            onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return const TeacherDetailsEditBox(
+                                                index: 0,
+                                                selectedSubject: [
+                                                  'Maths',
+                                                  'Science',
+                                                  '-',
+                                                  '-'
+                                                ],
+                                                selectedTeacherId: '120',
+                                                selectedTeacherName: 'Ram lal',
+                                                subjNo: 2,
+                                              );
+                                            },
+                                          );
+                                        }),
+                                        DataCell(
+                                          const Icon(Icons.delete),
+                                          onTap: () {},
+                                        ),
+                                      ])
+                                    ],
                                   ),
                                 ],
                               ),
@@ -663,25 +698,25 @@ List<DataRow> dataCellForTeachers(final td, BuildContext context) {
 
   td.forEach((key, value) {
     DataRow tmp = DataRow(cells: <DataCell>[
-      DataCell(Text(key)),
-      DataCell(Text(value["teacher_name"])),
-      DataCell(Text(value["subjects"][0])),
-      DataCell(Text(value["subjects"][1])),
-      DataCell(Text(value["subjects"][2])),
-      DataCell(Text(value["subjects"][3])),
+      const DataCell(Text('id')),
+      const DataCell(Text('Ram lal')),
+      const DataCell(Text('Maths')),
+      const DataCell(Text('Science')),
+      const DataCell(Text('-')),
+      const DataCell(Text('-')),
       DataCell(const Icon(Icons.edit), onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const TeacherDetailsEditBox(
-                index: 0,
-                selectedSubject: ['Maths', 'Science', '-', '-'],
-                selectedTeacherId: '120',
-                selectedTeacherName: 'Ram lal',
-                subjNo: 2,
-              );
-            },
-          );
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const TeacherDetailsEditBox(
+              index: 0,
+              selectedSubject: ['Maths', 'Science', '-', '-'],
+              selectedTeacherId: '120',
+              selectedTeacherName: 'Ram lal',
+              subjNo: 2,
+            );
+          },
+        );
       }),
       DataCell(
         const Icon(Icons.delete),

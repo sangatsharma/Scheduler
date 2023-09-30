@@ -31,6 +31,7 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
   late int editedSubjNo;
   late List<String> editedSubject;
   late List<String> selectedCourse;
+  late List<String> saveSelectedCourse;
 
   @override
   void initState() {
@@ -276,18 +277,22 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
                             print(editedId);
                             print(editedName);
                             print(editedSubjNo);
-                            print(editedSubject);
-                            // //Clear all the input field
-                            // _formKey.currentState?.reset();
-                            // setState(() {
-                            //   editedSubjNo = 1;
-                            //   selectedCourse = [
-                            //     'Select course',
-                            //     'Select course',
-                            //     'Select course',
-                            //     'Select course',
-                            //   ];
-                            // });
+                            print(selectedCourse);
+                            saveSelectedCourse = [
+                              selectedCourse[0] != 'Select course'
+                                  ? selectedCourse[0]
+                                  : '-',
+                              selectedCourse[1] != 'Select course'
+                                  ? selectedCourse[1]
+                                  : '-',
+                              selectedCourse[2] != 'Select course'
+                                  ? selectedCourse[2]
+                                  : '-',
+                              selectedCourse[3] != 'Select course'
+                                  ? selectedCourse[3]
+                                  : '-'
+                            ];
+                            print(saveSelectedCourse);
                           } else {
                             //Show error message
                             context.showErrorBar(
