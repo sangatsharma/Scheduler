@@ -100,13 +100,13 @@ class _TeacherHomepageState extends State<TeacherHomepage>
     //send notification function
     notificationServices.sendNotifications(
         'Test', 'application Loaded successfully');
-    notificationServices.zoneScheduleNotifications(
-        'You have a Class in 5 minutes.',
-        'Class will start shortly.',
-        subjectNameTeacher,
-        classNameTeacher,
-        startingTimeTeacher,
-        const Duration(minutes: 5));
+    // notificationServices.zoneScheduleNotifications(
+    //     'You have a Class in 5 minutes.',
+    //     'Class will start shortly.',
+    //     subjectNameTeacher,
+    //     classNameTeacher,
+    //     startingTimeTeacher,
+    //     const Duration(minutes: 5));
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 350),

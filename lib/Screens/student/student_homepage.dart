@@ -20,7 +20,6 @@ class StudentHomepage extends StatefulWidget {
   State<StudentHomepage> createState() => _StudentHomepageState();
 }
 
-
 class _StudentHomepageState extends State<StudentHomepage>
     with SingleTickerProviderStateMixin {
   //function to show when back button is pressed
@@ -90,10 +89,10 @@ class _StudentHomepageState extends State<StudentHomepage>
   int previousIndex = int.parse(DateTime.now().day.toString());
   DateTime selectedDate = DateTime.now();
 
-  Map<String, Map<String,List<String>>> data = {};
+  Map<String, Map<String, List<String>>> data = {};
   void startupLoad() {
     // TODO real class Name
-    RoutineOp.fetchRoutine("BSE-4th").then((value){
+    RoutineOp.fetchRoutine("BSE-4th").then((value) {
       setState(() {
         data = value;
       });
@@ -104,8 +103,9 @@ class _StudentHomepageState extends State<StudentHomepage>
   void initState() {
     super.initState();
     startupLoad();
-    List<String>? subjectName = data[_selectedDateIndex]?["subjects"]??[];
-    List<String>? startingTime = data[_selectedDateIndex]?["starting_times"]??[];
+    List<String>? subjectName = data[_selectedDateIndex]?["subjects"] ?? [];
+    List<String>? startingTime =
+        data[_selectedDateIndex]?["starting_times"] ?? [];
     //scheduleNotification
     NotificationServices notificationServices = NotificationServices();
     WidgetsFlutterBinding.ensureInitialized();
@@ -115,13 +115,8 @@ class _StudentHomepageState extends State<StudentHomepage>
     //send notification function
     notificationServices.sendNotifications(
         'Test', 'application Loaded successfully');
-    notificationServices.zoneScheduleNotifications(
-        'Next Class in 5 minutes.',
-        'Class will start shortly',
-        subjectName,
-        [],
-        startingTime,
-        const Duration(minutes: 5));
+    notificationServices.zoneScheduleNotifications('Next Class in 5 minutes.',
+        'Class will start shortly', data, const Duration(minutes: 5));
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 350),
