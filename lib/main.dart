@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const TeacherDetailsEntry(),
       routes: {
         SelectActor.screen: (context) => const SelectActor(),
         StudentLogin.screen: (context) => const StudentLogin(),
