@@ -1,6 +1,9 @@
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
+import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 // import '../Screens/admin/teacher_details_entry.dart';
 import '../Screens/admin/teacher_details_entry.dart';
 import '../Screens/select_actor.dart';
@@ -31,6 +34,7 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
   late int editedSubjNo;
   late List<String> editedSubject;
   late List<String> selectedCourse;
+  late List<String> saveSelectedCourse;
 
   @override
   void initState() {
@@ -45,6 +49,14 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
       editedSubject[2],
       editedSubject[3],
     ];
+  }
+
+  void first() {
+    TeacherCollectionOp.fetchAllTeachers(institutionName).then((res) {
+      setState(() {
+        data = res;
+      });
+    });
   }
 
   @override
@@ -268,15 +280,57 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
                       width: height * 0.015,
                     ),
                     ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           loginUser(_formKey);
                           if (loginUser(_formKey) &&
                               validateDropDown(editedSubjNo)) {
                             //todo add this to collection
-                            print(editedId);
-                            print(editedName);
-                            print(editedSubjNo);
-                            print(editedSubject);
+                            saveSelectedCourse = [
+                              selectedCourse[0] != 'Select course' &&
+                                      editedSubjNo >= 1
+                                  ? selectedCourse[0]
+                                  : '-',
+                              selectedCourse[1] != 'Select course' &&
+                                      editedSubjNo >= 2
+                                  ? selectedCourse[1]
+                                  : '-',
+                              selectedCourse[2] != 'Select course' &&
+                                      editedSubjNo >= 3
+                                  ? selectedCourse[2]
+                                  : '-',
+                              selectedCourse[3] != 'Select course' &&
+                                      editedSubjNo == 4
+                                  ? selectedCourse[3]
+                                  : '-'
+                            ];
+                            Map<String, dynamic> t = {};
+                            data.forEach((key, value) {
+                              if (key == widget.selectedTeacherId) {
+                                t[editedId] = {
+                                  "teacher_name": editedName,
+                                  "subjects": saveSelectedCourse,
+                                };
+                              }
+                            });
+                            if (await TeacherCollectionOp.updateTeacher(
+                                    institutionName,
+                                    t) &&
+                                context.mounted) {
+                              context.showSuccessBar(
+                                  content: const Text(
+                                "Updated",
+                                style: TextStyle(color: Colors.green),
+                              ));
+                              // first();
+                              setState(() {
+                                data.remove(widget.selectedTeacherId);
+                                data[editedId] = {
+                                  "teacher_name": editedName,
+                                  "subjects": saveSelectedCourse,
+                                };
+                              });
+                              Navigator.of(context).pop();
+                            }
                             // //Clear all the input field
                             // _formKey.currentState?.reset();
                             // setState(() {
