@@ -1,6 +1,7 @@
 import 'package:flash/flash_helper.dart';
 import 'package:scheduler/Models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -234,5 +235,38 @@ class TeacherCollectionOp {
     final docRef = await db.collection(iname).doc("Teachers").get();
     final d = docRef.data()??{};
     return d;
+  }
+
+  static Future<bool> updateTeacher(String iname, Map<String, dynamic> t) async {
+    final docs = await db.collection(iname).doc("Teachers").get();
+    Map<String, dynamic> res = {};
+
+    // docs.data()?.forEach((key, value) {
+    //   if (key == tid) {
+    //     res[tid] = {
+    //       "teacher_name": tname,
+    //       "subjects": subs,
+    //     };
+    //   }
+    //   else {
+    //     res[key] = value;
+    //   }
+    // });
+    
+    await db.collection(iname).doc("Teachers").set(t);
+    return true;
+  }
+
+  static Future<bool> removeTeacher(String? aid, String cid) async {
+    if (aid == null) {
+      return false;
+    }
+    final docRef = await db.collection(aid).doc("Teachers").get();
+    Map<String, dynamic> dataRef = docRef.data()??{};
+
+    dataRef.remove(cid);
+
+    await db.collection(aid).doc("Teachers").set(dataRef);
+    return true;
   }
 }

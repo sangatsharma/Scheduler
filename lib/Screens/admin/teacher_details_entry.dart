@@ -624,7 +624,8 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
                                         ),
                                       ),
                                     ],
-                                    rows: dataCellForTeachers(data, context),
+                                    rows: dataCellForTeachers(
+                                        data, setState, context),
                                   ),
                                 ],
                               ),
@@ -654,14 +655,22 @@ bool validateDropDown(int num) {
   return flag;
 }
 
-List<DataRow> dataCellForTeachers(final td, BuildContext context) {
+List<DataRow> dataCellForTeachers(final td, final first, BuildContext context) {
   List<DataRow> res = [];
+  print(td);
 
   if (td == null) {
     return res;
   }
 
   td.forEach((key, value) {
+    int c = 0;
+    List.from(value["subjects"]).forEach((element) {
+      if (element != '-') {
+        c++;
+      }
+    });
+    List<String> l = List.from(value["subjects"]);
     DataRow tmp = DataRow(cells: <DataCell>[
       DataCell(Text(key)),
       DataCell(Text(value["teacher_name"])),
@@ -673,19 +682,29 @@ List<DataRow> dataCellForTeachers(final td, BuildContext context) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return const TeacherDetailsEditBox(
+            return TeacherDetailsEditBox(
               index: 0,
-              selectedSubject: ['aa1', '-', '-', '-'],
-              selectedTeacherId: '120',
-              selectedTeacherName: 'Ram lal',
-              subjNo: 1,
+              selectedSubject: l,
+              selectedTeacherId: key,
+              selectedTeacherName: value["teacher_name"],
+              subjNo: c,
             );
           },
         );
       }),
       DataCell(
         const Icon(Icons.delete),
-        onTap: () {},
+        onTap: () async {
+          TeacherCollectionOp.removeTeacher(institutionName, key);
+          first(() {
+            data.remove(key);
+          });
+          context.showSuccessBar(
+              content: const Text(
+                "Removed",
+                style: TextStyle(color: Colors.green),
+              ));
+        },
       ),
     ]);
 
