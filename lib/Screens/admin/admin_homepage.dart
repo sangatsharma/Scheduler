@@ -107,7 +107,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
   @override
   Widget build(BuildContext context) {
     var photoUrl = widget.user?.photoURL ??
-        'https://upload.wikimedia.org/wikipedia/commons/f/f7/Facebook_default_male_avatar.gif';
+        'https://e7.pngegg.com/pngimages/636/819/png-clipart-computer-icons-privacy-policy-admin-icon-copyright-rim-thumbnail.png';
     return WillPopScope(
       onWillPop: showExitPopup,
       child: MaterialApp(
@@ -124,19 +124,6 @@ class _AdminHomepageState extends State<AdminHomepage> {
                   children: [
                     const SizedBox(
                       width: 5,
-                    ),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Icon(
-                          Icons.west,
-                          color: isLightMode ? Colors.black : Colors.white,
-                          size: 30,
-                        ),
-                      ),
                     ),
                     const SizedBox(
                       width: 10,

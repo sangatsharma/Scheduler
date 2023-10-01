@@ -2,125 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 
-var startingTime1 = {
-  '0': [
-    //7=>sunday when 7 change to 0
-//todo fetch data from database using function and paramter to pass date index,selected class name
-    '09:57',
-    '09:58',
-    '10:00',
-    '10:05',
-    '10:08',
-    '11:15',
-    '11:35',
-    '12:05',
-    '12:15',
-    '13:15',
-    '13:17',
-    '13:19'
-  ],
-  '1': [
-    //1=>monday
-//todo fetch data from database using function and paramter to pass date index,selected class name
-    '09:57',
-    '09:58',
-    '10:00',
-    '10:05',
-    '10:08',
-    '11:15',
-    '11:35',
-    '12:05',
-    '12:15',
-    '14:37',
-    '14:38',
-    '15:28'
-  ],
-  //perform same for below.
-  '2': 'argon',
-  '3': 'helium',
-  '4': 'neon',
-  '5': 'argon',
-  '6': 'helium',
-};
-// final prefs = await SharedPreferences.getInstance();
-// prefs.setString('startingTime1', jsonEncode(startingTime1));
-// final jsonData = prefs.getString('startingTime1');
-// if (jsonData != null) {
-// final Map<String, dynamic> parsedData = jsonDecode(jsonData);
-// print(parsedData
-//     .map((key, value) => MapEntry(key, List<String>.from(value)))['0']?[0]);
-// }
-// await prefs.remove('startingTime1');
-// List<String> startingTime = [
-//   '17:07',
-//   '17:09',
-//   '17:11',
-//   '17:15',
-//   '10:08',
-//   '11:15',
-//   '11:35',
-//   '12:05',
-//   '12:15',
-//   '13:15',
-//   '15:02',
-//   '15:01'
-// ];
-// //List can be of type dateTime
-// List<String> endingTime = [
-//   '08:38',
-//   '10:25',
-//   '10:35',
-//   '10:45',
-//   '11:15',
-//   '11:35',
-//   '12:05',
-//   '12:15',
-//   '12:55',
-//   '14:38',
-//   '14:39',
-//   '14:40',
-// ];
-// List<String> teacherName = [
-//   'Er. ShivaramDam/Er. Sujan Dhakal',
-//   'Dr.Rammani Adhikari',
-//   'Er.Rishi Sharan Khanal',
-//   'Dr.Rammani Adhikari',
-//   'Er.Rishi Sharan Khanal',
-//   'N/A ',
-//   'Er. Sujan Dhakal',
-//   'Er. ShivaramDam/Er. Sujan Dhakal',
-//   'Dr.Rammani Adhikari',
-//   'Er.Rishi Sharan Khanal',
-//   'N/A ',
-//   'Er. Sujan Dhakal',
-// ];
-// List<String> subjectName = [
-//   'Computer Organization and Architecture(2P)(A)',
-//   'Numerical Method(2L)',
-//   'Database Management System(2T)(A/B)',
-//   'Numerical Method(2L)',
-//   'DBMs(2T)(A/B)',
-//   'Break',
-//   'Computer Graphics(1L)',
-//   'Computer Organization and Architecture(2P)(A)',
-//   'Numerical Method(2L)',
-//   'Database Management System(2T)(A/B)',
-//   'Break',
-//   'Computer Graphics(1L)',
-// ];
-
-
-List<Widget> fetchRoutine(String day, Map<String, dynamic>? data, BuildContext context){
+List<Widget> fetchRoutine(
+    String day, Map<String, dynamic>? data, BuildContext context) {
   //fetch all data from database
   //items to be fetched and convert to list
   //todo make list empty and add from database
   //List can be of type dateTime
   List<Widget> allRoutine = [];
-  List<String> startingTime = data?["starting_times"]??[];
-  List<String> endingTime= data?["ending_times"]??[];
-  List<String> teacherName = data?["teachers_name"]??[];
-  List<String> subjectName = data?["subjects"]??[];
-  
+  List<String> startingTime = data?["starting_times"] ?? [];
+  List<String> endingTime = data?["ending_times"] ?? [];
+  List<String> teacherName = data?["teachers_name"] ?? [];
+  List<String> subjectName = data?["subjects"] ?? [];
+
   for (int i = 0; i < startingTime.length; i++) {
     Widget tempContainer = Container(
       margin: const EdgeInsets.only(top: 2, left: 4, right: 4, bottom: 3),
@@ -227,28 +120,29 @@ List<Widget> fetchRoutine(String day, Map<String, dynamic>? data, BuildContext c
 
 //List to fetch routine from database caled by passing day as a string
 //can be change day string to index according to the input field in admin section
-List<Widget> showRoutine(String dayIndex,Map<String, dynamic> d, BuildContext context) {
+List<Widget> showRoutine(
+    String dayIndex, Map<String, dynamic> d, BuildContext context) {
   final data = d[dayIndex];
 
   switch (dayIndex) {
     case '1':
-      return fetchRoutine('MON',data, context);
+      return fetchRoutine('MON', data, context);
 
     case '2':
-      return fetchRoutine('TUE',data, context);
+      return fetchRoutine('TUE', data, context);
     case '3':
-      return fetchRoutine('WED',data, context);
+      return fetchRoutine('WED', data, context);
     case '4':
-      return fetchRoutine('THU',data, context);
+      return fetchRoutine('THU', data, context);
 
     case '5':
-      return fetchRoutine('FRI',data, context);
+      return fetchRoutine('FRI', data, context);
 
     case '6':
-      return fetchRoutine('SAT',data, context);
+      return fetchRoutine('SAT', data, context);
 
     case '7':
-      return fetchRoutine('SUN',data, context);
+      return fetchRoutine('SUN', data, context);
     default:
       return [];
   }
