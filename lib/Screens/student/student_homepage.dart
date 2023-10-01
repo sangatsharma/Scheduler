@@ -92,7 +92,7 @@ class _StudentHomepageState extends State<StudentHomepage>
   Map<String, Map<String, List<String>>> data = {};
   void startupLoad() {
     // TODO real class Name
-    RoutineOp.fetchRoutine("BSE-4th").then((value) {
+    RoutineOp.fetchRoutine("demo-admin", "BSE-4th").then((value) {
       NotificationServices notificationServices = NotificationServices();
       WidgetsFlutterBinding.ensureInitialized();
       notificationServices.initializeNotifications();

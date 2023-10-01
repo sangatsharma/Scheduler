@@ -127,7 +127,14 @@ class InstituteCollection {
 }
 
 class RoutineOp {
-  static String _weekDay(String w) {
+  
+  static Future<List<dynamic>> getClasses(String iname) async{
+    final docRef = await db.collection(iname).doc("Routine").get();
+    List<dynamic> res = docRef.data()?["class_name"]??[];
+    return res;
+  }
+
+  static String weekDay(String w) {
     if (w == "Sunday")
       return "7";
     else if (w == "Monday")
@@ -143,9 +150,9 @@ class RoutineOp {
   }
 
   static Future<Map<String, Map<String, List<String>>>> fetchRoutine(
-      String cn) async {
+      String iname, String cn) async {
     final classColRef =
-        await db.collection("demo-admin").doc("Routine").collection(cn).get();
+        await db.collection(iname).doc("Routine").collection(cn).get();
 
     Map<String, Map<String, List<String>>> res = {
       "7": {
@@ -205,14 +212,38 @@ class RoutineOp {
         teachers_name.add(b["teacher_name"]);
         subjects.add(b["subject"]);
       }
-      res[_weekDay(doc.get("week_day"))]?["starting_times"]
+      res[weekDay(doc.get("week_day"))]?["starting_times"]
           ?.addAll(starting_time);
-      res[_weekDay(doc.get("week_day"))]?["ending_times"]?.addAll(ending_time);
-      res[_weekDay(doc.get("week_day"))]?["teachers_name"]
+      res[weekDay(doc.get("week_day"))]?["ending_times"]?.addAll(ending_time);
+      res[weekDay(doc.get("week_day"))]?["teachers_name"]
           ?.addAll(teachers_name);
-      res[_weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects);
+      res[weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects);
     }
     return res;
+  }
+
+  static Future<bool> addClass(String iname, String cname) async {
+    final docRef2 = db.collection(iname).doc("Routine");
+    await docRef2.set({
+      "class_name": FieldValue.arrayUnion([cname]),
+    }, SetOptions(merge: true)).then((value) => true);
+
+    return true;
+  }
+
+  static Future<bool> uploadRoutine(String iname, String cname, List<Map<String, dynamic>> data, String weekday) async{
+    final docRef = db.collection(iname).doc("Routine").collection(cname).doc(weekday);
+
+    for(var element in data){
+      await docRef.set({
+        'periods': FieldValue.arrayUnion([element]),
+        'week_day': weekday,
+      }, SetOptions(merge: true)).then((value) => true);
+    }
+
+    await addClass(iname, cname);
+
+    return true;
   }
 }
 
@@ -364,10 +395,10 @@ class TeacherCollectionOp {
           subjects.add(b["subject"]);
         }
       }
-      res[RoutineOp._weekDay(doc.get("week_day"))]?["starting_times"]
+      res[RoutineOp.weekDay(doc.get("week_day"))]?["starting_times"]
           ?.addAll(starting_time);
-      res[RoutineOp._weekDay(doc.get("week_day"))]?["ending_times"]?.addAll(ending_time);
-      res[RoutineOp._weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects);
+      res[RoutineOp.weekDay(doc.get("week_day"))]?["ending_times"]?.addAll(ending_time);
+      res[RoutineOp.weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects);
     }
     print(res);
     return res;

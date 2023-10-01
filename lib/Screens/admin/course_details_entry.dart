@@ -45,7 +45,7 @@ class _CourseDetailsEntryState extends State<CourseDetailsEntry> {
     double height = MediaQuery.of(context).size.height;
     first();
     // TODO real class name
-    RoutineOp.fetchRoutine("BSE-4th");
+    RoutineOp.fetchRoutine("demo-admin", "BSE-4th");
     final args = ModalRoute.of(context)!.settings.arguments.toString();
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
