@@ -4,14 +4,12 @@ import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Models/db_operations.dart';
-import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
-import 'package:scheduler/Screens/student/student_class_select.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Notification/notification_services.dart';
 import 'databaseFetch_student.dart';
 import 'package:scheduler/Widgets/themes.dart';
-import 'package:scheduler/Screens/student/student_homepage.dart';
 
 class StudentHomepage extends StatefulWidget {
   const StudentHomepage({Key? key}) : super(key: key);
@@ -22,6 +20,17 @@ class StudentHomepage extends StatefulWidget {
 
 class _StudentHomepageState extends State<StudentHomepage>
     with SingleTickerProviderStateMixin {
+  String studentClass = '';
+
+  void loadClassFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    studentClass = prefs.getString('studentClass') ??
+        ''; // Provide a default value ("") if the key is not found
+
+    // Update the UI with the retrieved string
+    setState(() {});
+  }
+
   //function to show when back button is pressed
   Future<bool> showExitPopup() async {
     return await showDialog(
@@ -126,6 +135,7 @@ class _StudentHomepageState extends State<StudentHomepage>
     // notificationServices.zoneScheduleNotifications('Next Class in 5 minutes.',
     //     'Class will start shortly', data, const Duration(minutes: 5));
 //end
+    loadClassFromPreferences();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 350),
       vsync: this,
@@ -281,7 +291,7 @@ class _StudentHomepageState extends State<StudentHomepage>
                               ),
                               Container(
                                 margin: const EdgeInsets.only(right: 20),
-                                child: Text(selectedClass,
+                                child: Text(studentClass,
                                     style: TextStyle(
                                         fontFamily: 'poppins',
                                         fontSize: 15,

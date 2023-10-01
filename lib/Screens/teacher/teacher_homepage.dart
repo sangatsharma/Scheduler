@@ -8,6 +8,7 @@ import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Notification/notification_services.dart';
 import 'databaseFetch_teacher.dart';
 import 'package:scheduler/Widgets/themes.dart';
@@ -24,7 +25,16 @@ class TeacherHomepage extends StatefulWidget {
 class _TeacherHomepageState extends State<TeacherHomepage>
     with SingleTickerProviderStateMixin {
   //function to show when back button is pressed
+String teacherName = '';
 
+  void loadStringFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    teacherName = prefs.getString('teacherName') ??
+        ''; // Provide a default value ("") if the key is not found
+
+    // Update the UI with the retrieved string
+    setState(() {});
+  }
   Future<bool> showExitPopup() async {
     return await showDialog(
           barrierColor: Colors.transparent.withOpacity(0.6),
@@ -116,7 +126,7 @@ class _TeacherHomepageState extends State<TeacherHomepage>
       //     classNameTeacher,
       //     startingTimeTeacher,
       //     const Duration(minutes: 5));
-
+    loadStringFromPreferences();
       _controller = AnimationController(
         duration: const Duration(milliseconds: 350),
         vsync: this,

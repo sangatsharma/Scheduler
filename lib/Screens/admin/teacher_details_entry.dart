@@ -48,7 +48,10 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
     //TODO no dummy
     final res = await CourseCollectionOp.fetchCourse(institutionName);
     final tRes = await TeacherCollectionOp.fetchAllTeachers(institutionName);
+<<<<<<< HEAD
     late final SplayTreeMap a;
+=======
+>>>>>>> 84e9cfe8c0b9b9a5d157b63a13cb8f6daffea71f
     // await TeacherCollectionOp.addTeacher("demo-admin", "1", "tname", 1, "cname");
     if (fetchAllCourse.length == 1) {
       setState(() {
@@ -66,6 +69,7 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
 
   @override
   Widget build(BuildContext context) {
+    startup();
     List<Widget> generateSubjectDropdown(int num, double width) {
       List<Widget> inputDropdownList = [];
       for (int i = 0; i <= (num < 3 ? num : 3); i++) {
@@ -703,9 +707,9 @@ List<DataRow> dataCellForTeachers(final td, final first, BuildContext context) {
           });
           context.showSuccessBar(
               content: const Text(
-                "Removed",
-                style: TextStyle(color: Colors.green),
-              ));
+            "Removed",
+            style: TextStyle(color: Colors.green),
+          ));
         },
       ),
     ]);

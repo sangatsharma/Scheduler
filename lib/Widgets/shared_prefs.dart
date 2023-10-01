@@ -10,7 +10,7 @@ void setThemeMode(bool themeMode) async {
 //Returns bool for the saved value of theme mode
 Future<bool?> selectedThemeMode() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('isLightModeSaved') ?? true;
+  return prefs.getBool('isLightModeSaved') ?? false;
 }
 
 bool isStudentLogin = false;
@@ -19,6 +19,16 @@ bool isTeacherLogin = false;
 void setStudentLoginStatus(bool isLoggedIn) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('isStudentLoggedIn', isLoggedIn);
+}
+
+void setStudentClassName(String className) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('studentClass', className);
+}
+
+void setTeacherName(String teacherName) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('teacherName', teacherName);
 }
 
 void setTeacherLoginStatus(bool isLoggedIn) async {

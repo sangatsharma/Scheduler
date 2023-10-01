@@ -7,10 +7,11 @@ import 'package:scheduler/Widgets/next_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Notification/notification_services.dart';
+import '../Widgets/shared_prefs.dart';
 
 //default set to light mode
 // from themes.dart
-bool isLightMode = true;
+bool isLightMode = false;
 
 class SelectActor extends StatefulWidget {
   const SelectActor({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class _SelectActorState extends State<SelectActor> {
   void initState() {
     super.initState();
     cancelNotification();
+    setThemeMode(true);
   }
 
   @override

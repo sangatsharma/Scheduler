@@ -4,6 +4,7 @@ import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import '../select_actor.dart';
 import 'package:scheduler/Models/db_operations.dart';
 
+<<<<<<< HEAD
 // List<String> startingTimeTeacher = [
 //   '17:17',
 //   '17:19',
@@ -41,6 +42,45 @@ import 'package:scheduler/Models/db_operations.dart';
 //   'Break',
 //   'Computer Graphics(1L)',
 // ];
+=======
+List<String> startingTimeTeacher = [
+  '10:15',
+  '11:45',
+  '12:30',
+  '13:15',
+  '13:55',
+  '14:30',
+  '15:50',
+];
+//List can be of type dateTime
+List<String> endingTimeTeacher = [
+  '11:45',
+  '12:30',
+  '13:15',
+  '13:55',
+  '14:30',
+  '15:50',
+  '16:30',
+];
+List<String> classNameTeacher = [
+  'BSE 4th sem',
+  'BSE 3rd sem',
+  'BSE 2nd sem',
+  'BSE 5th sem',
+  'BSE 6th sem',
+  'BSE 7th sem',
+  'BSE 8th sem',
+];
+List<String> subjectNameTeacher = [
+  'Computer Organization and Architecture(2P)(A)',
+  'Numerical Method(2L)',
+  'Database Management System(2T)(A/B)',
+  'Numerical Method(2L)',
+  'DBMs(2T)(A/B)',
+  'Break',
+  'Computer Graphics(1L)',
+];
+>>>>>>> 84e9cfe8c0b9b9a5d157b63a13cb8f6daffea71f
 
 List<Widget> fetchTeacherRoutine(
     String day, Map<String, dynamic> data, BuildContext context) {
