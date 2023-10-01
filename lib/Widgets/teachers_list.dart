@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 
 //Todo Saurav fetch data from database based on the institution code
 //filled by teacher
@@ -7,18 +9,19 @@ import 'package:flutter/material.dart';
 
 List<String> teachersNameList = [
   'Select your name',
-  'Pralhad Shrestha',
-  'Udaya raj Dhungana ',
-  'Prem Gurung',
-  'Dr.Rammani Adhikari',
-  'Er.Rishi Sharan Khanal',
-  'Dr.Rammani Adhikari2',
 ];
 
 //function to convert string list of teachers into dropdownitemlist
 
 List<DropdownMenuItem<String>> getDropDownItem() {
   List<DropdownMenuItem<String>> teacherNameDropDownItem = [];
+  List<String> names = [];
+  TeacherCollectionOp.fetchAllTeachers(institutionName).then((value){
+    value.forEach((key, value) {
+      names.add(value["teacher_name"]);
+    });
+    teachersNameList = teachersNameList + names;
+  });
   for (int i = 0; i < teachersNameList.length; i++) {
     var newItem = DropdownMenuItem<String>(
       value: teachersNameList[i],

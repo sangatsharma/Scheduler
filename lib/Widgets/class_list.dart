@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 
 //Todo Saurav fetch data from database based on the institution code
 //filled by teacher
@@ -7,23 +9,16 @@ import 'package:flutter/material.dart';
 
 List<String> classNameList = [
   'Select your Class',
-  'BSE 4th sem',
-  'BSE 3rd sem',
-  'BSE 2nd sem',
-  'BSE 5th sem',
-  'BSE 6th sem',
-  'BSE 7th sem',
-  'BSE 8th sem',
-  'BOCE 1st sem',
-  'BOCE 2nd sem',
-  'BOCE 4th sem',
-  'BOCE 5th sem',
-  'BOCE 6th sem',
 ];
 
 //function to convert string list of class into dropdownitemlist
 
 List<DropdownMenuItem<String>> getDropDownItem() {
+  //todo dosent change auto
+  RoutineOp.getClasses(institutionName).then((value) => {
+        if (classNameList.length == 1)
+          {classNameList = classNameList + List<String>.from(value)}
+      });
   List<DropdownMenuItem<String>> classNameDropDownItem = [];
   for (int i = 0; i < classNameList.length; i++) {
     var newItem = DropdownMenuItem<String>(

@@ -32,6 +32,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
     setState(() {
       inviteCode = a["code"];
       institutionName = a["institution_name"];
+      MappingCollectionOp.extra(institutionName, inviteCode);
     });
   }
 

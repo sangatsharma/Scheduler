@@ -16,7 +16,27 @@ class MappingCollectionOp {
     final m1Map = newCollection.toMap();
     final docRef = db.collection("mapping-collection").doc(aid);
 
+
     return await docRef.set(m1Map).then((value) => true, onError: (e) => false);
+  }
+
+  static Future<bool> extra(String iname, String code)async{
+    final docRef2 = db.collection("code-mapping").doc(code);
+    await docRef2.set({"name": iname});
+
+    return true;
+  }
+
+  static Future<String> nameFromCode(String code) async {
+    final docRef = await db.collection("code-mapping").doc(code).get();
+    final res = docRef.data();
+
+    if(res == null) {
+      return "";
+    }
+    else {
+      return res["name"];
+    }
   }
 
   // USAGE: <MAP/null> MappingCollectionOp.fetchMapping(...);
@@ -348,9 +368,9 @@ class TeacherCollectionOp {
 
 
   static Future<Map<String, Map<String, List<String>>>> fetchRoutine(
-      String cn, String tid) async {
+      String iname, String cn, String tid) async {
     final classColRef =
-        await db.collection("demo-admin").doc("Routine").collection(cn).get();
+        await db.collection(iname).doc("Routine").collection(cn).get();
 
     Map<String, Map<String, List<String>>> res = {
       "7": {

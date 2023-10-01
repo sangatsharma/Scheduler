@@ -4,6 +4,7 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
 import 'package:scheduler/Screens/student/student_class_select.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
@@ -54,8 +55,8 @@ void updateValues(String className) {
 
 //For taking routine inputs
 //todo fetch data from database
-List<String> teachersDB = ['Select Teacher', 'Ram', 'Shyam', 'Sita'];
-List<String> subjectDB = ['Select Subject', 'Maths', 'Science', 'English'];
+List<String> teachersDB = ['Select Teacher'];
+List<String> subjectDB = ['Select Subject'];
 List<String> inputTeacher = [
   'Select Teacher',
   'Select Teacher',
@@ -102,9 +103,19 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
   }
 
   void first() {
-    RoutineOp.getClasses(institutionName).then((value) {
-      setState(() {
-        classNames = value;
+    RoutineOp.getClasses(institutionName).then((classN) {
+      CourseCollectionOp.fetchCourse(institutionName).then((cources) {
+        TeacherCollectionOp.fetchAllTeachers(institutionName).then((teachers) {
+          List<String> names = [];
+          teachers.forEach((k,v) {
+            names.add(v["teacher_name"]);
+          });
+          setState(() {
+            classNames = classN;
+            subjectDB = subjectDB + cources;
+            teachersDB = teachersDB + names;
+          });
+        });
       });
     });
   }
@@ -924,7 +935,8 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                                                           columns: generateColumn(
                                                               activeClassPeriod),
                                                           rows: generateRow(
-                                                              context, fetchRoutine),
+                                                              context,
+                                                              fetchRoutine),
                                                         ),
                                                       ],
                                                     ),

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Models/db_operations.dart';
 import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 import 'package:scheduler/Screens/select_actor.dart';
+import 'package:scheduler/Screens/teacher/teacher_login.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import '../../Notification/notification_services.dart';
 import 'databaseFetch_teacher.dart';
@@ -93,38 +94,40 @@ class _TeacherHomepageState extends State<TeacherHomepage>
   @override
   void initState() {
     super.initState();
-    TeacherCollectionOp.fetchRoutine("BSE-4th",selectedTeacherName).then((value) {
-      setState(() {
-        data = value;
+    MappingCollectionOp.nameFromCode(teacherInstitutionCode).then((value) {
+      TeacherCollectionOp.fetchRoutine("demo-admin", "BSE-4th", "1").then((value) {
+        setState(() {
+          data = value;
+        });
       });
-    });
-    //scheduleNotification for teacher
-    NotificationServices notificationServices = NotificationServices();
-    WidgetsFlutterBinding.ensureInitialized();
-    notificationServices.initializeNotifications();
-    // notificationServices.zoneScheduleNotifications(
-    //     'Test', 'This is body', timeList, const Duration(minutes: 1));
-    //send notification function
-    notificationServices.sendNotifications(
-        'Test', 'application Loaded successfully');
-    // notificationServices.zoneScheduleNotifications(
-    //     'You have a Class in 5 minutes.',
-    //     'Class will start shortly.',
-    //     subjectNameTeacher,
-    //     classNameTeacher,
-    //     startingTimeTeacher,
-    //     const Duration(minutes: 5));
+      //scheduleNotification for teacher
+      NotificationServices notificationServices = NotificationServices();
+      WidgetsFlutterBinding.ensureInitialized();
+      notificationServices.initializeNotifications();
+      // notificationServices.zoneScheduleNotifications(
+      //     'Test', 'This is body', timeList, const Duration(minutes: 1));
+      //send notification function
+      notificationServices.sendNotifications(
+          'Test', 'application Loaded successfully');
+      // notificationServices.zoneScheduleNotifications(
+      //     'You have a Class in 5 minutes.',
+      //     'Class will start shortly.',
+      //     subjectNameTeacher,
+      //     classNameTeacher,
+      //     startingTimeTeacher,
+      //     const Duration(minutes: 5));
 
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 350),
-      vsync: this,
-    );
+      _controller = AnimationController(
+        duration: const Duration(milliseconds: 350),
+        vsync: this,
+      );
 
-    //Start the animation after a short delay (e.g., 500 milliseconds)
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        _controller.forward();
-      }
+      //Start the animation after a short delay (e.g., 500 milliseconds)
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _controller.forward();
+        }
+      });
     });
   }
 

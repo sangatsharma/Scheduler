@@ -92,16 +92,21 @@ class _StudentHomepageState extends State<StudentHomepage>
   Map<String, Map<String, List<String>>> data = {};
   void startupLoad() {
     // TODO real class Name
-    RoutineOp.fetchRoutine("demo-admin", "BSE-4th").then((value) {
-      NotificationServices notificationServices = NotificationServices();
-      WidgetsFlutterBinding.ensureInitialized();
-      notificationServices.initializeNotifications();
-      notificationServices.sendNotifications(
-          'Test', 'application Loaded successfully');
-      notificationServices.zoneScheduleNotifications('Next Class in 5 minutes.',
-          'Class will start shortly', value, const Duration(minutes: 5));
-      setState(() {
-        data = value;
+    MappingCollectionOp.nameFromCode(inviteCode).then((value) {
+      RoutineOp.fetchRoutine(value, selectedClass).then((value) {
+        NotificationServices notificationServices = NotificationServices();
+        WidgetsFlutterBinding.ensureInitialized();
+        notificationServices.initializeNotifications();
+        notificationServices.sendNotifications(
+            'Test', 'application Loaded successfully');
+        notificationServices.zoneScheduleNotifications(
+            'Next Class in 5 minutes.',
+            'Class will start shortly',
+            value,
+            const Duration(minutes: 5));
+        setState(() {
+          data = value;
+        });
       });
     });
   }
