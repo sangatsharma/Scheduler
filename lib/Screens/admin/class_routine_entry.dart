@@ -4,6 +4,7 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/student/student_class_select.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
@@ -101,7 +102,7 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
   }
 
   void first() {
-    RoutineOp.getClasses(institutionName).then((value){
+    RoutineOp.getClasses(institutionName).then((value) {
       setState(() {
         classNames = value;
       });
@@ -354,8 +355,8 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                       'Select Teacher'
                     ];
                   });
-                  formKey.currentState?.reset();
                   fetchRoutine(selectedDay);
+                  formKey.currentState?.reset();
                 } else {
                   context.showErrorBar(
                       content: const Text(
@@ -573,24 +574,21 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                                     selectedDay = newValue!;
                                     day = [selectedDay];
                                     String w = RoutineOp.weekDay(selectedDay);
-                                    setState(() {
-                                      activeClassPeriod = routineDetails[w]
-                                                  ?["starting_times"]!
-                                              .length ??
-                                          1;
-                                      startTime = routineDetails[w]
-                                              ?["starting_times"] ??
-                                          [''];
-                                      endTime = routineDetails[w]
-                                              ?["ending_times"] ??
-                                          [''];
-                                      subjects = routineDetails[w]
-                                              ?["subjects"] ??
-                                          [''];
-                                      teachers = routineDetails[w]
-                                              ?["teachers_name"] ??
-                                          [''];
-                                    });
+                                    activeClassPeriod = routineDetails[w]
+                                                ?["starting_times"]!
+                                            .length ??
+                                        1;
+                                    startTime = routineDetails[w]
+                                            ?["starting_times"] ??
+                                        [''];
+                                    endTime = routineDetails[w]
+                                            ?["ending_times"] ??
+                                        [''];
+                                    subjects =
+                                        routineDetails[w]?["subjects"] ?? [''];
+                                    teachers = routineDetails[w]
+                                            ?["teachers_name"] ??
+                                        [''];
                                   });
                                 },
                                 items: <String>[
@@ -852,6 +850,11 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                                                               routineDetails =
                                                                   value;
                                                             });
+                                                            if (selectedDay !=
+                                                                'Select Day') {
+                                                              fetchRoutine(
+                                                                  selectedDay);
+                                                            }
                                                           });
                                                           setState(() {
                                                             activeClass =
@@ -920,7 +923,8 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                                                               true,
                                                           columns: generateColumn(
                                                               activeClassPeriod),
-                                                          rows: generateRow(),
+                                                          rows: generateRow(
+                                                              context, fetchRoutine),
                                                         ),
                                                       ],
                                                     ),
@@ -1007,7 +1011,7 @@ List<DataColumn> generateColumn(int totalPeriod) {
   return temp;
 }
 
-List<DataRow> generateRow() {
+List<DataRow> generateRow(BuildContext c, var fetchRoutine) {
   List<DataRow> temp = [];
 
   if (activeClassPeriod == 0) {
@@ -1042,6 +1046,15 @@ List<DataRow> generateRow() {
     const Icon(Icons.delete),
     onTap: () {
       //Todo remove
+      RoutineOp.removeWeekDay(institutionName, activeClass, selectedDay)
+          .then((value) {
+        c.showSuccessBar(
+            content: const Text(
+          "Removed",
+          style: TextStyle(color: Colors.green),
+        ));
+      });
+      fetchRoutine(selectedDay);
     },
   ));
 

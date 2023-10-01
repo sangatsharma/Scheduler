@@ -1,4 +1,5 @@
 import 'package:flash/flash_helper.dart';
+import 'package:flutter/rendering.dart';
 import 'package:scheduler/Models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scheduler/Screens/admin/teacher_details_entry.dart';
@@ -242,6 +243,13 @@ class RoutineOp {
     }
 
     await addClass(iname, cname);
+
+    return true;
+  }
+
+  static Future<bool> removeWeekDay(String iname, String cname, String weekday) async {
+    final docRef = db.collection(iname).doc("Routine").collection(cname).doc(weekday);
+    await docRef.delete();
 
     return true;
   }
