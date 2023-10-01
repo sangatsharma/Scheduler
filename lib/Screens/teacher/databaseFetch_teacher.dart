@@ -4,7 +4,6 @@ import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import '../select_actor.dart';
 import 'package:scheduler/Models/db_operations.dart';
 
-<<<<<<< HEAD
 // List<String> startingTimeTeacher = [
 //   '17:17',
 //   '17:19',
@@ -42,7 +41,7 @@ import 'package:scheduler/Models/db_operations.dart';
 //   'Break',
 //   'Computer Graphics(1L)',
 // ];
-=======
+
 List<String> startingTimeTeacher = [
   '10:15',
   '11:45',
@@ -80,7 +79,6 @@ List<String> subjectNameTeacher = [
   'Break',
   'Computer Graphics(1L)',
 ];
->>>>>>> 84e9cfe8c0b9b9a5d157b63a13cb8f6daffea71f
 
 List<Widget> fetchTeacherRoutine(
     String day, Map<String, dynamic> data, BuildContext context) {
@@ -91,7 +89,7 @@ List<Widget> fetchTeacherRoutine(
   List<Widget> allRoutine = [];
   List<String> startingTimeTeacher = data["starting_times"] ?? [];
   List<String> endingTimeTeacher = data["ending_times"] ?? [];
-  String subjectNameTeacher =selectedTeacherName;
+  String subjectNameTeacher = selectedTeacherName;
   //TODO
   List<String> classNameTeacher = ["BSE-4th"];
 

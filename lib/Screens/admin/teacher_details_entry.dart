@@ -48,13 +48,9 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
     //TODO no dummy
     final res = await CourseCollectionOp.fetchCourse(institutionName);
     final tRes = await TeacherCollectionOp.fetchAllTeachers(institutionName);
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     late final SplayTreeMap a;
-=======
->>>>>>> 84e9cfe8c0b9b9a5d157b63a13cb8f6daffea71f
-=======
->>>>>>> 84e9cfe8c0b9b9a5d157b63a13cb8f6daffea71f
+
     // await TeacherCollectionOp.addTeacher("demo-admin", "1", "tname", 1, "cname");
     if (fetchAllCourse.length == 1) {
       setState(() {
