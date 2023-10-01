@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Notification/notification_services.dart';
 import 'databaseFetch_teacher.dart';
 import 'package:scheduler/Widgets/themes.dart';
-import 'teacher_name_select.dart';
 
 class TeacherHomepage extends StatefulWidget {
   const TeacherHomepage({Key? key}) : super(key: key);
@@ -24,8 +23,7 @@ class TeacherHomepage extends StatefulWidget {
 
 class _TeacherHomepageState extends State<TeacherHomepage>
     with SingleTickerProviderStateMixin {
-  //function to show when back button is pressed
-String teacherName = '';
+  String teacherName = '';
 
   void loadStringFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,6 +33,8 @@ String teacherName = '';
     // Update the UI with the retrieved string
     setState(() {});
   }
+
+  //function to show when back button is pressed
   Future<bool> showExitPopup() async {
     return await showDialog(
           barrierColor: Colors.transparent.withOpacity(0.6),
@@ -138,6 +138,24 @@ String teacherName = '';
           _controller.forward();
         }
       });
+    //scheduleNotification for teacher
+    // notificationServices.zoneScheduleNotifications(
+    //     'Test', 'This is body', timeList, const Duration(minutes: 1));
+    //send notification function
+    // notificationServices.zoneScheduleNotifications(
+    //     'You have a Class in 5 minutes.',
+    //     'Class will start shortly.',
+    //     subjectNameTeacher,
+    //     classNameTeacher,
+    //     startingTimeTeacher,
+    //     const Duration(minutes: 5));
+  });
+
+    //Start the animation after a short delay (e.g., 500 milliseconds)
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        _controller.forward();
+      }
     });
   }
 
@@ -283,7 +301,7 @@ String teacherName = '';
                               ),
                               Container(
                                 margin: const EdgeInsets.only(right: 20),
-                                child: Text(selectedTeacherName,
+                                child: Text(teacherName,
                                     style: TextStyle(
                                         fontFamily: 'poppins',
                                         fontSize: 15,
