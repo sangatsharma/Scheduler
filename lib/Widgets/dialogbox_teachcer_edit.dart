@@ -111,6 +111,7 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
       return flag;
     }
 
+    first();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return AlertDialog(
@@ -313,8 +314,7 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
                               }
                             });
                             if (await TeacherCollectionOp.updateTeacher(
-                                    institutionName,
-                                    t) &&
+                                    institutionName, t) &&
                                 context.mounted) {
                               context.showSuccessBar(
                                   content: const Text(
@@ -331,17 +331,6 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
                               });
                               Navigator.of(context).pop();
                             }
-                            // //Clear all the input field
-                            // _formKey.currentState?.reset();
-                            // setState(() {
-                            //   editedSubjNo = 1;
-                            //   selectedCourse = [
-                            //     'Select course',
-                            //     'Select course',
-                            //     'Select course',
-                            //     'Select course',
-                            //   ];
-                            // });
                           } else {
                             //Show error message
                             context.showErrorBar(
