@@ -5,7 +5,6 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
-import 'package:scheduler/tmp/temp_file.dart';
 
 import '../../Auth/auth_service.dart';
 
@@ -24,7 +23,7 @@ class EmailVerify extends StatelessWidget {
             children: [
               //LOGO
               Image.asset(
-                'Assets/images/verifyimage.png',
+                'Assets/images/verify.png',
                 height: 260,
                 width: 260,
               ),

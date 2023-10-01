@@ -7,6 +7,7 @@ import 'package:flash/flash.dart';
 
 import '../../Widgets/appbar_func.dart';
 import 'package:scheduler/Models/db_operations.dart';
+
 class TeacherLogin extends StatefulWidget {
   const TeacherLogin({Key? key}) : super(key: key);
   static const String screen = 'TeacherLogin';
@@ -91,7 +92,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () async{
+                    onTap: () async {
                       // The TeacherNameSelect screen only loads if the validation
                       // was success
                       if (loginUser(_formKey)) {
@@ -99,23 +100,26 @@ class _TeacherLoginState extends State<TeacherLogin> {
                         // TeacherNameSelect screen
 
                         // Fetch institution code
-                        bool validKey = await MappingCollectionOp.institutionCodeExists(teacherInstitutionCode);
-                        
+                        bool validKey =
+                            await MappingCollectionOp.institutionCodeExists(
+                                teacherInstitutionCode);
+
                         // Validate institution code
-                        if(!validKey && context.mounted) {
+                        if (!validKey && context.mounted) {
                           context.showErrorBar(
-                            content: const Text(
-                              'Institution code dosen\'t exist',
+                              content: const Text(
+                                'Institution code not found !',
                                 style: TextStyle(color: Colors.red),
                               ),
-                            position: FlashPosition.top);
+                              position: FlashPosition.top);
 
-                            return;
-                          }
+                          return;
+                        }
 
-                        if(context.mounted) {
+                        if (context.mounted) {
                           Navigator.of(context).pop();
-                          Navigator.pushNamed(context, TeacherNameSelect.screen);
+                          Navigator.pushNamed(
+                              context, TeacherNameSelect.screen);
                         }
                       }
                     },

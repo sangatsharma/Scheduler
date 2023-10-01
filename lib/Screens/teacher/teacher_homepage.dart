@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Notification/notification_services.dart';
 import 'databaseFetch_teacher.dart';
 import 'package:scheduler/Widgets/themes.dart';
-import 'teacher_name_select.dart';
 
 class TeacherHomepage extends StatefulWidget {
   const TeacherHomepage({Key? key}) : super(key: key);
@@ -20,6 +20,17 @@ class TeacherHomepage extends StatefulWidget {
 
 class _TeacherHomepageState extends State<TeacherHomepage>
     with SingleTickerProviderStateMixin {
+  String teacherName = '';
+
+  void loadStringFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    teacherName = prefs.getString('teacherName') ??
+        ''; // Provide a default value ("") if the key is not found
+
+    // Update the UI with the retrieved string
+    setState(() {});
+  }
+
   //function to show when back button is pressed
   Future<bool> showExitPopup() async {
     return await showDialog(
@@ -107,7 +118,7 @@ class _TeacherHomepageState extends State<TeacherHomepage>
     //     classNameTeacher,
     //     startingTimeTeacher,
     //     const Duration(minutes: 5));
-
+    loadStringFromPreferences();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 350),
       vsync: this,
@@ -263,7 +274,7 @@ class _TeacherHomepageState extends State<TeacherHomepage>
                               ),
                               Container(
                                 margin: const EdgeInsets.only(right: 20),
-                                child: Text(selectedTeacherName,
+                                child: Text(teacherName,
                                     style: TextStyle(
                                         fontFamily: 'poppins',
                                         fontSize: 15,

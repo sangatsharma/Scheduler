@@ -21,6 +21,16 @@ void setStudentLoginStatus(bool isLoggedIn) async {
   prefs.setBool('isStudentLoggedIn', isLoggedIn);
 }
 
+void setStudentClassName(String className) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('studentClass', className);
+}
+
+void setTeacherName(String teacherName) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('teacherName', teacherName);
+}
+
 void setTeacherLoginStatus(bool isLoggedIn) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('isTeacherLoggedIn', isLoggedIn);

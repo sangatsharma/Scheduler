@@ -70,16 +70,6 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                       ),
                     ),
                   ),
-
-                  //validation of institution code {* Not required in this page}
-                  //validation should be done in previous page so that teachers dropdown list
-                  //of that institution will be fetch from that institution's database.
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return 'Please enter your username';
-                  //   }
-                  //   return null;
-                  // },
                 ),
                 const SizedBox(height: 20),
                 Container(
@@ -108,6 +98,7 @@ class _TeacherNameSelectState extends State<TeacherNameSelect> {
                     onChanged: (value) {
                       setState(() {
                         selectedTeacherName = value.toString();
+                        setTeacherName(selectedTeacherName);
                       });
                       //validation for selected name
                       validateSelectName();

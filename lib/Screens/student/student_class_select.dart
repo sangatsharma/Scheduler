@@ -95,6 +95,7 @@ class _StudentClassSelectState extends State<StudentClassSelect> {
                       onChanged: (value) {
                         setState(() {
                           selectedClass = value.toString();
+                          setStudentClassName(selectedClass);
                         });
                         //validation for selected name
                         validateSelectedClass();

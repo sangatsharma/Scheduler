@@ -10,7 +10,7 @@ import '../Notification/notification_services.dart';
 
 //default set to light mode
 // from themes.dart
-bool isLightMode = true;
+bool isLightMode = false;
 
 class SelectActor extends StatefulWidget {
   const SelectActor({Key? key}) : super(key: key);
