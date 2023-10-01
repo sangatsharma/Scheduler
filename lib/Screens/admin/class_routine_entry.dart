@@ -1,15 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:scheduler/Models/models.dart';
 import '../../Auth/auth_service.dart';
 import '../../Widgets/login_users.dart';
 import '../../Widgets/shared_prefs.dart';
 import '../../Widgets/themes.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'getAdmin_institution.dart';
-import 'package:scheduler/Models/db_operations.dart';
 
 class ClassRoutineEntry extends StatefulWidget {
   const ClassRoutineEntry({Key? key}) : super(key: key);
@@ -26,42 +25,345 @@ final List<String> classNames = [
   'class 3',
   'class 4',
   'class 5',
-  'class 1',
-  'class 2',
-  'class 3',
-  'class 4',
-  'class 5',
-  'class 1',
-  'class 2',
-  'class 3',
-  'class 4',
-  'class 5',
 ];
+//variables for storing all details
+String selectedDay = 'Select Day';
+String totalPeriod = 'Total periods';
+List<String> saveTeachers = [];
+List<String> saveSubjects = [];
+List<String> saveStartTime = [];
+List<String> saveEndTime = [];
+
+//variable to add new class
+String addedClass = '';
+
+//todo get period no. and other details from database of active class
+//for displaying routines
+String activeClass = '';
+int activeClassPeriod = 2;
+List<String> day = ['Sunday'];
+List<String> startTime = ['10:20', '10:40'];
+List<String> endTime = ['10:40', '11:30'];
+List<String> subjects = ['Maths', 'Science'];
+List<String> teachers = ['Prem Gurung', 'Ramesh Bhandari'];
+//todo below function is used to update values for each class routine
+void updateValues(String className) {
+  //todo update from db
+  // List<String> day = ['Sunday'];
+  // List<String> startTime = ['10:20', '10:40'];
+  // List<String> endTime = ['10:40', '11:30'];
+  // List<String> subjects = ['Maths', 'Science'];
+  // List<String> teachers = ['Prem Gurung', 'Ramesh Bhandari'];
+}
+
+//For taking routine inputs
+//todo fetch data from database
+List<String> teachersDB = ['Select Teacher', 'Ram', 'Shyam', 'Sita'];
+List<String> subjectDB = ['Select Subject', 'Maths', 'Science', 'English'];
+List<String> inputTeacher = [
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher',
+  'Select Teacher'
+];
+List<String> inputSubject = [
+  'Select Subject',
+  'Select Subject',
+  'Select Subject',
+  'Select Subject',
+  'Select Subject',
+  'Select Subject',
+  'Select Subject',
+  'Select Subject',
+  'Select Subject',
+  'Select Subject'
+];
+List<String> inputStartTimes = ['', '', '', '', '', '', '', '', '', ''];
+List<String> inputEndTimes = ['', '', '', '', '', '', '', '', '', ''];
+
+final _formKey = GlobalKey<FormState>();
 
 class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
-  final _formKey = GlobalKey<FormState>();
-
-  // void first() {
-  //   final t = ModalRoute.of(context)!.settings.arguments.toString();
-  //   InstituteCollection.getCourseDetails(t).then((res) {
-  //     setState(() {
-  //       routineDetails = res?["course_list"];
-  //     });
-  //   });
-  // }
-  //
-  // bool firstTime = true;
+  final _formKey1 = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    // if (firstTime) {
-    //   firstTime = false;
-    //   first();
-    // }
-    // final args = ModalRoute.of(context)!.settings.arguments.toString();
+    List<Widget> getRoutineFields(
+        String allPeriods, GlobalKey<FormState> formKey) {
+      List<Widget> temp = [];
+
+      //check time in : HH:MM 24 format
+      bool isValidTime(String time) {
+        final RegExp timeRegex = RegExp(
+          r'^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$',
+        );
+        return timeRegex.hasMatch(time);
+      }
+
+      //check if dropdown is not selected
+      bool checkDropdown(String num) {
+        int no = int.parse(num);
+        bool flag = true;
+        for (int k = 0; k < no; k++) {
+          if (inputTeacher[k] == 'Select Teacher' &&
+              inputSubject[k] == 'Select Subject') {
+            flag = false;
+          }
+        }
+        return flag;
+      }
+
+      if (allPeriods == 'Total periods') {
+        return temp;
+      } else {
+        int j = int.parse(allPeriods);
+        for (int i = 0; i < j; i++) {
+          Column t = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('  Period ${i + 1}'),
+              const SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                width: 80,
+                height: 40,
+                child: TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      inputStartTimes[i] = value;
+                    });
+                  },
+                  style: const TextStyle(
+                    fontFamily: 'poppins',
+                    fontSize: 10,
+                  ),
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(
+                      fontFamily: 'poppins',
+                      color: isLightMode ? Colors.black : Colors.white,
+                    ),
+                    labelText: 'Start time',
+                    errorStyle: const TextStyle(fontSize: 10),
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ),
+
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'HH:MM ?';
+                    }
+                    if (!isValidTime(inputStartTimes[i])) return 'HH:MM !';
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              SizedBox(
+                width: 80,
+                height: 40,
+                child: TextFormField(
+                  onChanged: (value) {
+                    inputEndTimes[i] = value;
+                  },
+                  style: const TextStyle(
+                    fontFamily: 'poppins',
+                    fontSize: 12,
+                  ),
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(
+                      fontFamily: 'poppins',
+                      color: isLightMode ? Colors.black : Colors.white,
+                    ),
+                    labelText: 'End time',
+                    errorStyle: const TextStyle(fontSize: 10),
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ),
+
+                  //****  VALIDATION LOGIC ****//
+                  validator: (value) {
+                    // Make sure that input field is not Empty neither null
+                    if (value == null || value.isEmpty) {
+                      return 'HH:MM ?';
+                    }
+                    if (!isValidTime(inputEndTimes[i])) return 'HH:MM !';
+                    // If everything is good, return null
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              DropdownButton<String>(
+                value: inputTeacher[i],
+                onChanged: (String? newValue) {
+                  setState(() {
+                    inputTeacher[i] = newValue!;
+                  });
+                },
+                items: teachersDB.map((String item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontFamily: 'poppins',
+                        fontSize: 12,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              DropdownButton<String>(
+                value: inputSubject[i],
+                onChanged: (String? newValue) {
+                  setState(() {
+                    inputSubject[i] = newValue!;
+                  });
+                },
+                items: subjectDB.map((String item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontFamily: 'poppins',
+                        fontSize: 12,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          );
+          temp.add(t);
+          temp.add(const SizedBox(
+            width: 5,
+          ));
+        }
+        temp.add(
+          ElevatedButton(
+              onPressed: () async {
+                if (activeClass == '') {
+                  context.showErrorBar(
+                      content: const Text(
+                        'Select class first',
+                        style:
+                            TextStyle(color: Colors.red, fontFamily: 'poppins'),
+                      ),
+                      position: FlashPosition.top);
+                  return;
+                }
+                loginUser(formKey);
+                if (loginUser(formKey) &&
+                    checkDropdown(allPeriods) &&
+                    selectedDay != 'Select Day') {
+                  //todo fetch data to database and ui
+                  setState(() {
+                    for (int i = 0; i < int.parse(allPeriods); i++) {
+                      saveTeachers.add(inputTeacher[i]);
+                      saveStartTime.add(inputStartTimes[i]);
+                      saveEndTime.add(inputEndTimes[i]);
+                      saveSubjects.add(inputSubject[i]);
+                    }
+                    //todo save below variables to db
+                    print(selectedDay);
+                    print(saveTeachers);
+                    print(saveStartTime);
+                    print(saveEndTime);
+                    print(saveSubjects);
+                    context.showSuccessBar(
+                        content: const Text(
+                          'Added successfully',
+                          style: TextStyle(
+                              color: Colors.green, fontFamily: 'poppins'),
+                        ),
+                        position: FlashPosition.top);
+                    //Clear all the input field after data is saved to database and change is reflected in ui
+                    inputEndTimes = ['', '', '', '', '', '', '', '', '', ''];
+                    inputStartTimes = ['', '', '', '', '', '', '', '', '', ''];
+                    inputSubject = [
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject',
+                      'Select Subject'
+                    ];
+                    inputTeacher = [
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher',
+                      'Select Teacher'
+                    ];
+                  });
+                  formKey.currentState?.reset();
+                } else {
+                  context.showErrorBar(
+                      content: const Text(
+                        'Select all Fields',
+                        style:
+                            TextStyle(color: Colors.red, fontFamily: 'poppins'),
+                      ),
+                      position: FlashPosition.top);
+                }
+              },
+              child: const SizedBox(
+                height: 40,
+                width: 30,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Add',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    Icon(
+                      Icons.add,
+                      size: 8,
+                    ),
+                  ],
+                ),
+              )),
+        );
+        return temp;
+      }
+    }
+
     return MaterialApp(
       theme: isLightMode ? lightTheme : darkTheme,
       debugShowCheckedModeBanner: false,
@@ -231,149 +533,110 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                           )),
                     ),
                     const SizedBox(height: 10),
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  // courseId = value;
-                                },
-                                style: const TextStyle(
-                                  fontFamily: 'poppins',
-                                  fontSize: 12,
-                                ),
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                    fontFamily: 'poppins',
-                                    color: isLightMode
-                                        ? Colors.black
-                                        : Colors.white,
-                                  ),
-                                  labelText: 'Id',
-                                  errorStyle:
-                                      TextStyle(fontSize: width * 0.018),
-                                  border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
-
-                                //****  VALIDATION LOGIC ****//
-                                validator: (value) {
-                                  final RegExp pattern =
-                                      RegExp(r'^[A-Za-z][A-Za-z0-9 +\-]*$');
-
-                                  // Make sure that input field is not Empty neither null
-                                  if (value == null || value.isEmpty) {
-                                    return 'Id ?';
-                                  } else if (!pattern.hasMatch(value)) {
-                                    return 'Invalid Id';
-                                  }
-                                  // If everything is good, return null
-                                  return null;
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.02,
-                            ),
-                            SizedBox(
-                              width: width * 0.18,
-                              child: TextFormField(
-                                onChanged: (value) {
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Form(
+                        key: _formKey1,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              DropdownButton<String>(
+                                value: selectedDay,
+                                onChanged: (String? newValue) {
                                   setState(() {
-                                    // courseName = value;
+                                    selectedDay = newValue!;
                                   });
                                 },
-                                style: TextStyle(
-                                  fontFamily: 'poppins',
-                                  fontSize: width * 0.015,
-                                ),
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                    fontFamily: 'poppins',
-                                    color: isLightMode
-                                        ? Colors.black
-                                        : Colors.white,
-                                  ),
-                                  labelText: 'Course name',
-                                  errorStyle:
-                                      TextStyle(fontSize: width * 0.018),
-                                  border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
-
-                                //****  VALIDATION LOGIC ****//
-                                validator: (value) {
-                                  final RegExp pattern =
-                                      RegExp(r'^[A-Za-z][A-Za-z0-9 +\-]*$');
-
-                                  // Make sure that input field is not Empty neither null
-                                  if (value == null || value.isEmpty) {
-                                    return 'Course name ?';
-                                  } else if (!pattern.hasMatch(value)) {
-                                    return 'Invalid course name';
-                                  }
-                                  // If everything is good, return null
-                                  return null;
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.02,
-                            ),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  loginUser(_formKey);
-                                  if (loginUser(_formKey)) {
-                                    //todo add this to collection
-                                    //Clear all the input field
-                                    _formKey.currentState?.reset();
-                                  }
-                                },
-                                child: SizedBox(
-                                  height: height * 0.05,
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Add',
-                                        style: TextStyle(),
+                                items: <String>[
+                                  "Select Day",
+                                  "Monday",
+                                  "Tuesday",
+                                  "Wednesday",
+                                  "Thursday",
+                                  "Friday",
+                                  "Saturday",
+                                  "Sunday",
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontFamily: 'poppins',
+                                        fontSize: width * 0.008,
                                       ),
-                                      Icon(Icons.add),
-                                    ],
-                                  ),
-                                )),
-                          ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              DropdownButton<String>(
+                                value: totalPeriod,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    totalPeriod = newValue!;
+                                  });
+                                },
+                                items: <String>[
+                                  'Total periods',
+                                  '4',
+                                  '5',
+                                  '6',
+                                  '7',
+                                  '8',
+                                  '9',
+                                  '10'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontFamily: 'poppins',
+                                        fontSize: width * 0.008,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children:
+                                    getRoutineFields(totalPeriod, _formKey1),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     Container(
                       width: double.infinity,
                       margin: const EdgeInsets.only(right: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Course Details',
+                          Text('Classes:',
                               style: TextStyle(
                                   fontFamily: 'poppins',
                                   color: isLightMode
                                       ? Colors.black
                                       : Colors.white)),
                           const SizedBox(
-                            width: 10,
+                            width: 150,
                           ),
+                          Text('Routine: $activeClass',
+                              style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  color: isLightMode
+                                      ? Colors.black
+                                      : Colors.white)),
                         ],
                       ),
                     ),
@@ -400,14 +663,12 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                         borderRadius: const BorderRadius.only(
                             bottomRight: Radius.circular(8),
                             bottomLeft: Radius.circular(8))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-
-                          //todo Add class list here
-                          child: Column(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
                             //class name list
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -425,82 +686,88 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 120,
-                                          height: 60,
-                                          child: TextFormField(
-                                            onChanged: (value) {
-                                              // courseId = value;
-                                            },
-                                            style: const TextStyle(
-                                              fontFamily: 'poppins',
-                                              fontSize: 12,
-                                            ),
-                                            decoration: InputDecoration(
-                                              labelStyle: TextStyle(
+                                    Form(
+                                      key: _formKey,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 120,
+                                            height: 60,
+                                            child: TextFormField(
+                                              onChanged: (value) {
+                                                addedClass = value;
+                                              },
+                                              style: const TextStyle(
                                                 fontFamily: 'poppins',
-                                                color: isLightMode
-                                                    ? Colors.black
-                                                    : Colors.white,
+                                                fontSize: 12,
                                               ),
-                                              labelText: 'Add class',
-                                              errorStyle: TextStyle(
-                                                  fontSize: width * 0.018),
-                                              border: const OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
+                                              decoration: InputDecoration(
+                                                labelStyle: TextStyle(
+                                                  fontFamily: 'poppins',
+                                                  color: isLightMode
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                                ),
+                                                labelText: 'Add class',
+                                                errorStyle: const TextStyle(
+                                                    fontSize: 12),
+                                                border:
+                                                    const OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
 
-                                            //****  VALIDATION LOGIC ****//
-                                            validator: (value) {
-                                              // Make sure that input field is not Empty neither null
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'class ?';
-                                              }
-                                              // If everything is good, return null
-                                              return null;
-                                            },
+                                              //****  VALIDATION LOGIC ****//
+                                              validator: (value) {
+                                                // Make sure that input field is not Empty neither null
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'class ?';
+                                                }
+                                                // If everything is good, return null
+                                                return null;
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        ElevatedButton(
-                                            onPressed: () async {
-                                              loginUser(_formKey);
-                                              if (loginUser(_formKey)) {
-                                                //todo add this to collection
-                                                //Clear all the input field
-                                                _formKey.currentState?.reset();
-                                              }
-                                            },
-                                            child: const SizedBox(
-                                              height: 40,
-                                              width: 30,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Add',
-                                                    style:
-                                                        TextStyle(fontSize: 12),
-                                                  ),
-                                                  Icon(
-                                                    Icons.add,
-                                                    size: 8,
-                                                  ),
-                                                ],
-                                              ),
-                                            )),
-                                      ],
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          ElevatedButton(
+                                              onPressed: () async {
+                                                loginUser(_formKey);
+                                                if (loginUser(_formKey)) {
+                                                  //todo add this to collection
+                                                  //Clear all the input field
+                                                  _formKey.currentState
+                                                      ?.reset();
+                                                }
+                                              },
+                                              child: const SizedBox(
+                                                height: 40,
+                                                width: 30,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Add',
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                    Icon(
+                                                      Icons.add,
+                                                      size: 8,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
                                     ),
                                     const Divider(thickness: 2, endIndent: 10),
                                     Expanded(
@@ -517,17 +784,30 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                                                   (BuildContext context,
                                                       int index) {
                                                 return ListTile(
-                                                  mouseCursor:
-                                                      MaterialStateMouseCursor
-                                                          .clickable,
-                                                  splashColor:
-                                                      Colors.greenAccent,
-                                                  onTap: () {
-                                                    print(
-                                                        'Tapped on: ${classNames[index]}');
-                                                  },
-                                                  title: Text(
-                                                    classNames[index],
+                                                  title: Column(
+                                                    children: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            activeClass =
+                                                                classNames[
+                                                                    index];
+                                                            updateValues(
+                                                                activeClass);
+                                                          });
+                                                        },
+                                                        child: SizedBox(
+                                                          height: 20,
+                                                          width: 200,
+                                                          child: Text(
+                                                            classNames[index],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const Divider(
+                                                          thickness: 1,
+                                                          endIndent: 10),
+                                                    ],
                                                   ),
                                                 );
                                               },
@@ -541,169 +821,59 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
                               )
                             ],
                           ),
-                        ),
-                        Expanded(
-                          flex: 10,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: SizedBox(
-                              height: height * 0.58,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          SingleChildScrollView(
-                                            scrollDirection: Axis.vertical,
-                                            child: Column(
-                                              children: [
-                                                SingleChildScrollView(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      //make data table here
-                                                      DataTable(
+                          Expanded(
+                            flex: 10,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: SizedBox(
+                                height: height * 0.58,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.vertical,
+                                              child: Column(
+                                                children: [
+                                                  SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        //todo make data table here
+                                                        DataTable(
+                                                          dataRowMaxHeight: 65,
                                                           showCheckboxColumn:
                                                               true,
-                                                          columns: const <DataColumn>[
-                                                            DataColumn(
-                                                              label: Expanded(
-                                                                child: Text(
-                                                                  'S.N.',
-                                                                  style: TextStyle(
-                                                                      fontStyle:
-                                                                          FontStyle
-                                                                              .normal,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            DataColumn(
-                                                              label: Expanded(
-                                                                child: Text(
-                                                                  'Course Id',
-                                                                  style: TextStyle(
-                                                                      fontStyle:
-                                                                          FontStyle
-                                                                              .normal,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            DataColumn(
-                                                              label: Expanded(
-                                                                child: Text(
-                                                                  'Course Name',
-                                                                  style: TextStyle(
-                                                                      fontStyle:
-                                                                          FontStyle
-                                                                              .normal,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            DataColumn(
-                                                              label: Expanded(
-                                                                child: Text(
-                                                                  'Edit',
-                                                                  style: TextStyle(
-                                                                      fontStyle:
-                                                                          FontStyle
-                                                                              .italic),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            DataColumn(
-                                                              label: Expanded(
-                                                                child: Text(
-                                                                  'Delete',
-                                                                  style: TextStyle(
-                                                                      fontStyle:
-                                                                          FontStyle
-                                                                              .italic),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                          rows: [
-                                                            DataRow(
-                                                              cells: <DataCell>[
-                                                                DataCell(
-                                                                    Text('1')),
-                                                                DataCell(Text(
-                                                                    'Bse221')),
-                                                                DataCell(Text(
-                                                                    'Graphics')),
-                                                                DataCell(
-                                                                  const Icon(
-                                                                      Icons
-                                                                          .edit),
-                                                                  onTap:
-                                                                      () async {
-                                                                    //TODO edit
-                                                                  },
-                                                                ),
-                                                                DataCell(
-                                                                  const Icon(Icons
-                                                                      .delete),
-                                                                  onTap: () {},
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            DataRow(
-                                                              cells: <DataCell>[
-                                                                DataCell(
-                                                                    Text('1')),
-                                                                DataCell(Text(
-                                                                    'Bse221')),
-                                                                DataCell(Text(
-                                                                    'Graphics')),
-                                                                DataCell(
-                                                                  const Icon(
-                                                                      Icons
-                                                                          .edit),
-                                                                  onTap:
-                                                                      () async {
-                                                                    //TODO edit
-                                                                  },
-                                                                ),
-                                                                DataCell(
-                                                                  const Icon(Icons
-                                                                      .delete),
-                                                                  onTap: () {},
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ]),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                                          columns: generateColumn(
+                                                              activeClassPeriod),
+                                                          rows: generateRow(),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     )),
               )
             ]),
@@ -714,33 +884,102 @@ class _ClassRoutineEntryState extends State<ClassRoutineEntry> {
   }
 }
 
-// List<DataRow> dataCellForCourses(final cd) {
-//   List<DataRow> res = [];
-//
-//   if (cd == null) {
-//     return res;
-//   }
-//   int i = 1;
-//   for (var course in cd) {
-//     DataRow tmp = DataRow(
-//       cells: <DataCell>[
-//         DataCell(Text(i.toString())),
-//         DataCell(Text(course["course_id"])),
-//         DataCell(Text(course["course_name"])),
-//         DataCell(
-//           const Icon(Icons.edit),
-//           onTap: () async {
-//             //TODO edit
-//           },
-//         ),
-//         DataCell(
-//           const Icon(Icons.delete),
-//           onTap: () {},
-//         ),
-//       ],
-//     );
-//     i++;
-//     res.add(tmp);
-//   }
-//   return res;
-// }
+List<DataColumn> generateColumn(int totalPeriod) {
+  List<DataColumn> temp = [];
+  if (totalPeriod == 0) {
+    return [];
+  }
+  temp.add(
+    const DataColumn(
+      label: Expanded(
+        child: Text(
+          'Day',
+          style: TextStyle(
+            fontFamily: 'poppins',
+          ),
+        ),
+      ),
+    ),
+  );
+  for (int i = 0; i < totalPeriod; i++) {
+    temp.add(
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'Period ${i + 1}',
+            style: const TextStyle(
+              fontFamily: 'poppins',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  temp.add(
+    const DataColumn(
+      label: Expanded(
+        child: Text(
+          'Edit',
+          style: TextStyle(
+            fontFamily: 'poppins',
+          ),
+        ),
+      ),
+    ),
+  );
+  temp.add(
+    const DataColumn(
+      label: Expanded(
+        child: Text(
+          'Delete',
+          style: TextStyle(
+            fontFamily: 'poppins',
+          ),
+        ),
+      ),
+    ),
+  );
+  return temp;
+}
+
+List<DataRow> generateRow() {
+  List<DataRow> temp = [];
+
+  if (activeClassPeriod == 0) {
+    return [];
+  }
+  List<DataCell> tempCell = [];
+  for (int k = 0; k < day.length; k++) {
+    tempCell.add(DataCell(Text(
+      day[k],
+      style: const TextStyle(
+        fontFamily: 'poppins',
+      ),
+    )));
+    for (int i = 0; i < activeClassPeriod; i++) {
+      tempCell.add(DataCell(
+        Text(
+          '${startTime[i]} - ${endTime[i]}\n${subjects[i]}\n${teachers[i]}',
+          style: const TextStyle(
+            fontFamily: 'poppins',
+          ),
+        ),
+      ));
+    }
+  }
+  tempCell.add(DataCell(
+    const Icon(Icons.edit),
+    onTap: () async {
+      //TODO edit
+    },
+  ));
+  tempCell.add(DataCell(
+    const Icon(Icons.delete),
+    onTap: () {
+      //Todo remove
+    },
+  ));
+
+  temp.add(DataRow(cells: tempCell));
+  return temp;
+}
