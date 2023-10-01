@@ -3,23 +3,23 @@ import 'package:auto_size_text/auto_size_text.dart';
 import '../select_actor.dart';
 
 List<String> startingTimeTeacher = [
-  '17:17',
-  '17:19',
-  '17:10',
-  '17:21',
-  '14:57',
-  '14:58',
-  '14:59',
+  '10:15',
+  '11:45',
+  '12:30',
+  '13:15',
+  '13:55',
+  '14:30',
+  '15:50',
 ];
 //List can be of type dateTime
 List<String> endingTimeTeacher = [
-  '08:45',
-  '10:25',
-  '10:35',
-  '10:45',
-  '11:15',
-  '11:35',
-  '12:05',
+  '11:45',
+  '12:30',
+  '13:15',
+  '13:55',
+  '14:30',
+  '15:50',
+  '16:30',
 ];
 List<String> classNameTeacher = [
   'BSE 4th sem',
