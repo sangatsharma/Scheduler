@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //formats date
+import 'package:scheduler/Models/db_operations.dart';
+import 'package:scheduler/Screens/admin/getAdmin_institution.dart';
 import 'package:scheduler/Screens/select_actor.dart';
 import 'package:scheduler/Widgets/shared_prefs.dart';
 import '../../Notification/notification_services.dart';
@@ -21,6 +23,7 @@ class TeacherHomepage extends StatefulWidget {
 class _TeacherHomepageState extends State<TeacherHomepage>
     with SingleTickerProviderStateMixin {
   //function to show when back button is pressed
+
   Future<bool> showExitPopup() async {
     return await showDialog(
           barrierColor: Colors.transparent.withOpacity(0.6),
@@ -86,11 +89,15 @@ class _TeacherHomepageState extends State<TeacherHomepage>
   int nextIndex = 100;
   int previousIndex = int.parse(DateTime.now().day.toString());
   DateTime selectedDate = DateTime.now();
-
+  Map<String, dynamic> data = {};
   @override
   void initState() {
     super.initState();
-
+    TeacherCollectionOp.fetchRoutine("BSE-4th",selectedTeacherName).then((value) {
+      setState(() {
+        data = value;
+      });
+    });
     //scheduleNotification for teacher
     NotificationServices notificationServices = NotificationServices();
     WidgetsFlutterBinding.ensureInitialized();
@@ -136,7 +143,7 @@ class _TeacherHomepageState extends State<TeacherHomepage>
 
   List<Widget> routines = [];
   void _addItems(BuildContext context) {
-    routines = showRoutine(_selectedDateIndex, context);
+    routines = showRoutine(_selectedDateIndex, data, context);
   }
 
   @override

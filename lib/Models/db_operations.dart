@@ -222,11 +222,22 @@ class TeacherCollectionOp {
     TeacherDetail td = TeacherDetail(tname: tname, subjects: course);
 
     final docRef = db.collection(iname).doc("Teachers");
+    final docRef2 = db.collection(iname).doc("TeacherSubjectMapping");
 
     await docRef.set({
       tid: td.toMap(),
     }, SetOptions(merge: true)).then((value) => true);
 
+    await docRef2.set({
+      tid: {
+        "teacher_name": tname,
+        "subjects": [],
+        "week_days": [],
+        "starting_time": [],
+        "ending_time": [],
+        "class_name": []
+      }
+    });
 
     return true;
   }
@@ -268,5 +279,97 @@ class TeacherCollectionOp {
 
     await db.collection(aid).doc("Teachers").set(dataRef);
     return true;
+  }
+
+  static Future<Map<String, dynamic>> teacherHomepage(String aid, String tid, String cname) async {
+    final docRef = await db.collection(aid).doc("TeacherSubjectMapping").get();
+    Map<String, dynamic> res = {
+      "teacher_id": "",
+      "starting_time": [],
+      "ending_time": [],
+      "class_name": [],
+      "subject_name": [],
+      "week_days": []
+    };
+
+    docRef.data()?.forEach((key, value) {
+      res["teacher_id"] = key;
+      res["teacher_name"] = value["teacher_name"];
+
+      for(var i = 0; i < value["starting_time"].length; i++) {
+        res["starting_time"].add(value["starting_time"][i]);
+        res["ending_time"].add(value["ending_time"][i]);
+        res["class_name"].add(value["class_name"][i]);
+        res["subject_name"].add(value["subjects"][i]);
+        res["week_days"].add(value["week_days"][i]);
+      }
+    });
+    return res;
+  }
+
+
+  static Future<Map<String, Map<String, List<String>>>> fetchRoutine(
+      String cn, String tid) async {
+    final classColRef =
+        await db.collection("demo-admin").doc("Routine").collection(cn).get();
+
+    Map<String, Map<String, List<String>>> res = {
+      "7": {
+        "starting_times": [],
+        "ending_times": [],
+        "subjects": []
+      },
+      "1": {
+        "starting_times": [],
+        "ending_times": [],
+        "subjects": []
+      },
+      "2": {
+        "starting_times": [],
+        "ending_times": [],
+        "subjects": []
+      },
+      "3": {
+        "starting_times": [],
+        "ending_times": [],
+        "subjects": []
+      },
+      "4": {
+        "starting_times": [],
+        "ending_times": [],
+        "subjects": []
+      },
+      "5": {
+        "starting_times": [],
+        "ending_times": [],
+        "subjects": []
+      },
+      "6": {
+        "starting_times": [],
+        "ending_times": [],
+        "subjects": []
+      },
+    };
+
+    for (var doc in classColRef.docs) {
+      List<String> starting_time = [];
+      List<String> ending_time = [];
+      List<String> subjects = [];
+
+      final a = doc.get("periods");
+      for (var b in a) {
+        if(b["teacher_name"] == tid) {
+          starting_time.add(b["starting_time"]);
+          ending_time.add(b["ending_time"]);
+          subjects.add(b["subject"]);
+        }
+      }
+      res[RoutineOp._weekDay(doc.get("week_day"))]?["starting_times"]
+          ?.addAll(starting_time);
+      res[RoutineOp._weekDay(doc.get("week_day"))]?["ending_times"]?.addAll(ending_time);
+      res[RoutineOp._weekDay(doc.get("week_day"))]?["subjects"]?.addAll(subjects);
+    }
+    print(res);
+    return res;
   }
 }

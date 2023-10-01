@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
   void first() {
     TeacherCollectionOp.fetchAllTeachers(institutionName).then((res) {
       setState(() {
-        data = res;
+        data = SplayTreeMap.from(res);
       });
     });
   }
@@ -303,6 +305,7 @@ class _TeacherDetailsEditBoxState extends State<TeacherDetailsEditBox> {
                                   ? selectedCourse[3]
                                   : '-'
                             ];
+                              print(saveSelectedCourse);
                             Map<String, dynamic> t = {};
                             data.forEach((key, value) {
                               if (key == widget.selectedTeacherId) {

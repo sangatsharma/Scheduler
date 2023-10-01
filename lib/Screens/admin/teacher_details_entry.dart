@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
@@ -37,7 +39,7 @@ List<String> fetchAllCourse = <String>[
   'Select course',
 ];
 
-Map<String, dynamic> data = {};
+SplayTreeMap data = SplayTreeMap();
 
 class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
   final _formKey = GlobalKey<FormState>();
@@ -46,12 +48,12 @@ class _TeacherDetailsEntryState extends State<TeacherDetailsEntry> {
     //TODO no dummy
     final res = await CourseCollectionOp.fetchCourse(institutionName);
     final tRes = await TeacherCollectionOp.fetchAllTeachers(institutionName);
-
+    late final SplayTreeMap a;
     // await TeacherCollectionOp.addTeacher("demo-admin", "1", "tname", 1, "cname");
     if (fetchAllCourse.length == 1) {
       setState(() {
         fetchAllCourse = fetchAllCourse + res;
-        data = tRes;
+        data = SplayTreeMap.from(tRes);
       });
     }
   }

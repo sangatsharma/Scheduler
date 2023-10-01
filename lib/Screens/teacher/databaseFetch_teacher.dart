@@ -1,51 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:scheduler/Screens/teacher/teacher_name_select.dart';
 import '../select_actor.dart';
+import 'package:scheduler/Models/db_operations.dart';
 
-List<String> startingTimeTeacher = [
-  '17:17',
-  '17:19',
-  '17:10',
-  '17:21',
-  '14:57',
-  '14:58',
-  '14:59',
-];
-//List can be of type dateTime
-List<String> endingTimeTeacher = [
-  '08:45',
-  '10:25',
-  '10:35',
-  '10:45',
-  '11:15',
-  '11:35',
-  '12:05',
-];
-List<String> classNameTeacher = [
-  'BSE 4th sem',
-  'BSE 3rd sem',
-  'BSE 2nd sem',
-  'BSE 5th sem',
-  'BSE 6th sem',
-  'BSE 7th sem',
-  'BSE 8th sem',
-];
-List<String> subjectNameTeacher = [
-  'Computer Organization and Architecture(2P)(A)',
-  'Numerical Method(2L)',
-  'Database Management System(2T)(A/B)',
-  'Numerical Method(2L)',
-  'DBMs(2T)(A/B)',
-  'Break',
-  'Computer Graphics(1L)',
-];
+// List<String> startingTimeTeacher = [
+//   '17:17',
+//   '17:19',
+//   '17:10',
+//   '17:21',
+//   '14:57',
+//   '14:58',
+//   '14:59',
+// ];
+// //List can be of type dateTime
+// List<String> endingTimeTeacher = [
+//   '08:45',
+//   '10:25',
+//   '10:35',
+//   '10:45',
+//   '11:15',
+//   '11:35',
+//   '12:05',
+// ];
+// List<String> classNameTeacher = [
+//   'BSE 4th sem',
+//   'BSE 3rd sem',
+//   'BSE 2nd sem',
+//   'BSE 5th sem',
+//   'BSE 6th sem',
+//   'BSE 7th sem',
+//   'BSE 8th sem',
+// ];
+// List<String> subjectNameTeacher = [
+//   'Computer Organization and Architecture(2P)(A)',
+//   'Numerical Method(2L)',
+//   'Database Management System(2T)(A/B)',
+//   'Numerical Method(2L)',
+//   'DBMs(2T)(A/B)',
+//   'Break',
+//   'Computer Graphics(1L)',
+// ];
 
-List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
+List<Widget> fetchTeacherRoutine(
+    String day, Map<String, dynamic> data, BuildContext context) {
   //fetch all data from database
   //items to be fetched and convert to list
   //todo make list empty and add from database
   //List can be of type dateTime
   List<Widget> allRoutine = [];
+  List<String> startingTimeTeacher = data["starting_times"] ?? [];
+  List<String> endingTimeTeacher = data["ending_times"] ?? [];
+  String subjectNameTeacher =selectedTeacherName;
+  //TODO
+  List<String> classNameTeacher = ["BSE-4th"];
+
   for (int i = 0; i < startingTimeTeacher.length; i++) {
     Widget tempContainer = Container(
       margin: const EdgeInsets.only(top: 2, left: 4, right: 4, bottom: 3),
@@ -115,10 +124,10 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
                     maxFontSize: 28,
                     minFontSize: 17,
                     overflowReplacement: Text(
-                      subjectNameTeacher[i],
+                      subjectNameTeacher,
                       style: const TextStyle(fontSize: 14),
                     ),
-                    subjectNameTeacher[i],
+                    subjectNameTeacher,
                     style: const TextStyle(fontFamily: 'poppins'),
                   ),
                 ),
@@ -155,26 +164,28 @@ List<Widget> fetchTeacherRoutine(String day, BuildContext context) {
 //can be change day string to index according to the input field in admin section
 //List to fetch routine from database caled by passing day as a string
 //can be change day string to index according to the input field in admin section
-List<Widget> showRoutine(String dayIndex, BuildContext context) {
+List<Widget> showRoutine(
+    String dayIndex, Map<String, dynamic> data, BuildContext context) {
+  final d = data[dayIndex];
   switch (dayIndex) {
     case '1':
-      return fetchTeacherRoutine('MON', context);
+      return fetchTeacherRoutine('MON', d, context);
 
     case '2':
-      return fetchTeacherRoutine('TUE', context);
+      return fetchTeacherRoutine('TUE', d, context);
     case '3':
-      return fetchTeacherRoutine('WED', context);
+      return fetchTeacherRoutine('WED', d, context);
     case '4':
-      return fetchTeacherRoutine('THU', context);
+      return fetchTeacherRoutine('THU', d, context);
 
     case '5':
-      return fetchTeacherRoutine('FRI', context);
+      return fetchTeacherRoutine('FRI', d, context);
 
     case '6':
-      return fetchTeacherRoutine('SAT', context);
+      return fetchTeacherRoutine('SAT', d, context);
 
     case '7':
-      return fetchTeacherRoutine('SUN', context);
+      return fetchTeacherRoutine('SUN', d, context);
     default:
       return [];
   }
