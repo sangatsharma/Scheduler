@@ -10,7 +10,7 @@ void setThemeMode(bool themeMode) async {
 //Returns bool for the saved value of theme mode
 Future<bool?> selectedThemeMode() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('isLightModeSaved') ?? true;
+  return prefs.getBool('isLightModeSaved') ?? false;
 }
 
 bool isStudentLogin = false;

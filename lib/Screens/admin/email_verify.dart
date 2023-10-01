@@ -135,7 +135,7 @@ class _ResendButtonEmailState extends State<ResendEmailButton> {
   // If user goes back, stop the timer to prevent memory leak
   void dispose() {
     super.dispose();
-    countdownTimer!.cancel();
+    countdownTimer.cancel();
   }
 
   // Sets some variable and starts the countdown timer
@@ -163,7 +163,7 @@ class _ResendButtonEmailState extends State<ResendEmailButton> {
     // If _secondRemain reaches zero, stop the timer
     if (_secondsRemain == 0) {
       _resendEmailEnabled = true;
-      countdownTimer!.cancel();
+      countdownTimer.cancel();
     }
   }
 
@@ -216,7 +216,7 @@ class _ResendButtonEmailState extends State<ResendEmailButton> {
   }
 }
 
-//TODO dosen't work first time (maybe call reload twice, or set a 1 sec delay)
+//TODO does not work first time (maybe call reload twice, or set a 1 sec delay)
 // TODO maybe sign out after user verifies
 // Check if user has verified email or not
 bool? _checkForVerification() {
